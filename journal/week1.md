@@ -94,17 +94,15 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend-react-js:/frontend-react-js
-
-# the name flag is a hack to change the default prepend folder
-# name when outputting the image names
 networks: 
   internal-network:
     driver: bridge
     name: cruddur
     }
 
-# I Finally added some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
-  
+# Lastly
+I added Cloned the backeend and frontend, some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
+ NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
   
 
 
