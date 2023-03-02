@@ -1,1 +1,4 @@
 # Week 2 — Distributed Tracing
+- This is the when you get a lot of requests happening in same time in a lot of different services a bunch of seperated log lines don't cut it instead it needs a trace of what happens and software can tell us that trace. When you see track of requests that come in. AN drow in atrace is called a span and it is part of a trace it has a strart time and a duration so it descibes a span of time and represents a single unit of work that was done as part of serving a request.traces tells you not only what happens but when it happended and you can see what happended at same time and what waited for something else to finish.
+- Instrumentation is the code that sends the data that makes this trace.
+- Traces not only tell you a list of what happens, it also tella when it happens and can see what happens at the same time
