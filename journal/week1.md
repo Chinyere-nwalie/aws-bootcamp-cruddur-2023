@@ -34,11 +34,6 @@ cd ..
  To Run =
  {
  docker run --rm -p 4567:4567 -it backend-flask
-FRONTEND_URL="*" BACKEND_URL="*" docker run --rm -p 4567:4567 -it backend-flask
-export FRONTEND_URL="*"
-export BACKEND_URL="*"
-docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask
-docker run --rm -p 4567:4567 -it  -e FRONTEND_URL -e BACKEND_URL backend-flask
 }
 
 # After running i unset them all
@@ -101,7 +96,13 @@ networks:
     }
 
 # Lastly
-I added Cloned the backeend and frontend, some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
+I added Cloned the backend and frontend and made it run
+{
+FRONTEND_URL="*" BACKEND_URL="*" docker run --rm -p 4567:4567 -it backend-flask
+
+docker run --rm -p 4567:4567 -it  -e FRONTEND_URL -e BACKEND_URL backend-flask
+}
+- Also made some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
  NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
   
 
