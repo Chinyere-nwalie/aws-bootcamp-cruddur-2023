@@ -2,6 +2,7 @@
 
 - I added a dockerfile to my backendfile with this commands
  {
+ 
  FROM python:3.10-slim-buster
 
  WORKDIR /backend-flask
@@ -15,25 +16,34 @@
 
  EXPOSE ${PORT}
  CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"] 
+ 
  }
 
 # I containerized my backend app successfully with this commands
  {
+ 
  cd backend-flask
  export FRONTEND_URL="*"
  export BACKEND_URL="*"
  python3 -m flask run --host=0.0.0.0 --port=4567
  cd ..
+ 
  }
 
  - I Built a backend container and run the it in my Gitpod workspace
  To build = 
+ 
  {
+ 
  docker build -t  backend-flask ./backend-flask
+ 
  }
+ 
  To Run =
+ 
  {
  docker run --rm -p 4567:4567 -it backend-flask
+ 
  }
 
 - After running i unset them all
