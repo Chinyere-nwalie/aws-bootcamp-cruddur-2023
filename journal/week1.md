@@ -89,7 +89,6 @@
 
 # I Created a Docker composed file
  {
- 
  version: "3.8"
  services:
   backend-flask:
@@ -113,7 +112,6 @@
   internal-network:
     driver: bridge
     name: cruddur
-    
     }
 
 # Lastly
