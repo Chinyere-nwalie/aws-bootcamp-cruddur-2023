@@ -1,6 +1,6 @@
 # Week 1 — App Containerization
 
-# I added a dockerfile to my backendfile with this commands
+- I added a dockerfile to my backendfile with this commands
 {
 FROM python:3.10-slim-buster
 
@@ -26,7 +26,7 @@ python3 -m flask run --host=0.0.0.0 --port=4567
 cd ..
 }
 
-# I Built a backend container and run the it in my Gitpod workspace
+- I Built a backend container and run the it in my Gitpod workspace
  To build = 
  {
  docker build -t  backend-flask ./backend-flask
@@ -36,7 +36,7 @@ cd ..
  docker run --rm -p 4567:4567 -it backend-flask
 }
 
-# After running i unset them all
+- After running i unset them all
 {unset FRONTEND_URL="*"
 unset BACKEND_URL="*"}
 
@@ -64,7 +64,7 @@ EXPOSE ${PORT}
 CMD ["npm", "start"]
 }
 
-# I Built and ran a frontend container
+- I Built and ran a frontend container
 build= {docker build -t frontend-react-js ./frontend-react-js}
 made is run= {docker run -p 3000:3000 -d frontend-react-js}
 
@@ -95,7 +95,7 @@ networks:
     name: cruddur
     }
 
-# Lastly
+- Lastly
 I added Cloned the backend and frontend and made it run
 {
 FRONTEND_URL="*" BACKEND_URL="*" docker run --rm -p 4567:4567 -it backend-flask
