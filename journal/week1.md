@@ -56,11 +56,15 @@
  deleted= {docker image rm backend-flask --force}
 
 -  I tested the backend server and made sure the port was work and public
- {curl -X GET http://localhost:4567/api/activities/home -H "Accept: application/json" -H "Content-Type: application/json"}
+ {
+ curl -X GET http://localhost:4567/api/activities/home -H "Accept: application/json" -H "Content-Type: application/json"
+ }
   
 # I ran a npm and created a frontend dockerfile
- npm i= {cd frontend-react-js
- npm i}
+ npm i= {
+ cd frontend-react-js
+ npm i
+ }
  
  frontend dockerfile= 
  {
@@ -76,11 +80,16 @@
  }
 
 - I Built and ran a frontend container
- build= {docker build -t frontend-react-js ./frontend-react-js}
- made is run= {docker run -p 3000:3000 -d frontend-react-js}
+ build= {
+ docker build -t frontend-react-js ./frontend-react-js
+ }
+ made is run= {
+ docker run -p 3000:3000 -d frontend-react-js
+ }
 
 # I Created a Docker composed file
  {
+ 
  version: "3.8"
  services:
   backend-flask:
@@ -104,14 +113,17 @@
   internal-network:
     driver: bridge
     name: cruddur
+    
     }
 
 # Lastly
 - I added Cloned the backend and frontend and made it run
  {
+ 
  FRONTEND_URL="*" BACKEND_URL="*" docker run --rm -p 4567:4567 -it backend-flask
 
  docker run --rm -p 4567:4567 -it  -e FRONTEND_URL -e BACKEND_URL backend-flask
+ 
  }
 - Also made some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
 - NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
