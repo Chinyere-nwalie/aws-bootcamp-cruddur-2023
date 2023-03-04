@@ -69,12 +69,6 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Activity'
-    get:
-      description: ''
-      parameters: []
-      responses:
-        '200':
-          description: OK
   /api/activities/@{handle}:
     get:
       description: 'Return a feed of activity for a specific user'
@@ -131,21 +125,47 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Message'
-  /api/activities/notifications:
-    get:
-      description: 'Return a feed of activity based for all that i follow'
+  /api/messages:
+    post:
+      description: 'Create a direct message between two users'
       tags:
-        - activities
-      parameters: []
+        - messages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_receiver_handle:
+                  type: string
       responses:
         '200':
-          description: 'Return and array of activites'
+          description: Return a single message
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Message'
+  /api/activities/notification:
+    get:
+      description: 'Return a feed of activities for all those that I follow'
+      tags:
+        - activities
+      parameters: []
+      responses: 
+        '200':
+          description: 'Return a feed of activities'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
+
+
 components:
   schemas:
     Activity:
