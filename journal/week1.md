@@ -42,7 +42,7 @@ To Run = docker run --rm -p 4567:4567 -it backend-flask
  unset FRONTEND_URL="*"
  unset BACKEND_URL="*"
 ```
--  I created and deleted the container images
+*  I created and deleted the container images
 ```sh
  To create = 
  docker ps
@@ -50,17 +50,12 @@ To Run = docker run --rm -p 4567:4567 -it backend-flask
  deleted= {docker image rm backend-flask --force
  ```
 
--  I tested the backend server and made sure the port was work and public
+*  I tested the backend server and made sure the port was work and public
  ```sh
  {
  curl -X GET http://localhost:4567/api/activities/home -H "Accept: application/json" -H "Content-Type: application/json"
  }
  ```
-
-After running the command I can open the backend into the browser via URL which is present into the gitpod "PORTS". I made the URL public and I opened the URL and found that its giving me 404 error which is good sign it means the backend is running
-
-![BACKEND IS RUNNING](assets/backend-test.png)
-
 I installed npm in my Gitpod terminal
 
 ```sh
@@ -92,14 +87,11 @@ CMD ["npm", "start"]
 ```
 
 To test the backend I ran these commands to run the frontend 
+```sh
+To build the image = docker build -t frontend-react-js ./frontend-react-js
+To run the container exposing the port 3000 = docker run -p 3000:3000 frontend-react-js
 
-```
-# To build the image
-docker build -t frontend-react-js ./frontend-react-js
-
-# To run the container exposing the port 3000
-docker run -p 3000:3000 frontend-react-js
-# I containerized my backend app successfully with this commands
+My backend containerization was a success with these commands
 ```sh
 cd backend-flask
 export FRONTEND_URL="*"
@@ -136,14 +128,8 @@ export BACKEND_URL="*"
 ```
 
 # Lastly
-- I added Cloned the backend and frontend and made it run
-```sh
- FRONTEND_URL="*" BACKEND_URL="*" docker run --rm -p 4567:4567 -it backend-flask
-
- docker run --rm -p 4567:4567 -it  -e FRONTEND_URL -e BACKEND_URL backend-flask
-```
-- Also made some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
-- NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
+* Also made some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
+* NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
   
 
 
