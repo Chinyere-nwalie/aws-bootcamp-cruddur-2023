@@ -42,14 +42,6 @@ To Run = docker run --rm -p 4567:4567 -it backend-flask
  unset FRONTEND_URL="*"
  unset BACKEND_URL="*"
 ```
-*  I created and deleted the container images
-```sh
- To create = 
- docker ps
- docker images
- deleted= {docker image rm backend-flask --force
- ```
-
 *  I tested the backend server and made sure the port was work and public
  ```sh
  {
@@ -90,8 +82,9 @@ To test the backend I ran these commands to run the frontend
 ```sh
 To build the image = docker build -t frontend-react-js ./frontend-react-js
 To run the container exposing the port 3000 = docker run -p 3000:3000 frontend-react-js
+```
 
-My backend containerization was a success with these commands
+* My backend containerization was a success with these commands
 ```sh
 cd backend-flask
 export FRONTEND_URL="*"
