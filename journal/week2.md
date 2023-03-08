@@ -19,3 +19,5 @@
     opentelemetry-instrumentation-requests
     } to my requirement.txt in my backend file
     i added updates to my app.y and initialized tracing and an exporter
+    I explored the pricing concept in honeycomb
+    I understood the concepts of observability. it is the way you will break down an entire application into processes, have an exact trace of where a function is calling, where it's basically tranversing the data, where it's going for logging what kind of metric you should look out for when improving that logging capability. and it three pillars are metric, logs and traces.
