@@ -57,8 +57,8 @@ provider.add_span_processor(processor)
 # xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
 
 # Show this in the logs within the backend-flask app (STDOUT)
-simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
-provider.add_span_processor(processor)
+# simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
+# provider.add_span_processor(processor)
 
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)

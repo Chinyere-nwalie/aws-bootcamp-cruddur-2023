@@ -50,5 +50,5 @@ class HomeActivities:
       }
       ]
       span.set_attribute("app.result_lenght", len(results))
-      return results
+      results
       
