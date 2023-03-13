@@ -7,7 +7,11 @@ Instrumentation is the code, it sends the data that makes this trace.
 
 - I set my honeycomb account and created a new environment and set my api key, proceeded to my Gitpod and created a file with the name of my api alongside gp env to persistent to Gitpod when it starts the env next time.
 
-On my terminal i did ``gp env HONEYCOMB_SERVICE_NAME="Cruddur" and gp env HONEYCOMB_API_KEY=""`` but it did'nt work then i did 
+On my terminal i did:
+
+``gp env HONEYCOMB_SERVICE_NAME="Cruddur" and gp env HONEYCOMB_API_KEY=""
+``  
+but it did'nt work. Then i did:
 ``
 export HONEYCOMB_SERVICE_NAME="Cruddur" 
 export HONEYCOMB_API_KEY="" and added a OTEL_SERVICE_NAME "Backend-flask" to the docker-compose.yml. 
@@ -15,10 +19,12 @@ export HONEYCOMB_API_KEY="" and added a OTEL_SERVICE_NAME "Backend-flask" to the
   OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
   OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY
   }
+  
   ``
 - I configured OTEL to send to honeycomb. OTEL means - Open Telemetry. These are part of the CNCF - cloud native compute foundation and this only runs kubernetes.
 
 I ran this pip install opentelemetry-api to instal OTEL and added this to my requirements.txt in my backend file
+
 `` 
 {
 opentelemetry-api \
@@ -27,6 +33,7 @@ opentelemetry-exporter-otlp-proto-http \
 opentelemetry-instrumentation-flask \
 opentelemetry-instrumentation-requests
 }
+
 ``
 # Technical task
 
