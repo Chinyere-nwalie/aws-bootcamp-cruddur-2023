@@ -9,7 +9,7 @@ url "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 ```
-* I configured the required environment variables into my Gitpod. I also created credentials in my aws/IAM account for the course of this bootcamp using the AWS console
+*I configured the required environment variables into my Gitpod. I also created credentials in my aws/IAM account for the course of this bootcamp using the AWS console
 ``
 "export AWS_ACCESS_KEY_ID" 
 "export AWS_SECRET_ACCESS_KEY"
@@ -79,7 +79,7 @@ aws sns subscribe \
 
 After that I received an email below is the proof
 
-![EMAIL](assets/sns-topic.png)
+![EMAIL](assets/sns%20notification.png)
 
 ![BILLING-BUDGET](assets/billing-budgets.png)
 
