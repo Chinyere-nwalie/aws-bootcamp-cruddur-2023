@@ -12,8 +12,7 @@ On my terminal i did:
 ``gp env HONEYCOMB_SERVICE_NAME="Cruddur" and gp env HONEYCOMB_API_KEY=""
 ``  
 but it did'nt work. Then i did:
-``
-export HONEYCOMB_SERVICE_NAME="Cruddur" 
+``export HONEYCOMB_SERVICE_NAME="Cruddur" 
 export HONEYCOMB_API_KEY="" and added a OTEL_SERVICE_NAME "Backend-flask" to the docker-compose.yml. 
 {
   OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
@@ -25,8 +24,7 @@ export HONEYCOMB_API_KEY="" and added a OTEL_SERVICE_NAME "Backend-flask" to the
 
 I ran this pip install opentelemetry-api to instal OTEL and added this to my requirements.txt in my backend file
 
-`` 
-{
+`` {
 opentelemetry-api \
 opentelemetry-sdk \
 opentelemetry-exporter-otlp-proto-http \
