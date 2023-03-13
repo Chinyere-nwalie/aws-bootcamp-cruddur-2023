@@ -13,24 +13,13 @@ On my terminal i did:
 ``  
 - but it did'nt work. Then i did this:
 
-``
-export HONEYCOMB_SERVICE_NAME="Cruddur" 
-export HONEYCOMB_API_KEY="" OTEL_SERVICE_NAME
+``export HONEYCOMB_SERVICE_NAME="Cruddur" 
+  export HONEYCOMB_API_KEY="" OTEL_SERVICE_NAME
 ``
   
   
 - I configured OTEL to send to honeycomb. OTEL means - Open Telemetry. These are part of the CNCF - cloud native compute foundation and this only runs kubernetes.
 
-I ran this pip install opentelemetry-api to instal OTEL and added this to my requirements.txt in my backend file
-
-``
-opentelemetry-api \
-
-opentelemetry-sdk \
-opentelemetry-exporter-otlp-proto-http \
-opentelemetry-instrumentation-flask \
-opentelemetry-instrumentation-requests
-``
 
 # Technical task
 
