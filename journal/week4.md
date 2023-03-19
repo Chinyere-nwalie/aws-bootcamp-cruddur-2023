@@ -8,7 +8,7 @@ export CONNECTION_URL="postgresql://postgres:password@localhost:5432/cruddur"
 $connection_url
 gp env CONNECTION_URL="postgresql://postgres:password@localhost:5432/cruddur" to save the environment
 ```
-
+psql postgresql://postgres:password@localhost:5432/cruddur
 
 
 to make a new folder called bin short from for binary made 3 files db-create, drop and schema-load
@@ -40,3 +40,9 @@ creating tables
 
 Un-relational database is mysql, postgres
 outbound rules state that without vpc, it can go anywhere
+
+create a database
+
+login with your pasword
+connect all bin and db
+
