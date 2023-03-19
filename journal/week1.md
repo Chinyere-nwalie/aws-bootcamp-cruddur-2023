@@ -95,7 +95,92 @@ export BACKEND_URL="*"
 
 * Also made some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
 * NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
+
+- I added the dynamodb and postgres into docker compose file
+ To run the dynamodb via container I added theses commands in the docker compose file
+``dynamodb-local:
+    # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
+    # We needed to add user:root to get this working.
+    user: root
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+ ``
+To run the postgres via container I added these commands in the docker compose file
+``db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
+``
+
+
+# Home work Challenges
+- I pushed the docker images from my Gitpod CLI to my docker hub
+I achieved this by firstly creating an access token, then i login to docker in my CLI
+``docker login -u nwaliechinyerejessica -p accesstoken
+``
+Then I tage the images with this commands
+``docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-backend
+  docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-frontend
+``
+After that I pushed all Images
+``docker image push nwaliechinyerejessica/cruddur-backend:latest
+  docker image push nwaliechinyerejessica/cruddur-frontend:latest
+``
+Below is the outcome of the commands i executed, displaying my docker images
+![docker_images][assets/week%201%20docker%20image.png]
+
+- I installed Docker on my localmachine 
+![docker_localmachine][assets/Screenshot%20(180).png]
+
+- I Launched an EC2 instance that has docker installed,
+![EC2_instance][assets/week%201%20EC2.jpg]
   
+This the docker compose file I used to run both the containers inside ec2
+
+``version: "3.8"
+services:
+  backend-flask:
+    environment:
+      FRONTEND_URL: "http://${ips}:3000"
+      BACKEND_URL: "http://${ips}:4567"
+    image: nwaliechinyerejessica/cruddur-backend
+#    build: ./backend-flask
+    ports:
+      - "4567:4567"
+    volumes:
+      - ./backend-flask:$HOME/backend-flask
+  frontend-react-js:
+    environment:
+      REACT_APP_BACKEND_URL: "http://${ips}:4567"
+    image: nwaliechinyerejessica/cruddur-frontend
+#    build: ./frontend-react-js
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend-react-js:$HOME/frontend-react-js
+
+# the name flag is a hack to change the default prepend folder
+# name when outputting the image names
+networks: 
+  internal-network:
+    driver: bridge
+    name: cruddur
+``
 
 
   
