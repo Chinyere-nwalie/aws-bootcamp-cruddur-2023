@@ -29,3 +29,6 @@ to acced db-scheam-load
 we ran this command ``sed 's/ / /'`` meaning what is it that you want to remove and replace
 
 creating tables
+
+Un-relational database is mysql, postgres
+outbound rules state that without vpc, it can go anywhere
