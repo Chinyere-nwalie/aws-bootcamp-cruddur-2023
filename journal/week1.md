@@ -96,14 +96,15 @@ export BACKEND_URL="*"
 * Also made some changes to the frontend notifications.js file, notifications.py file, app.py file and commited all changes made.
 * NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
 
-#Dynamodb and Postgres
+# Dynamodb and Postgres
 
 I added the dynamodb and postgres into docker compose file 
 This was also insightful [link](https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa)
+
 To run the dynamodb via container I added theses commands in the docker compose file
  
-``yml
-`dynamodb-local:
+```yml
+dynamodb-local:
     # We needed to add user:root to get this working.
     user: root
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
