@@ -99,7 +99,8 @@ export BACKEND_URL="*"
 - I added the dynamodb and postgres into docker compose file
  To run the dynamodb via container I added theses commands in the docker compose file
  
-```dynamodb-local:
+``yml
+`dynamodb-local:
     # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
     # We needed to add user:root to get this working.
     user: root
@@ -114,7 +115,8 @@ export BACKEND_URL="*"
  ```
 To run the postgres via container I added these commands in the docker compose file
 
-```db:
+```yml
+db:
     image: postgres:13-alpine
     restart: always
     environment:
@@ -132,17 +134,23 @@ volumes:
 
 # Home work Challenges
 - I pushed the docker images from my Gitpod CLI to my docker hub
+
 I achieved this by firstly creating an access token, then i login to docker in my CLI
-```docker login -u nwaliechinyerejessica -p accesstoken
+
+```sh
+docker login -u nwaliechinyerejessica -p accesstoken
  ```
 Then I tagged the images with this commands:
-```docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-backend
-  docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-frontend
+
+```sh
+docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-backend
+docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-frontend
  ```
 After that I pushed all Images
 
-```docker image push nwaliechinyerejessica/cruddur-backend:latest
-  docker image push nwaliechinyerejessica/cruddur-frontend:latest
+```sh
+docker image push nwaliechinyerejessica/cruddur-backend:latest
+docker image push nwaliechinyerejessica/cruddur-frontend:latest
  ```
 Below is the outcome of the commands i executed, displaying my docker images
 ![docker_images](assets/week%201%20docker%20image.png)
@@ -155,7 +163,8 @@ I Launched an EC2 instance that has docker installed,
   
 This the docker compose commands I added to the file to run both the containers inside ec2
 
-```version: "3.8"
+```yml
+version: "3.8"
 services:
   backend-flask:
     environment:
