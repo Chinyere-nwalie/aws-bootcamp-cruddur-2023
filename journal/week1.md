@@ -133,10 +133,9 @@ volumes:
 # Home work Challenges
 - I pushed the docker images from my Gitpod CLI to my docker hub
 I achieved this by firstly creating an access token, then i login to docker in my CLI
-
 ```docker login -u nwaliechinyerejessica -p accesstoken
  ```
-Then I tage the images with this commands
+Then I tagged the images with this commands:
 ```docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-backend
   docker tag ubuntu:latest  nwaliechinyerejessica/cruddur-frontend
  ```
@@ -148,13 +147,13 @@ After that I pushed all Images
 Below is the outcome of the commands i executed, displaying my docker images
 ![docker_images](assets/week%201%20docker%20image.png)
 
-- I installed Docker on my localmachine 
+I installed Docker on my localmachine 
 ![docker_localmachine](assets/Screenshot%20(180).png)
 
-- I Launched an EC2 instance that has docker installed,
+I Launched an EC2 instance that has docker installed,
 ![EC2_instance](assets/week%201%20EC2.jpg)
   
-This the docker compose file I used to run both the containers inside ec2
+This the docker compose commands I added to the file to run both the containers inside ec2
 
 ```version: "3.8"
 services:
