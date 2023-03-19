@@ -99,6 +99,7 @@ export BACKEND_URL="*"
 # Dynamodb and Postgres
 
 I added the dynamodb and postgres into docker compose file 
+
 This was also insightful [link](https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa)
 
 To run the dynamodb via container I added theses commands in the docker compose file
