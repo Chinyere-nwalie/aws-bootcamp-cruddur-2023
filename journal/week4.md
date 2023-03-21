@@ -35,7 +35,7 @@ psql $CONNECTION_URL cruddur < db/schema.sql``
 to acced db-scheam-load
 we ran this command ``sed 's/ / /'`` meaning what is it that you want to remove and replace
 ```
-
+Connected to gitpod
 creating tables
 
 Un-relational database is mysql, postgres
