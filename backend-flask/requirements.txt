@@ -13,3 +13,8 @@ watchtower
 
 blinker
 rollbar
+
+FLASK-AWSCognito
+
+psycopg[binary]
+psycopg[pool]
