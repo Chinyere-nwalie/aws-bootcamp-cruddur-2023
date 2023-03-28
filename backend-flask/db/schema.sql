@@ -12,7 +12,6 @@ CREATE TABLE public.users (
   cognito_user_id text NOT NULL,
   created_at TIMESTAMP default current_timestamp NOT NULL
 );
-
 CREATE TABLE public.activities (
   uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_uuid UUID NOT NULL,
