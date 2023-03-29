@@ -3,9 +3,12 @@
 
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
 	"features": {
 		"ghcr.io/devcontainers/features/aws-cli:1": {}
+	},
+	
+	"remoteEnv": {
+		"AWS_CLI_AUTO_PROMPT": "on-partial"
 	},
 	"customizations": {
 		"vscode": {
