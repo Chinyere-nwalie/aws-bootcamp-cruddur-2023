@@ -172,7 +172,7 @@ I clicked on forgot page and I got a password reset code.
 
 ![password_reset](assets/password%20reset%20week%203%20.png)
 
-- Verify JWT Token side to serve authenticated API endpoints in Flask Application.
+# Verify JWT Token side to serve authenticated API endpoints in Flask Application. -->
 
 Implementing server side verification using JWT, I understood how to use codes for verification, authentication and authorization purposes. Using JWT(JSON Web Token)  It is more straight forward because I would not use another external resource. It was instructed to create a user token, it helps to fetch user data when the user logs in and if user logs out then for that the token was unset. 
 
