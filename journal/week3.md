@@ -13,7 +13,48 @@ Amazon cognito is a service that is all about username, user credentials, authen
 
 ![user_pool](assets/cruddur-user-pool%20week%203_LI%20(2).jpg)
 
-I installed and configured Amplify client-side library for Amazon Congnito, I also confirmed email address and my client user being active.
+- How I set up UserPool in AWS Cognito
+
+I Logged in my your AWS Console and Checked my region for my service. My region is `us-east-1` 
+
+Search for Cognito service and then UserPool tab, click on UserPool -> Create UserPool.
+
+It displayed  **Authentication providers** page I Inputed my Username and Email for Cognito user pool sign-in options -> click Next and kept my Password Policy as Cognito Default.
+
+I didn't select Multi-factor authentication, In User account recovery -> checkbox --Email only--and Under Required attributes I selected -Name- and --preferred username--
+
+I choose --Send email with Cognito-- for first time after that, I was asked to give my User Pool Name , I named it as --cruddur-user-pool--  and under Initial app client I kept it as --Public client-- and entered my app client name --(eg: cruddur)--
+
+I verified all my filled details and then click on --Create User Pool-- this was how my userpool was created.
+
+I installed and configured Amplify client-side library for Amazon Congnito as it is development platform and provides you set of pre-built UI components and Libraries.
+```
+npm i aws-amplify --save
+```
+- To Configure Amplify
+I added this code in `app.js` of frontend-react-js directory.
+```js
+import { Amplify } from 'aws-amplify';
+
+Amplify.configure({
+  "AWS_PROJECT_REGION": process.env.REACT_AWS_PROJECT_REGION,
+  "aws_cognito_identity_pool_id": process.env.REACT_APP_AWS_COGNITO_IDENTITY_POOL_ID,
+  "aws_cognito_region": process.env.REACT_APP_AWS_COGNITO_REGION,
+  "aws_user_pools_id": process.env.REACT_APP_AWS_USER_POOLS_ID,
+  "aws_user_pools_web_client_id": process.env.REACT_APP_CLIENT_ID,
+  "oauth": {},
+  Auth: {
+    // We are not using an Identity Pool
+    // identityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID, // REQUIRED - Amazon Cognito Identity Pool ID
+    region: process.env.REACT_AWS_PROJECT_REGION,           // REQUIRED - Amazon Cognito Region
+    userPoolId: process.env.REACT_APP_AWS_USER_POOLS_ID,         // OPTIONAL - Amazon Cognito User Pool ID
+    userPoolWebClientId: process.env.REACT_APP_AWS_USER_POOLS_WEB_CLIENT_ID,   // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+  }
+});
+```
+After installation, mine was  `"aws-amplify": "^5.0.16",` in my frontend-react-js directory's `package.json` file.
+
+I also confirmed email address and my client user being active.
 
 ![client_user](assets/active%20user%20week%203_LI.jpg)
 
