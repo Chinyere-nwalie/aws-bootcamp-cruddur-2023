@@ -159,6 +159,7 @@ psql $URL cruddur < $seed_path
 And to connect to PROD environment, You add a prod at the back`./bin/db-connect prod`
 
 # NB
+
 When You login after you've stopped your machine, insert you password, create a database, connect all bin and db files. Eg ``./bin/db-setup`` From the list of it's hierachies.
 
 When i created the Database instance in my Amazon RDS Service, Because of costs, I stopped it temprorarily and used it only when required. 
@@ -226,7 +227,7 @@ def lambda_handler(event, context):
  ```
 - I added the function to Cognito, under the user pool properties add the function as a ``Post Confirmation`` lambda trigger.
 
-I had to do this strenous process; deleting my user pool details in my cognito, then I signup in my cruddur app as a new user and below you can see the trigger.
+I had to do this Strenous process; deleting my user pool details in my cognito, then I signup in my cruddur app as a new user and below you can see the trigger.
 
 ![time out](assets/time%20out%20week4.png)
 
@@ -234,7 +235,7 @@ Cloud watch is essential to monitor activites, and below I am being informed wha
 
 ![cloudwatch](assets/cloudwatch%20week%204.png)
 
-At first I had a problem with this, but i rectified this issue by setting another inbound rule and set it as ``not postgress but ALL`` with my default security group since my gitpod IP will change with each new workspace and it’s only approved on port 5432 for the IP that I specify.
+At first I had a problem with this, but i rectified this issue by setting another inbound rule and set it as ``not PostgresSQL but ALL`` with my default security group since my gitpod IP will change with each new workspace and it’s only approved on port 5432 for the IP that I specify.
 
 ![inbound roles](assets/inbound%20rules.jpg)
 
@@ -242,11 +243,11 @@ Now It had been resolved and I am able to log into my cruddur app.
 
 ![resolved](assets/resolved%20week%204.png)
 
-My backedend logs kept notifying me I had an issue with my public activities.
+My backed-end logs kept notifying me I had an issue with my public activities.
 
 ![public activities](assets/public%20activities%20week%204.png)
 
-I had seriousss issue with this for weeks, but successfully I was able to rectify it by changing the last url line in both my db-seed script and db-schema-load from ``URL=$PRODUCTION_URL`` to ``URL=$PROD_CONNECTION_URL`` 
+I had Seriousss issue with this for weeks, but successfully I was able to rectify it by changing the last url line in both my db-seed script and db-schema-load from ``URL=$PRODUCTION_URL`` to ``URL=$PROD_CONNECTION_URL`` 
 
 This is because I was always loading into my schema through my local database. because connection_url is the local connection url despite the name. But since I have changed it to production url, I ought to have updated my script which i late did.
 
