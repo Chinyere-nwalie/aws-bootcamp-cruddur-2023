@@ -1,8 +1,8 @@
 # Week 4 — Postgres and RDS
 
--This week has to do with RDS, SQL, PSQL database and I was able to learn from my instructor all of these. 
+This week has to do with RDS, SQL, PSQL database and I was able to learn from my instructor all of these. 
 
--Things to note about Amazon RDS security best practices before I lead you on how i created mine; 
+- Things to note about Amazon RDS security best practices before I lead you on how i created mine; 
 
 Use amazon virtual cloud (VPC) to create a private network for your RDS instance. This helps prevent unauthorized access to your instance from the public internet.
 
@@ -42,7 +42,7 @@ volumes:
     driver: local
 ```
 
--To connect to psql in my terminal I ran this command `psql -Upostgres --host localhost` 
+- To connect to psql in my terminal I ran this command `psql -Upostgres --host localhost` 
 
 Inserted my password , then I was connected to Postgres in my terminal.
 
@@ -72,7 +72,7 @@ echo "db-create"
 ```
 We allow permission and changed owner by executing this  ``chmod u+x bin/db-create`` 
 
--`./bin/db-connect` To connect to the psql 
+- `./bin/db-connect` To connect to the psql 
 ```sh
 #! /usr/bin/bash
 if [ "$1" = "prod" ]; then
@@ -85,7 +85,7 @@ fi
 psql $URL
 ```
 
--`./bin/db-create` To create a new table 'cruddur'
+- `./bin/db-create` To create a new table 'cruddur'
 ```sh
 #!  /usr/bin/bash
 
@@ -98,7 +98,7 @@ NO_DB_CONNECTION_URL=$(sed 's/\/cruddur//g' <<< "$CONNECTION_URL")
 psql $NO_DB_CONNECTION_URL -c "create database cruddur;"
 ```
 
--`./bin/db-drop` To drop an existing table.
+- `./bin/db-drop` To drop an existing table.
 ```sh
 #!  /usr/bin/bash
 
@@ -111,7 +111,7 @@ NO_DB_CONNECTION_URL=$(sed 's/\/cruddur//g' <<< "$CONNECTION_URL")
 psql $NO_DB_CONNECTION_URL -c "drop database cruddur;"
 ```
 
--`./bin/db-schema-load` To load the schema. This means to give it contents and set its constraints.
+- `./bin/db-schema-load` To load the schema. This means to give it contents and set its constraints.
 ```sh
 #! /usr/bin/bash
 
@@ -133,7 +133,7 @@ fi
 psql $URL cruddur < $schema_path
 ```
 
--`./bin/db-seed` To insert the data into schema load.
+- `./bin/db-seed` To insert the data into schema load.
 ```sh
 #! /usr/bin/bash
 
@@ -186,9 +186,9 @@ This is my database
 
 # AWS Lambda
 
--I setup Post Confirmation Lambda to get logs recorded as I sign in to the cruddur app, created the handler function, created lambda in same vpc as RDS instance Python 3.8.
+I setup Post Confirmation Lambda to get logs recorded as I sign in to the cruddur app, created the handler function, created lambda in same vpc as RDS instance Python 3.8.
 
-I added a layer for psycopg2 
+- I added a layer for psycopg2 
 
 ``sh
 arn:aws:lambda:ca-central-1:898466741470:layer:psycopg2-py38:1
@@ -224,9 +224,9 @@ def lambda_handler(event, context):
 
     return event
  ```
--I added the function to Cognito, under the user pool properties add the function as a ``Post Confirmation`` lambda trigger.
+- I added the function to Cognito, under the user pool properties add the function as a ``Post Confirmation`` lambda trigger.
 
-I had to do this strenous process; deleting my user pool details in my cognito, then I signed into my cruddur app as a new user and below you can see the trigger.
+I had to do this strenous process; deleting my user pool details in my cognito, then I signup in my cruddur app as a new user and below you can see the trigger.
 
 ![time out](assets/time%20out%20week4.png)
 
@@ -253,3 +253,7 @@ This is because I was always loading into my schema through my local database. b
 Now I signed in a new user in my cognito and it dropped in my tables.
 
 ![cognito](assets/cognito.png)
+
+I can signin my crudder app
+
+![crudder](assets/cruddur%20week%204.png)
