@@ -108,6 +108,7 @@ After configuring, I gave it an attribute name and it was displaying on my crudd
 ![username](assets/username%20week%203.png)
 
 I Implemented API calls to Amazon Cognito for custom login, signup, recovery and forgot password page. I received a cofirmation email to login. 
+
 ![verification](assets/verification%20code%20week%203.png)
 
 - I added these scripts in my `DesktopNavigation.js` file which helps to check if I am Logged in or not by passing the`user` to `ProfileInfo`.
@@ -167,9 +168,10 @@ export default function DesktopNavigation(props) {
 ```
 
 I clicked on forgot page and I got a password reset code.
+
 ![password_reset](assets/password%20reset%20week%203%20.png)
 
-# Verify JWT Token side to serve authenticated API endpoints in Flask Application.
+- Verify JWT Token side to serve authenticated API endpoints in Flask Application.
 
 Implementing server side verification using JWT, I understood how to use codes for verification, authentication and authorization purposes. Using JWT(JSON Web Token)  It is more straight forward because I would not use another external resource. It was instructed to create a user token, it helps to fetch user data when the user logs in and if user logs out then for that the token was unset. 
 
