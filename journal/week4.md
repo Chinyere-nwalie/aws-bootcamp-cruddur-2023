@@ -171,7 +171,6 @@ I set the Inbound rules to connect to RDS by doing this I provided my Gitpod IP 
 I got the security group rule ID so I can easily modify it in the future from the terminal here in Gitpod.
 
 ``sh
-
 export DB_SG_ID="sg-0b725ebab7e25635e"
 gp env DB_SG_ID="sg-0b725ebab7e25635e"
 export DB_SG_RULE_ID="sgr-070061bba156cfa88"
@@ -181,7 +180,6 @@ gp env DB_SG_RULE_ID="sgr-070061bba156cfa88"
 I also updated my URL from connection to production.
 
 ``sh
-
 export PROD_CONNECTION_URL="postgresql://root:huEE33z2Qvl383@cruddur-db-instance.czz1cuvepklc.ca-central-1.rds.amazonaws.com:5432/cruddur"
 gp env PROD_CONNECTION_URL="postgresql://root:huEE33z2Qvl383@cruddur-db-instance.czz1cuvepklc.ca-central-1.rds.amazonaws.com:5432/cruddur"
 
@@ -197,9 +195,7 @@ I setup Post Confirmation Lambda to get logs recorded as I sign in to the cruddu
 - I added a layer for psycopg2 
 
 ``sh
-
 arn:aws:lambda:ca-central-1:898466741470:layer:psycopg2-py38:1
-
 ``
 
 I wrote scripts for Lambda for production
