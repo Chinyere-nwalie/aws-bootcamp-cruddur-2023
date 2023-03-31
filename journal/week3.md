@@ -21,7 +21,8 @@ AWS Cognito
 
 The two type of amazon cognito are: Cognito User Pool -- This help to grant access to your Applications, And : Cognito Identity Pool -- This enables access to Amazon services.
 
-I created an Amazon Cognito User Pool
+I created an Amazon Cognito User Pool.
+
 ![user_pool](assets/cruddur-user-pool%20week%203_LI%20(2).jpg)
 
 - How I set up UserPool in AWS Cognito
