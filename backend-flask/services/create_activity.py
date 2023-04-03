@@ -56,8 +56,9 @@ class CreateActivity:
       'message': message,
       'expires_at': expires_at
     })
+    return uuid
   def query_object_activity(uuid):
-    sql = db.template('activities','create')
-    return db.query_object(sql,{
+    sql = db.template('activities','object')
+    return db.query_object_json(sql,{
       'uuid': uuid
     })
