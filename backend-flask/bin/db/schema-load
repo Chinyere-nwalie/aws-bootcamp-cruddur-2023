@@ -15,5 +15,4 @@ else
   URL=$CONNECTION_URL
 fi
 
-psql $URL cruddur < $schema_path
-# psql $CONNECTION_URL cruddur < $schema_path
+psql $CONNECTION_URL cruddur < $schema_path
