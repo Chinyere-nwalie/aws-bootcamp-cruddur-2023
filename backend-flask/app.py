@@ -191,7 +191,7 @@ def data_create_message():
         mode="update",
         message=message,
         message_group_uuid=message_group_uuid,
-        cognito_user_id=user_id
+        cognito_user_id=cognito_user_id
       )
     if model['errors'] is not None:
       return model['errors'], 422
