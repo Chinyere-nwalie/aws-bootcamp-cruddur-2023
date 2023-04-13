@@ -9,17 +9,17 @@ INSERT INTO
     )
 VALUES (
         'nwalie chinyere',
-        'nwaliechinyerejessica@gmail.com',
+        'nwaliechinyerejessica+andrewbrown@gmail.com',
         'nwaliechinyere',
         'MOCK'
     ), (
         'Andrew Bayko',
-        'bayko@exampro.co',
+        'nwaliechinyerejessica+bayko@gmail.com',
         'bayko',
         'MOCK'
     ), (
-         'Londo Mollari',
-        'lmollari@centari.com',
+        'Londo Mollari',
+        'nwaliechinyerejessica+lmollari@gmail.com',
         'londo',
         'MOCK'
     );
