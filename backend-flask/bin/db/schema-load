@@ -10,10 +10,9 @@ echo $schema_path
 
 if [ "$1" = "prod" ]; then
   echo "Running in production mode"
-  URL=$PROD_CONNECTION_URL
+  URL=$PRODUCTION_URL
 else
   URL=$CONNECTION_URL
 fi
 
-psql $URL cruddur < $schema_path
-# psql $CONNECTION_URL cruddur < $schema_path
+psql $CONNECTION_URL cruddur < $schema_path
