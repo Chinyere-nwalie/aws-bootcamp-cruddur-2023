@@ -7,6 +7,7 @@
 - [Implement Conversations with DynamoDB Local](#implement-conversations-with-dynamodb-local)
 - [Errors](#Errors)
 - [Implement DynamoDB Stream with AWS Lambda](#implement-dynamodb-stream-with-aws-lambda)
+- [dynamodb Security](#dynamodb Security)
 
 ## Data Modelling
 
@@ -306,3 +307,18 @@ Everything worked fine, there was no error observed on AWS in CloudWatch > Log g
 ![dynamodb-stream](assets/week%205%20Dynamodb%20stream.png)
 
 ![week 5 last](assets/Week%205%20last.png)
+
+## dynamodb Security
+
+- According to ashis's video on dynamodb security best practices;
+
+Amazon dynamodb should only be In the AWS region that you are legally allowed to be holding user data in.
+
+AWS Cloud-Trail is enabled and monitored to trigger alerts on malicious dynamodb behaviour by an identity in AWS.
+
+Use VPC Endpoints to create a private network from your application or lamda to a dynamodb. This helps prevent unauthorized access to your instance from the public internet.
+
+Dynamodb uses appropriate authentication e.g IAM Roles/AWS Cognito Identity Pool to avoid IAM Users/Groups.
+
+Add an amazon dynamodb accelerator (DAX) to improve the response time of the dynamodb linked to a web-application in AWS.
+
