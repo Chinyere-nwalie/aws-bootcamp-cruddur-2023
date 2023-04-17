@@ -85,11 +85,15 @@ Set `CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"` in `docke
 
 Added `python "$bin_path/db/update_cognito_user_ids"` to run `backend-flask/bin/db/update_cognito_user_ids`
 
-- I manually updated a cognito ID for another user `bayko` by the following commands:
+- I  also manually updated a cognito ID for another users; `bayko` and for `londo` by the following commands:
 
 ```sh
 ./bin/db/connect
 UPDATE public.users SET cognito_user_id = 'f73f4b05-a59e-468b-8a29-a1c39e7a2222' WHERE users.handle = 'bayko';
+\q
+
+./bin/db/connect
+UPDATE public.users SET cognito_user_id = 'f73f4b05-a59e-468b-8a29-a1c39e7a1111' WHERE users.handle = 'londo';
 \q
 ```
 
