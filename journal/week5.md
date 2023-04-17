@@ -310,7 +310,7 @@ Everything worked fine, there was no error observed on AWS in CloudWatch > Log g
 
 ## dynamodb Security
 
-- According to ashis's video on dynamodb security best practices;
+- According to Ashish's video on dynamodb security best practices;
 
 Amazon dynamodb should only be In the AWS region that you are legally allowed to be holding user data in.
 
