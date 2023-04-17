@@ -13,13 +13,18 @@
 Data modelling called single table design is a data modelling technique that stores all related data in a single database table. In Dynamodb, we are doing a direct Messaging System in our Cruddur application. A list of messages that are a part of a message group are visible to users. Data access can be divided into four patterns:
 
 1. Pattern A for showing messages. Users can see a list of messages that belong to a message group.
+ 
 2. Pattern B for showing message groups. Users can see a list of message groups so they can check the other persons they have been talking to.
+ 
 3. Pattern C for creating a new message in a new message group.
-4. Pattern D for creating a new message in an existing message group
+ 
+4. Pattern D for creating a new message in an existing message group.
 
 ## Uses
 For displaying message groups, use Pattern B. 
+
 For composing a fresh message in a fresh message group, use Pattern C. 
+
 For adding a new message to an existing message group, use Pattern D.
 
 - There are 3 types of items to put in dynamoDB table.
@@ -56,11 +61,14 @@ message = {
 }
 ```
 
-- Backend Preparation
+- Backend Activities
 
-I restructuredthe bash scripts with 3 folders having the utility commands for PSQL. Here are 3 folders storing utility commands for Postgres database
+I restructured the bash scripts with 3 folders having the utility commands for PSQL. Here are 3 folders storing utility commands for Postgres database.
+
 DynamoDB (`backend-flask/bin/db`), 
+
 AWS RDS (`backend-flask/bin/rds`),
+
 AWS Cognito (`backend-flask/bin/cognito`).
 
 I added `boto3` into `backend-flask/requirements.txt`, which is the AWS SDK for Python to create, configure, and manage AWS services like dynamoDB. I also added a command in `.gitpod.yml`  allowing gitpod to install python libraries automatically whenever a new workspace is launched.
@@ -77,7 +85,7 @@ Set `CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"` in `docke
 
 Added `python "$bin_path/db/update_cognito_user_ids"` to run `backend-flask/bin/db/update_cognito_user_ids`
 
-I manually updated a cognito ID for another user `bayko` by the following commands:
+- I manually updated a cognito ID for another user `bayko` by the following commands:
 
 ```sh
 ./bin/db/connect
@@ -104,7 +112,7 @@ UPDATE public.users SET cognito_user_id = 'f73f4b05-a59e-468b-8a29-a1c39e7a2222'
 ![dynamodb-seed](assets/Week%205%20dynamodb%20seed.png)
 
 `scan`  scan all the items saved in the table `cruddur-messages`
-`patterns/get-conversation`  list messages associated with the hard-coded `message_group_uuid` and print the consumed capacity
+`patterns/get-conversation`  list messages associated with the hard-coded `message_group_uuid` and print the consumed capacity.
 
 ![get-conversations](assets/Week%205%20get-conversations.png)
 
@@ -115,13 +123,16 @@ Most times when I Login my cruddur app, I am faced with this error;
 ![psyscop-error](assets/Week%205%20pyscog%20pool%20error.png)
 
 So, I run `./bin/db/setup/` 
+
 `./bin/ddb/drop cruddur-messages`
+
 `./bin/ddb/schema-load`
+
 `./bin/ddb/seed` 
 
 This is to actually load the seed data into our local dynamoDB and then the error is cleared.
 
-#Example of list-conversations
+- Example of list-conversations
  
 `./bin/ddb/patterns/list-conversations` returns:
 
