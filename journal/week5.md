@@ -1,9 +1,11 @@
 # Week 5 — DynamoDB and Serverless Caching
 
 - [Data Modelling](#data-modelling)
+- [Uses](#Uses)
 - [Backend Preparation](#backend-preparation)
 - [DynamoDB Utility Scripts](#dynamodb-utility-scripts)
 - [Implement Conversations with DynamoDB Local](#implement-conversations-with-dynamodb-local)
+- [Errors](#Errors)
 - [Implement DynamoDB Stream with AWS Lambda](#implement-dynamodb-stream-with-aws-lambda)
 
 ## Data Modelling
@@ -66,9 +68,13 @@ I added `boto3` into `backend-flask/requirements.txt`, which is the AWS SDK for 
 - For the local Postgres database I did the following:
 
 Update seed data in `backend-flask/db/seed.sql` to have 3 users and 1 activity. Setting one user as one you used for cruddur signin to avoid errors.
+
 Created `backend-flask/bin/cognito/list-users` to list users data saved in AWS Cognito.
+
 Created `backend-flask/bin/db/update_cognito_user_ids` to update users in the seed data.
+
 Set `CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"` in `docker-compose.yml`, because this week we are working with the users data queried from the local Postgres database named `cruddur`.
+
 Added `python "$bin_path/db/update_cognito_user_ids"` to run `backend-flask/bin/db/update_cognito_user_ids`
 
 I manually updated a cognito ID for another user `bayko` by the following commands:
@@ -83,27 +89,29 @@ UPDATE public.users SET cognito_user_id = 'f73f4b05-a59e-468b-8a29-a1c39e7a2222'
 
 ## DynamoDB Utility Scripts
 
-In this section, I created the following utility scripts to easily setup and remove dynamodb data in the `backend-flask/bin/ddb/` directory.
+- In this section, I created the following utility scripts to easily setup and remove dynamodb data in the `backend-flask/bin/ddb/` directory.
 
-- `schema-load` create a table named `cruddur-messages` either for DynamoDB local or on the AWS.
-- `list-tables`list the name of tables we created.
+`schema-load` create a table named `cruddur-messages` either for DynamoDB local or on the AWS.
+
+`list-tables`list the name of tables we created.
 
 ![List-tables](assets/Week%205%20list-tables.png)
 
 
-- `drop` drop a table by its name, e.g. `drop cruddur-messages`
-- `seed` load the seed data into the table `cruddur-messages` with hard-coded `message_group_uuid` To avoid potential data conflict, I replaced `my_handle` from `andrewbrown` to `nwaliechinyere`; Plus, `created_at` was set back a couple of hours so that seed messages are not created for the future time.
+`drop` drop a table by its name, e.g. `drop cruddur-messages`
+`seed` load the seed data into the table `cruddur-messages` with hard-coded `message_group_uuid` To avoid potential data conflict, I replaced `my_handle` from `andrewbrown` to `nwaliechinyere`; Plus, `created_at` was set back a couple of hours so that seed messages are not created for the future time.
 
 ![dynamodb-seed](assets/Week%205%20dynamodb%20seed.png)
 
-- `scan`  scan all the items saved in the table `cruddur-messages`
-- `patterns/get-conversation`  list messages associated with the hard-coded `message_group_uuid` and print the consumed capacity
+`scan`  scan all the items saved in the table `cruddur-messages`
+`patterns/get-conversation`  list messages associated with the hard-coded `message_group_uuid` and print the consumed capacity
 
 ![get-conversations](assets/Week%205%20get-conversations.png)
 
-- `patterns/list-conversations` list message groups and print the consumed capacity. This script uses functions from `backend-flask/lib/db.py`, which needs to always be updated.
+`patterns/list-conversations` list message groups and print the consumed capacity. This script uses functions from `backend-flask/lib/db.py`, which needs to always be updated.
 
-Most times when i Login I am faced with this error
+Most times when I Login my cruddur app, I am faced with this error;
+
 ![psyscop-error](assets/Week%205%20pyscog%20pool%20error.png)
 
 So, I run `./bin/db/setup/` 
@@ -182,40 +190,61 @@ my-uuid: ---------------------------
 
 Firstly, create `backend-flask/lib/ddb.py` which creates `class Ddb` -> ALSO <- Set `AWS_ENDPOINT_URL: "http://dynamodb-local:8000"` in `docker-compose.yml`.
 
-I chnaged  and Updated/create routes and functions in the backend as instructed by Andrew Brown. This is to get messages and message groups from Dynamodb instead it being hard-coded. Changing `handle` TO `message_group_uuid` These implementations mainly use `list_message_groups` and `list_messages` of the `Ddb` class:
+I changed and Updated/create routes and functions in the backend as instructed by Andrew Brown. This is to get messages and message groups from Dynamodb instead it being hard-coded. Changing `handle` TO `message_group_uuid` These implementations mainly use `list_message_groups` and `list_messages` of the `Ddb` class:
 
-I replaced codes in;
+- I replaced codes in;
 
-- `backend-flask/app.py` (mainly, instead of using `"/api/messages/@<string:handle>"`, use `"/api/messages/<string:message_group_uuid>"`)
-- `backend-flask/services/message_groups.py`
-- `backend-flask/services/messages.py`
+`backend-flask/app.py` (mainly, instead of using `"/api/messages/@<string:handle>"`, use `"/api/messages/<string:message_group_uuid>"`)
 
-I created and changed codes in;
+`backend-flask/services/message_groups.py`
 
-- Created `backend-flask/db/sql/users/uuid_from_cognito_user_id.sql`
-- Changed `backend_url` from using `${handle}` to `${params.message_group_uuid}` in `frontend-react-js/src/pages/MessageGroupPage.js`
-- Changed path from `"/messages/@:handle"` to `"/messages/:message_group_uuid"` in `frontend-react-js/src/App.js`
-- Change `params.handle` to `params.message_group_uuid` and `props.message_group.handle` to `props.message_group.uuid` in `frontend-react-js/src/components/MessageGroupItem.js`
+`backend-flask/services/messages.py`
 
-Updated & Created codes in the frontend file:
+- I created and changed codes in;
 
-- created `frontend-react-js/src/lib/CheckAuth.js` 
-- `frontend-react-js/src/pages/HomeFeedPage.js`
-- `frontend-react-js/src/pages/MessageGroupPage.js`
-- `frontend-react-js/src/pages/MessageGroupsPage.js`
-- `frontend-react-js/src/components/MessageForm.js`
-- Updated the content for `body` in `frontend-react-js/src/components/MessageForm.js`
-- Updated function `data_create_message` in `backend-flask/app.py`
-- Updated `backend-flask/services/create_message.py` 
-- Created `backend-flask/db/sql/users/create_message_users.sql`
-- Imported `MessageGroupNewPage` from `./pages/MessageGroupNewPage` and add the corresponding router in `frontend-react-js/src/App.js`
-- Created `frontend-react-js/src/pages/MessageGroupNewPage.js`
-- Created `frontend-react-js/src/components/MessageGroupNewItem.js`
-- Add the endpoint and function for user short in `backend-flask/app.py`
-- Created `backend-flask/services/users_short.py`
-- Created `backend-flask/db/sql/users/short.sql`
-- Updated `frontend-react-js/src/components/MessageGroupFeed.js`
-- Updated `frontend-react-js/src/components/MessageForm.js`
+Created `backend-flask/db/sql/users/uuid_from_cognito_user_id.sql`
+
+Changed `backend_url` from using `${handle}` to `${params.message_group_uuid}` in `frontend-react-js/src/pages/MessageGroupPage.js`
+
+Changed path from `"/messages/@:handle"` to `"/messages/:message_group_uuid"` in `frontend-react-js/src/App.js`
+
+Change `params.handle` to `params.message_group_uuid` and `props.message_group.handle` to `props.message_group.uuid` in `frontend-react-js/src/components/MessageGroupItem.js`
+
+- Updated & Created codes in the frontend file:
+
+created `frontend-react-js/src/lib/CheckAuth.js` 
+
+`frontend-react-js/src/pages/HomeFeedPage.js`
+
+`frontend-react-js/src/pages/MessageGroupPage.js`
+
+`frontend-react-js/src/pages/MessageGroupsPage.js`
+
+`frontend-react-js/src/components/MessageForm.js`
+
+Updated the content for `body` in `frontend-react-js/src/components/MessageForm.js`
+
+Updated function `data_create_message` in `backend-flask/app.py`
+
+Updated `backend-flask/services/create_message.py` 
+
+Created `backend-flask/db/sql/users/create_message_users.sql`
+
+Imported `MessageGroupNewPage` from `./pages/MessageGroupNewPage` and add the corresponding router in `frontend-react-js/src/App.js`
+
+Created `frontend-react-js/src/pages/MessageGroupNewPage.js`
+
+Created `frontend-react-js/src/components/MessageGroupNewItem.js`
+
+Add the endpoint and function for user short in `backend-flask/app.py`
+
+Created `backend-flask/services/users_short.py`
+
+Created `backend-flask/db/sql/users/short.sql`
+
+Updated `frontend-react-js/src/components/MessageGroupFeed.js`
+
+Updated `frontend-react-js/src/components/MessageForm.js`
 
 I completed the above steps.
 
@@ -237,20 +266,25 @@ In the above picture, this was an reoccuring error. All of these errors got me s
 
 Finally it worked!
 
-![pattern-D](assets/week%205%20Pattern%20D.pngg)
+![pattern-D](assets/week%205%20Pattern%20D.png)
 
 To specifically see theses messages types this in your browser `https://<frontend_address>/messages/new/<handle>` To create and update new messages in a new message group with Bayko or londo (set the url handle to `bayko`-> OR <- `londo`)
 
 ## Implement DynamoDB Stream with AWS Lambda
 
-Working in the AWS console using dynamoDB, I added a trigger to execute a Lambda function which can trackes errors and monitor functions in the dynamoDB stream.
+- Working in the AWS console using dynamoDB, I added a trigger to execute a Lambda function which can trackes errors and monitor functions in the dynamoDB stream.
 
-- I Commented the  `AWS_ENDPOINT_URL` in `docker-compose.yml`, then compose up and run `./bin/db/setup`
-- Updated `./bin/ddb/schema-load` with a Global Secondary Index (GSI) and run `./bin/ddb/schema-load prod`, Which created a dynamoDB table named `cruddur-messages` This was created in my AWS console.
-- On AWS in DynamoDB > Tables > cruddur-messages > Turn on DynamoDB stream, choose "new image"
-- On AWS in the VPC console, create an endpoint named `cruddur-ddb`, choose services with DynamoDB, and select the default VPC and route table.
-- On AWS in the Lambda console, create a new function named `cruddur-messaging-stream-1` and enable VPC in its advanced settings; deploy the code as seen in `aws/lambdas/cruddur-messaging-stream.py`; add permission of `AWSLambdaInvocation-DynamoDB` to the Lambda IAM role; more permissions can be added by creating inline policies as seen in `aws/policies/cruddur-message-stream-policy.json`
-- On AWS in the DynamoDB console, create a new trigger and select `cruddur-messaging-stream-1`
+I Commented the  `AWS_ENDPOINT_URL` in `docker-compose.yml`, then compose up and run `./bin/db/setup`
+
+Updated `./bin/ddb/schema-load` with a Global Secondary Index (GSI) and run `./bin/ddb/schema-load prod`, Which created a dynamoDB table named `cruddur-messages` This was created in my AWS console.
+
+On AWS in DynamoDB > Tables > cruddur-messages > Turn on DynamoDB stream, choose "new image"
+
+On AWS in the VPC console, create an endpoint named `cruddur-ddb`, choose services with DynamoDB, and select the default VPC and route table.
+
+On AWS in the Lambda console, create a new function named `cruddur-messaging-stream-1` and enable VPC in its advanced settings; deploy the code as seen in `aws/lambdas/cruddur-messaging-stream.py`; add permission of `AWSLambdaInvocation-DynamoDB` to the Lambda IAM role; more permissions can be added by creating inline policies as seen in `aws/policies/cruddur-message-stream-policy.json`
+
+On AWS in the DynamoDB console, create a new trigger and select `cruddur-messaging-stream-1`
 
 At first the messages tab was blank, because there is no data in our AWS DynamoDB. I created a new message in a new message group with Bayko with this URL `https://<frontend_address>/messages/new/bayko` and it was working!
 
