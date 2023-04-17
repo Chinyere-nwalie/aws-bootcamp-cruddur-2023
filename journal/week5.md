@@ -7,7 +7,7 @@
 - [Implement Conversations with DynamoDB Local](#implement-conversations-with-dynamodb-local)
 - [Errors](#Errors)
 - [Implement DynamoDB Stream with AWS Lambda](#implement-dynamodb-stream-with-aws-lambda)
-- [dynamodb Security](#dynamodb Security)
+- [Dynamodb Security](#Dynamodb Security)
 
 ## Data Modelling
 
@@ -308,7 +308,7 @@ Everything worked fine, there was no error observed on AWS in CloudWatch > Log g
 
 ![week 5 last](assets/Week%205%20last.png)
 
-## dynamodb Security
+## Dynamodb Security
 
 - According to Ashish's video on dynamodb security best practices;
 
