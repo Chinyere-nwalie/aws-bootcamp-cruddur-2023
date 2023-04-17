@@ -308,6 +308,7 @@ Everything worked fine, there was no error observed on AWS in CloudWatch > Log g
 
 ![week 5 last](assets/Week%205%20last.png)
 
+
 ## Dynamodb Security
 
 - According to Ashish's video on dynamodb security best practices;
