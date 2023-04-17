@@ -293,3 +293,5 @@ At first the messages tab was blank, because there is no data in our AWS DynamoD
 Everything worked fine, there was no error observed on AWS in CloudWatch > Log groups.
 
 ![dynamodb-stream](assets/week%205%20Dynamodb%20stream.png)
+
+![week 5 last](assets/Week%205%20last.png)
