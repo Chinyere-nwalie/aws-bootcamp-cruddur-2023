@@ -1,5 +1,5 @@
 # Week 6 — Deploying Containers
-[ECS Security Best Practices](#ECS-Security-Best-Practices-Fargate-ECR)
+[ECS Security Best Practices](#ECS-Security-Best-Practices)
 
 
 -Deploying an ECS Cluster using ECS Service Connect.
@@ -11,5 +11,17 @@
 - Testing that services individually work and familiarized with Fargate desired capacity.
 
 
-## ECS Security Best Practices Fargate ECR
+## ECS Security Best Practices
+
+Choose the right public or private ECR for images
+
+AWS ECR scan images to 'scan on push' using basic or enhanced (inspector + snyk)
+
+AWS fargate cannot run traditional security agents in fargate.
+
+AWS fargate users can run unverified container images.
+
+AWS fargate has no visibility of infrastructure.
+
+AWS fargate containers can run as root and even with elevated priviledges.
 
