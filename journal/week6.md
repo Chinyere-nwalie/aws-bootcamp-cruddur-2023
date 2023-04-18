@@ -17,6 +17,8 @@
 - Testing that services individually work and familiarized with Fargate desired capacity.
 
 
+Created a bin/db/test file, and changed a code to PROD_CONNECTION_URL to login into the container and change it back. then, added a forward slash to a code in gitpod.yml
+
 ## ECS Security Best Practices
 
 Choose the right public or private ECR for images
