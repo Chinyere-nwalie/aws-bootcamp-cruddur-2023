@@ -278,11 +278,11 @@ In the above picture, I wasn't able to see conversations with bayko, and if i po
 
 ![inspect-error](assets/week%205%20Inspect%20error.png)
 
-In the above picture, I inspected my page, and found out the reason for all of these errors including my messages disappearing was because there was a bug in my code. This was caused by mispelling and I assigned bayko as a users in my cognito console making it 2 users. This error was successfully rectified.
+In the above picture, I inspected my page, and found out the reason for all of these errors including my messages disappearing was because there was a bug in my code. This error was successfully rectified by correcting a mispelt word in my codes, and I assigned bayko as a users in my cognito console making it 2 users.
 
 ![none-object-error](assets/week%205%20None%20Object%20Error.png)
 
-In the above picture, this was an reoccuring error. All of these errors got me stucked for good two weeks. I checked and cross-checked, restarted my Gitpod environment to solve this error which i did, by editing my codes and tackling indentation errors.
+In the above picture, this was a reoccuring error. All of these errors got me stucked for good two weeks. I checked and cross-checked, restarted my Gitpod environment to solve this error which i did, by editing my codes and tackling indentation errors.
 
 Finally it worked!
 
