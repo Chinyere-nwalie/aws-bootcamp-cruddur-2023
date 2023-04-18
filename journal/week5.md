@@ -27,6 +27,7 @@ For composing a fresh message in a fresh message group, use Pattern C.
 
 For adding a new message to an existing message group, use Pattern D.
 
+
 - There are 3 types of items to put in dynamoDB table.
 
 ```python
@@ -73,6 +74,7 @@ AWS Cognito (`backend-flask/bin/cognito`).
 
 I added `boto3` into `backend-flask/requirements.txt`, which is the AWS SDK for Python to create, configure, and manage AWS services like dynamoDB. I also added a command in `.gitpod.yml`  allowing gitpod to install python libraries automatically whenever a new workspace is launched.
 
+
 - For the local Postgres database I did the following:
 
 Update seed data in `backend-flask/db/seed.sql` to have 3 users and 1 activity. Setting one user as one you used for cruddur signin to avoid errors.
@@ -85,16 +87,15 @@ Set `CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"` in `docke
 
 Added `python "$bin_path/db/update_cognito_user_ids"` to run `backend-flask/bin/db/update_cognito_user_ids`
 
+
 - I  also manually updated a cognito ID for another users; `bayko` and for `londo` by the following commands:
 
 ```sh
 ./bin/db/connect
 UPDATE public.users SET cognito_user_id = 'f73f4b05-a59e-468b-8a29-a1c39e7a2222' WHERE users.handle = 'bayko';
-\q
 
-./bin/db/connect
+
 UPDATE public.users SET cognito_user_id = 'f73f4b05-a59e-468b-8a29-a1c39e7a1111' WHERE users.handle = 'londo';
-\q
 ```
 
 ![UUID](assets/Week%205%20UUID.jpg)
@@ -135,6 +136,7 @@ So, I run `./bin/db/setup/`
 `./bin/ddb/seed` 
 
 This is to actually load the seed data into our local dynamoDB and then the error is cleared.
+
 
 - Example of list-conversations
  
@@ -207,6 +209,7 @@ Firstly, create `backend-flask/lib/ddb.py` which creates `class Ddb` -> ALSO <- 
 
 I changed and Updated/create routes and functions in the backend as instructed by Andrew Brown. This is to get messages and message groups from Dynamodb instead it being hard-coded. Changing `handle` TO `message_group_uuid` These implementations mainly use `list_message_groups` and `list_messages` of the `Ddb` class:
 
+
 - I replaced codes in;
 
 `backend-flask/app.py` (mainly, instead of using `"/api/messages/@<string:handle>"`, use `"/api/messages/<string:message_group_uuid>"`)
@@ -214,6 +217,7 @@ I changed and Updated/create routes and functions in the backend as instructed b
 `backend-flask/services/message_groups.py`
 
 `backend-flask/services/messages.py`
+
 
 - I created and changed codes in;
 
@@ -224,6 +228,7 @@ Changed `backend_url` from using `${handle}` to `${params.message_group_uuid}` i
 Changed path from `"/messages/@:handle"` to `"/messages/:message_group_uuid"` in `frontend-react-js/src/App.js`
 
 Change `params.handle` to `params.message_group_uuid` and `props.message_group.handle` to `props.message_group.uuid` in `frontend-react-js/src/components/MessageGroupItem.js`
+
 
 - Updated & Created codes in the frontend file:
 
