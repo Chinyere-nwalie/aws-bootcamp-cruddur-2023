@@ -1,5 +1,5 @@
 # Week 6 — Deploying Containers
-[ECS Security Best Practices](#ECS-Security-Best-Practices)
+- [ECS Security Best Practices](#ECS-Security-Best-Practices)
 
 
 - Deploying an ECS Cluster using ECS Service Connect.
