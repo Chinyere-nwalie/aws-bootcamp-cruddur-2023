@@ -1,7 +1,7 @@
 # Week 5 — DynamoDB and Serverless Caching
 
 - [Data Modelling](#data-modelling)
-- [Uses](#Uses)
+- [Dynamodb Security](#Dynamodb-Security)
 - [Backend Preparation](#backend-preparation)
 - [DynamoDB Utility Scripts](#dynamodb-utility-scripts)
 - [Implement Conversations with DynamoDB Local](#implement-conversations-with-dynamodb-local)
@@ -20,7 +20,7 @@ Data modelling called single table design is a data modelling technique that sto
  
 4. Pattern D for creating a new message in an existing message group.
 
-## Uses
+- Uses
 For displaying message groups, use Pattern B. 
 
 For composing a fresh message in a fresh message group, use Pattern C. 
