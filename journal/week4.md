@@ -244,10 +244,6 @@ At first I had a problem with this, but i rectified this issue by setting anothe
 
 ![inbound roles](assets/inbound%20rules.jpg)
 
-Now It had been resolved and I am able to log into my cruddur app.
-
-![resolved](assets/resolved%20week%204.png)
-
 My backed-end logs kept notifying me I had an issue with my public activities.
 
 ![public activities](assets/public%20activities%20week%204.png)
