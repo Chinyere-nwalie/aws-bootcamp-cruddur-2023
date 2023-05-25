@@ -1,0 +1,18 @@
+#! /usr/bin/bash
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="Updating the backend flask container and frontend container service to 1!"
+printf "${CYAN}>> ${LABEL}${NO_COLOR}\n"
+aws ecs update-service --cluster cruddur --service backend-flask --desired-count 1 & \
+aws ecs update-service --cluster cruddur --service frontend-react-js --desired-count 1 & \
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="RDS Start!"
+printf "${CYAN}>> ${LABEL}${NO_COLOR}\n"
+
+aws rds start-db-instance --db-instance-identifier cruddur-db-instance & \
+
+LABEL="Fargate and RDS will be running soon!"
+printf "${CYAN}>> ${LABEL}${NO_COLOR}\n"
