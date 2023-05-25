@@ -57,8 +57,8 @@
           {"name": "OTEL_EXPORTER_OTLP_ENDPOINT", "value": "https://api.honeycomb.io"},
           {"name": "AWS_COGNITO_USER_POOL_ID", "value": "us-east-1_iz8Mj2XOe"},
           {"name": "AWS_COGNITO_USER_POOL_CLIENT_ID", "value": "5ef8p6nqk7ssvh3t0a2c3jsih3"},
-          {"name": "FRONTEND_URL", "value": "nwaliechinyere.xyz"},
-          {"name": "BACKEND_URL", "value": "api.nwaliechinyere.xyz"},
+          {"name": "FRONTEND_URL", "value": "https://nwaliechinyere.xyz"},
+          {"name": "BACKEND_URL", "value": "https://api.nwaliechinyere.xyz"},
           {"name": "AWS_DEFAULT_REGION", "value": "us-east-1"}
         ],
         "secrets": [
