@@ -1,10 +1,10 @@
 # Week 6 — Deploying Containers
 - [ECS Security Best Practices](#ECS-Security-Best-Practices)
-- [ECS Fargate Frontend and Backend](#ECS Fargate Frontend and Backend)
-- [Implementation of the SSL and configuration of Domain from Route53](#Implementation of the SSL and configuration of Domain from Route53)
-- [Securing Backend flask](#Securing Backend flask)
-- [Fixing Check Auth Cognito](#Fixing Check Auth Cognito)
-- [Implementation of Xray on Ecs and Container Insights](#Implementation of Xray on Ecs and Container Insights)
+- [ECS Fargate Frontend and Backend](#ECS-Fargate-Frontend-and-Backend)
+- [Implementation of the SSL and configuration of Domain from Route53](#Implementation-of-the-SSL-and-configuration-of-Domain-from-Route53)
+- [Securing Backend flask](#Securing-Backend-flask)
+- [Fixing Check Auth Cognito](#Fixing-Check-Auth-Cognito)
+- [Implementation of Xray on Ecs and Container Insights](#Implementation-of-Xray-on-Ecs-and-Container-Insights)
 
 ## ECS Security Best Practices
 
