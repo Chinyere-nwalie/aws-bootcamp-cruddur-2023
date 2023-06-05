@@ -78,13 +78,14 @@ except Exception as e:
   print(e)
   exit(1) # false
 ```
----image-----
+[Api-health-check](assets/Health-check%20week%206-7.png)
 
 4) Create the cloudwatch log group with the following command running the codes in the terminal
 ```sh
 aws logs create-log-group --log-group-name "/cruddur/fargate-cluster"
 aws logs put-retention-policy --log-group-name "/cruddur/fargate-cluster" --retention-in-days 1
 ```
+[cluster-cruddur](assets/Cluster-cruddur%20week6-7.png)
 
 5) Create the container registry the images and we are creating this cluster in the aws CLI
 
@@ -101,7 +102,6 @@ First we need to login to ECR using the following command (Note this has to be d
 aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
 
 ```
---image--
 
 we created the python repo using the CLI
 ```sh
@@ -366,6 +366,7 @@ launch the task definition by executing this command
 ```sh
 aws ecs register-task-definition --cli-input-json file://aws/task-definitions/backend-flask.json
 ```
+[Task-Def-backend](assets/Task%20Def-backend%20week6-7.jpg)
 
 the next step is to find the default vpc run this command
 
@@ -570,6 +571,8 @@ on container name backend-flask and port:4567.
     ]
   }
 ```
+
+[Task-def-Frontend](assets/Task%20Def%20Frontend%20week%206-7.jpg)
 
 
 (i) Create a dockerfile.prod under the frontend-react-js
@@ -1052,7 +1055,11 @@ And we also created a folder for Backend and Frontend in the bin folder and made
 
 ## Fixing Check Auth Cognito
 
-1) This is because at the moment the token won't update so, replace the checkAuth.js with the following code:
+After Fixing messaging in production
+
+[messages-in-prod](assets/Messaging%20in%20prod%20week%206-7.png)
+
+This is because at the moment the token won't update so, replace the checkAuth.js with the following code:
 
 ```sh
 import { Auth } from 'aws-amplify';
@@ -1114,7 +1121,7 @@ Authorization': `Bearer ${access_token}`
 ```
 -NB: Please make sure to change these codes because this was where I hit multiple errors that made my code blank till I joined the office hours and andrew helped debugged
 
---image--
+[cognito-check-auth](assets/Check%20Auth%20cognito%20week%206-7.png)
 
 ## Implementation of Xray on Ecs and Container Insights
 
@@ -1341,6 +1348,9 @@ networks:
     driver: bridge
     name: cruddur
 ```
+
+[docker-list](assets/Docker%20list%20week%206-7.png)
+
 with the following code
 
 ```
