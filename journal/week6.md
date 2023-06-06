@@ -840,7 +840,7 @@ I had a problem with creating my service  and figured the problem was the  ALB a
 
 ## Implementation of the SSL and configuration of Domain from Route53
 
-1) I firstly bought a domain name from [porkbun website](https://porkbun.com/) then, I Created the hosted zone for [my domain](http://nwaliechinyere.xyz/) It won't work now and will show 404 error this is because my container isn't on. Most importantly, I took note of the "name servers" it should look like this
+1) I firstly bought a domain name from [porkbun website](https://porkbun.com/) then, I Created the hosted zone for [my domain name](http://nwaliechinyere.xyz/) It won't work now and will show 503 Temporary Service this is because my container isn't on. Most importantly, I took note of the "name servers" it should look like this
 
 ```sh
 ns-00.awsdns-00.com.
