@@ -14,7 +14,6 @@ class UserActivities:
     if user_handle == None or len(user_handle) < 1:
       model['errors'] = ['blank_user_handle']
     else:
-      print("else:")
       sql = db.template('users','show')
       results = db.query_object_json(sql,{'handle': user_handle})
       # print('return' ,results)
