@@ -28,7 +28,7 @@ def set_last_successful_run(value):
   UPDATE schema_information
   SET last_successful_run = %(last_successful_run)s
   """
-  db.query_commit(sql,{'last_successful_run': value},verbose=False)
+  db.query_commit(sql,{'last_successful_run': value})
   return value
 
 last_successful_run = get_last_successful_run()
@@ -46,7 +46,7 @@ for migration_file in migration_files:
     file_time = int(match.group())
     if last_successful_run <= file_time:
       mod = importlib.import_module(module_name)
-      print('=== running migration: ',module_name)
       mod.migration.migrate()
+      print('running migration: ',module_name)
       timestamp = str(time.time()).replace(".","")
       last_successful_run = set_last_successful_run(timestamp)

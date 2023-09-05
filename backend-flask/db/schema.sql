@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.activities;
 
 CREATE TABLE IF NOT EXISTS public.schema_information (
-  id integer UNIQUE,
-  last_successful_run text
+  last_successful_run text,
+  last_migration_file text
 );
 INSERT INTO public.schema_information (id, last_successful_run)
 VALUES(1, '0')
