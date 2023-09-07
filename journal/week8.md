@@ -26,37 +26,154 @@
 
 ## Serverless Image Process CDK
 
+This week we need to use CDK (Cloud Development Kit) to create S3 buckets, Lambda functions, SNS topics, etc., allowing users to upload their avatars to update their profiles.
+
+```sh
+cd /workspace/aws-bootcamp-crudder-2023/bin
+touch bootstrap prepare
+chmod u+x bootstrap prepare
+```
+Start by manually creating an S3 bucket named `assets.<domain_name>` (e.g., `assets.nwaliechinyere.xyz`), which will be used for serving the processed images in the profile page. In this bucket, create a folder named `banners`, and then upload a `banner.jpg` into the folder.
+
+Secondly, export the following env vars according to your domain name and another S3 bucket (e.g., `nwaliechinyere-cruddur-uploaded-avatars`), which will be created by CDK later for saving the original uploaded avatar images:
+
+```sh
+export DOMAIN_NAME=nwaliechinyere.xyz
+gp env DOMAIN_NAME=nwaliechinyere.xyz
+export UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
+gp env UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
+```
+
+In order to process uploaded images into a specific dimension, a Lambda function will be created by CDK. This function and related packages are specified in the scripts ([repo](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/week-8/aws/lambdas/process-images)) created by the following commands:
+
+```sh
+mkdir -p aws/lambdas/process-images
+cd aws/lambdas/process-images
+touch index.js s3-image-processing.js test.js  example.json
+npm init -y
+npm install sharp @aws-sdk/client-s3
+```
+
+To check if the created Lambda function works or not, create scripts  ([repo](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/week-8/bin/avatar)) by the following commands and then upload a profile picture named `data.jpg` inside the created folder `files`:
+
+```sh
+cd /workspace/aws-bootcamp-cruddur-2023
+mkdir -p bin/avatar
+cd bin/avatar
+touch build upload clear
+chmod u+x build upload clear
+mkdir files
+```
+
+Now we can initialize CDK and install related packages:
+
+```sh
+cd /workspace/aws-bootcamp-cruddur-2023
+mkdir thumbing-serverless-cdk
+cd thumbing-serverless-cdk
+touch .env.example
+npm install aws-cdk -g
+cdk init app --language typescript
+npm install dotenv
+```
+
+Update `.env.example`  ([reference code](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/week-8/thumbing-serverless-cdk/.env.example)), and run `cp .env.example .env`. Update `./bin/thumbing-serverless-cdk.ts` and `./lib/thumbing-serverless-cdk-stack.ts` 
+
+In order to let the `sharp` dependency work in Lambda, run the script:
+
+```sh
+cd /workspace/aws-bootcamp-cruddur-2023
+./bin/avatar/build
+
+cd thumbing-serverless-cdk
+```
+
+To create AWS CloudFormation stack `ThumbingServerlessCdkStack`:
+
+- Run `cdk synth` you can debug and observe the generated `cdk.out`
+- run `cdk bootstrap "aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION}"` (just once)
+- Finally run `cdk deploy`, you can observe your what have been created on AWS CloudFormation
+
+Now, after running `./bin/avatar/upload`, at AWS I can observe that the `data.jpg` can be uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere..xyz` S3 bucket.
+
 ---
 ## Serving avatar via CloudFront
+
+Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 content in a faster way. Also, using CloudFront to serve s3 content gives you a lot more flexibility and control. To create a CloudFront distribution, a certificate in the `us-east-1` zone for `*.<your_domain_name>` is required. If you don't have one yet, create one via AWS Certificate Manager, and click "Create records in Route 53" after the certificate is issued.
+
+Create a distribution by:
+
+- Set the Origin domain to point to `assets.<your_domain_name>`
+- Choose Origin access control settings (recommended) and create a control setting
+- Select Redirect HTTP to HTTPS for the viewer protocol policy
+- choose CachingOptimized, CORS-CustomOrigin as the optional Origin request policy, and SimpleCORS as the response headers policy
+- Set alternate domain name (CNAME) as `assets.<your_domain_name>`
+- Choose the previously created ACM for the Custom SSL certificate.
+
+Remember to copy the created policy to the `assets.<your_domain_name>` bucket by editing its bucket policy.
+
+In order to visit `https://assets.<your_domain_name>/avatars/data.jpg` to see the processed image, we need to create a record via Route 53:
+
+- Set record name as `assets.<your_domain_name>`
+- Turn on alias, route traffic to alias to CloudFront distribution
+- In my case, you can see my profile at ([link](https://assets.nwaliechinyere.xyz/avatars/data.jpg
+
+Since we don't use versioned file names for a user's avatar, CloudFront Edge caches old avatar. Until the old one expires, you will not immediately see the new avatar after updating the profile. Therefore, we need to [invalidate files](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html) by creating an invalidation:
+
+- Go to the distribution we created
+- Under the Invalidations tab, click Create
+- add object path `/avatars/*`
+
+This ensures that CloudFront will always serve the latest avatar uploaded by the user.
 
 ---
 
 ## Implementation User Profile Page
 
----
+For the backend, update/create the following scripts ([repo](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/week-8/backend-flask)):
 
-## Implementation Avatar Uploading
+- `backend-flask/db/sql/users/show.sql` to get info about the user
+- `backend-flask/db/sql/users/update.sql` to update bio
+- `backend-flask/services/user_activities.py`
+- `backend-flask/services/update_profile.py`
+- `backend-flask/app.py`
 
----
+For the Frontend, update/create the following scripts ([repo](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/week-8/frontend-react-js)):
 
-## Rendering Avatar using Cloudfront
-
----
-
-## Journal Summary
+- `frontend-react-js/src/components/ActivityFeed.js`
+- `frontend-react-js/src/components/CrudButton.js`
+- `frontend-react-js/src/components/DesktopNavigation.js` to change the hardcoded URL into yours
+- `frontend-react-js/src/components/EditProfileButton.css`
+- `frontend-react-js/src/components/EditProfileButton.js`
+- `frontend-react-js/src/components/Popup.css`
+- `frontend-react-js/src/components/ProfileAvatar.css`
+- `frontend-react-js/src/components/ProfileAvatar.js`
+- `frontend-react-js/src/components/ProfileForm.css`
+- `frontend-react-js/src/components/ProfileForm.js` to let the user edit their profile page
+- `frontend-react-js/src/components/ProfileHeading.css`
+- `frontend-react-js/src/components/ProfileHeading.js` to display profile details
+- `frontend-react-js/src/components/ProfileInfo.js`
+- `frontend-react-js/src/components/ReplyForm.css`
+- `frontend-react-js/src/pages/HomeFeedPage.js`
+- `frontend-react-js/src/pages/NotificationsFeedPage.js`
+- `frontend-react-js/src/pages/UserFeedPage.js` to fetch data
+- `frontend-react-js/src/lib/CheckAuth.js`
+- `frontend-react-js/src/App.js`
+- `frontend-react-js/jsconfig.json`
 
 ---
 
 ## Implement Migrations Backend Endpoint & Profile Form
 
-1 Firstly we had to remodify ‘gitpod.yml file taking out the ‘source’ for each workspace refactoring the file.
+1 Firstly we had to remodify ‘gitpod.yml file taking out the ‘source’ for each workspace and refactoring the file.
 
-When i tried to compose up it wasn’t working
-(screenshot 393.png)
+When I tried to compose it wasn’t working
 
-I had issues with composing up till I remodified my scripts and then ran in my terminal ‘./bin/backend/generate-env’ for the front end too. This will generate the env files for a proper compose-up, and it worked.
+(screenshot 393. png)
 
-In the frontend I created ‘jsconfig.json’ file this file is linked to the ‘src’ directory you can reference any frontend file you want to import from here.
+I had issues with composing until I remodified my scripts and then ran in my terminal ‘./bin/backend/generate-env’ for the front end too. This will generate the env files for a proper compose-up, and it worked.
+
+In the Frontend I created ‘jsconfig.json’ file. This file is linked to the ‘src’ directory you can reference any frontend file you want to import from here.
 
 ```sh
 {
@@ -842,4 +959,17 @@ WHERE
     users.handle = %(handle)s
 ```
 
+
+
+## Implementation Avatar Uploading
+
+---
+
+## Rendering Avatar using Cloudfront
+
+---
+
+## Journal Summary
+
+---
 
