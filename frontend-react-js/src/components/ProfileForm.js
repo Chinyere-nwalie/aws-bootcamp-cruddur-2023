@@ -4,30 +4,34 @@ import process from 'process';
 import {getAccessToken} from 'lib/CheckAuth';
 
 export default function ProfileForm(props) {
-  const [presignedurl, setPresignedurl] = React.useState(0);
-  const [bio, setBio] = React.useState(0);
-  const [displayName, setDisplayName] = React.useState(0);
+  const [bio, setBio] = React.useState('');
+  const [displayName, setDisplayName] = React.useState('');
 
   React.useEffect(()=>{
-    console.log('useEffects',props)
-    setBio(props.profile.bio);
+    setBio(props.profile.bio || '');
     setDisplayName(props.profile.display_name);
   }, [props.profile])
 
   const s3uploadkey = async(event)=> {
     try {
       console.log('s3upload')
-      const backend_url = ""
+      const gateway_url = `${process.env.REACT_APP_API_GATEWAY_ENDPOINT_URL}/avatars/key_upload`
       await getAccessToken()
       const access_token = localStorage.getItem("access_token")
-      const res = await fetch(backend_url, {
+      const json = {
+        extension: "",
+        cognito_user_uuid: ""
+      }
+      const res = await fetch(gateway_url, {
         method: "POST",
+        body: JSON.stringify(json),
         headers: {
-          'Origin': "",
+          'Origin': process.env.REACT_APP_FRONTEND_URL,
           'Authorization': `Bearer ${access_token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-      }})
+        }
+      })
       
       let data = await res.json();
       if (res.status === 200) {
@@ -50,9 +54,10 @@ export default function ProfileForm(props) {
     const type = file.type
     const preview_image_url = URL.createObjectURL(file)
     console.log(filename, size, type)
-    // const fileparts = filename.split('.')
-    // const extension = fileparts[fileparts.length-1]
-    const presignedurl = await s3uploadkey()
+    const fileparts = filename.split('.')
+    const extension = fileparts[fileparts.length-1]
+    const presignedurl = await s3uploadkey(extension,cognito_user_uuid)
+    console.log('pp' ,presignedurl)
     try {
       console.log('s3upload')
       const res = await fetch(presignedurl, {
@@ -61,10 +66,8 @@ export default function ProfileForm(props) {
         headers: {
           'Content-Type': type
       }})
-      
-      // let data = await res.json();
       if (res.status === 200) {
-        // console.log('presigned url' ,data)
+        
       } else {
         console.log(res)
       }

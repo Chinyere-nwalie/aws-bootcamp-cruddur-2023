@@ -11,6 +11,9 @@ BIN_DIR=$(dirname $ABS_PATH)
 
 echo "Creation local database"
 
+# Connect to ECR
 source "$BIN_DIR/ecr/login"
-source "$BIN_DIR/backend/generate-env"
-source "$BIN_DIR/frontend/generate-env"
+
+# Generate environment variables
+ruby "$BIN_DIR/backend/generate-env"
+ruby "$BIN_DIR/frontend/generate-env"
