@@ -1,6 +1,6 @@
 require 'aws-sdk-s3'
 require 'json'
-require 'jwt'
+# require 'jwt'
 
 def handler(event:, context:)
   puts event
@@ -10,7 +10,7 @@ def handler(event:, context:)
     { 
       headers: {
         "Access-Control-Allow-Headers": "*, Authorization",
-        "Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-twcj1zviy5z.ws-eu104.gitpod.io",
+        "Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io",
         "Access-Control-Allow-Methods": "OPTIONS,GET,POST"
       },
       statusCode: 200
@@ -37,12 +37,11 @@ def handler(event:, context:)
     obj = s3.bucket(bucket_name).object(object_key)
     url = obj.presigned_url(:put, expires_in: 60 * 5)
     url # this is the data that will be returned
-    
     body = {url: url}.to_json
     { 
       headers: {
         "Access-Control-Allow-Headers": "*, Authorization",
-        "Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-fihplr349mt.ws-eu104.gitpod.io",
+        "Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io",
         "Access-Control-Allow-Methods": "OPTIONS,GET,POST"
       },
       statusCode: 200, 

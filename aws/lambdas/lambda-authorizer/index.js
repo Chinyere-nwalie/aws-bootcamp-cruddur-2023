@@ -3,7 +3,7 @@ const { CognitoJwtVerifier } = require("aws-jwt-verify");
 //const { assertStringEquals } = require("aws-jwt-verify/assert");
 
 const jwtVerifier = CognitoJwtVerifier.create({
-  userPoolId: process.env.USER_POOL_ID,
+  userPoolId: process.env.USER_POOLS_ID,
   tokenUse: "access",
   clientId: process.env.CLIENT_ID//,
   //customJwtCheck: ({ payload }) => {
@@ -13,6 +13,9 @@ const jwtVerifier = CognitoJwtVerifier.create({
 
 exports.handler = async (event) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
+
+  const auth = event.headers.authorization;
+  const jwt = auth.split(" ")[1]
 
   const token = JSON.stringify(event.headers["authorization"]).split(" ")[1].replace(/['"]+/g, '');
   try {
