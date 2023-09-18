@@ -16,6 +16,7 @@ export default function ProfileForm(props) {
     console.log('ext',extension)
     try {
       console.log('s3upload')
+      console.log (process.env.REACT_APP_AWS_API_GATEWAY_ENDPOINT_URL)
       const gateway_url = `${process.env.REACT_APP_AWS_API_GATEWAY_ENDPOINT_URL}/avatars/key_upload`
       await getAccessToken()
       const access_token = localStorage.getItem("access_token")
@@ -26,9 +27,9 @@ export default function ProfileForm(props) {
         method: "POST",
         body: JSON.stringify(json),
         headers: {
-          'Origin': process.env.REACT_APP_FRONTEND_URL,
-          'Authorization': `Bearer ${access_token}`,
-          'Accept': 'application/json',
+          Origin: process.env.REACT_APP_FRONTEND_URL,
+          Authorization: `Bearer ${access_token}`,
+          Accept: 'application/json',
           'Content-Type': 'application/json'
         }
       })

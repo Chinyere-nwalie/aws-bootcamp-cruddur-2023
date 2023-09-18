@@ -13,11 +13,10 @@ const jwtVerifier = CognitoJwtVerifier.create({
 
 exports.handler = async (event) => {
   console.log("request:", JSON.stringify(event, undefined, 2));
-
-  const auth = event.headers.authorization;
-  const jwt = auth.split(" ")[1]
-
-  const token = JSON.stringify(event.headers["authorization"]).split(" ")[1].replace(/['"]+/g, '');
+  
+  const jwt = event.headers.authorization;
+  var token = jwt.substring(7, jwt.length);
+  console.log(token)
   try {
     const payload = await jwtVerifier.verify(token);
     console.log("Access allowed. JWT payload:", payload);
