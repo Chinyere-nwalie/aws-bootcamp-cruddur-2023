@@ -184,7 +184,7 @@ In the Frontend I created ‘jsconfig.json’ file. This file is linked to the �
 }
 ```
 
-For the Frontend, update, edit & create the following scripts ([repo](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/week-8/frontend-react-js)):
+For the Frontend, update, edit & create the following scripts 
 
 - `frontend-react-js/src/components/Profileform.js`
 - `frontend-react-js/src/components/ProfileForm.css`
@@ -230,290 +230,44 @@ from services.update_profile import *
 
 ```
 
-create the file **update_profile.py** under the folder **backend-flask/services/**
-```sh
-from lib.db import db
+For the Bin & Backenf directory create these files;
 
-class UpdateProfile:
-  def run(cognito_user_id,bio,display_name):
-    model = {
-      'errors': None,
-      'data': None
-    }
-
-    if display_name == None or len(display_name) < 1:
-      model['errors'] = ['display_name_blank']
-
-    if model['errors']:
-      model['data'] = {
-        'bio': bio,
-        'display_name': display_name
-      }
-    else:
-      handle = UpdateProfile.update_profile(bio,display_name,cognito_user_id)
-      data = UpdateProfile.query_users_short(handle)
-      model['data'] = data
-    return model
-
-  def update_profile(bio,display_name,cognito_user_id):
-    if bio == None:    
-      bio = ''
-
-    sql = db.template('users','update')
-    handle = db.query_commit(sql,{
-      'cognito_user_id': cognito_user_id,
-      'bio': bio,
-      'display_name': display_name
-    })
-  def query_users_short(handle):
-    sql = db.template('users','short')
-    data = db.query_object_json(sql,{
-      'handle': handle
-    })
-    return data
-```
-
-create a file called **update.sql** inside the folder **backend-flask/db/sql/users**
-The query will do an update inside the table users by setting the bio and the display name for the user
-
-```sh
-UPDATE public.users 
-SET 
-  bio = %(bio)s,
-  display_name= %(display_name)s
-WHERE 
-  users.cognito_user_id = %(cognito_user_id)s
-RETURNING handle;
-```
-
-Since there is no biofield in the DB, You need to create a migration script.
-One solution you can use is SQL alchemy but it will create nested dependencies.
-
-create a file called **migration** under **.bin/generate/**
-```sh
-#!/usr/bin/env python3
-import time
-import os
-import sys
-
-if len(sys.argv) == 2:
-  name = sys.argv[1].lower()
-else:
-  print("pass a filename: eg. ./bin/generate/migration add_bio_column")
-  exit(0)
-
-timestamp = str(time.time()).replace(".","")
-
-filename = f"{timestamp}_{name.replace('_', '')}.py"
-
-klass = name.replace('_', ' ').title().replace(' ','')
-
-file_content = f"""
-from lib.db import db
-
-class {klass}Migration:
-  def migrate_sql():
-    data = \"\"\"
-    \"\"\"
-    return data
-  def rollback_sql():
-    data = \"\"\"
-    \"\"\"
-    return data
-
-  def migrate():
-    db.query_commit({klass}Migration.migrate_sql(),{{
-    }})
-  def rollback():
-    db.query_commit({klass}Migration.rollback_sql(),{{
-    }})
-
-migration = AddBioColumnMigration
-"""
-#remove leading and trailing new line
-file_content = file_content.lstrip('\n').rstrip('\n')
-
-current_path = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.abspath(os.path.join(current_path, '..', '..','backend-flask','db','migrations',filename))
-print(file_path)
-
-with open(file_path, 'w') as f:
-  f.write(file_content)
-  ```
+- backend-flask/services/update_profile.py
+- bin/db/migrate
+- bin/db/rollback
+- backend-flask/db/sql/users/update.sql: The query will do an update inside the table users by setting the bio and the display name for the user
+- bin/generate/migration: Since there is no biofield in the DB, You need to create a migration script.
 
 Note: we can enforce that the name assigned is lowercase by changing the line with this
 ```sh
 name = sys.argv[1].lower()
 ```
 
-from the **backend-flask/db/** create a folder called **migration**
-
-Once it is done, do the chmod u+x to the folder **.bin/generate/migration** and launch
-Inside the folder **backend-flask/db/migration**, the script will generate a file with this  naming **1693452967453112907add_bio_column.py** 
-
-**Note** the name of the file is generated with the timestamp+add_bio_column.py
-the codes below highlighted are the ones from the generated file. add the 2 lines in bold need to be added between each block
-
-```sh
-from lib.db import db
-
-class AddBioColumnMigration:
-  def migrate_sql():
-    data = """
+Inside the folder **backend-flask/db/migration** generate a migration file inside the `backend-flask/db/migrations/` directory using the following command:
+```bash
+./bin/generate/migration add_bio_column
 ```
 
-**ALTER TABLE public.users ADD COLUMN bio text;**
+After generating the migration file, update the functions as shown below:
 
-```sh
-    """
-    return data
-  def rollback_sql():
-    data = """
-```
-**ALTER TABLE public.users DROP COLUMN bio;**
-```sh
-    """
+```SQL
+def migrate_sql():
+    data = '''
+      ALTER TABLE public.users ADD COLUMN bio text;
+    '''
     return data
 
-  def migrate():
-    db.query_commit(AddBioColumnMigration.migrate_sql(),{
-    })
-
-  def rollback():
-    db.query_commit(AddBioColumnMigration.rollback_sql(),{
-    })
-
-migration = AddBioColumnMigration
+def rollback_sql():
+    data = '''
+      ALTER TABLE public.users DROP COLUMN;
+    '''
+    return data
 ```
 
-Now you need to create another 2 scripts **bin/db/** 
-one called **migrate** with the following code
-```sh
-#!/usr/bin/env python3
 
-import os
-import sys
-import glob
-import re
-import time
-import importlib
+**Note** The name of the file is generated with the timestamp+add_bio_column.py
 
-current_path = os.path.dirname(os.path.abspath(__file__))
-parent_path = os.path.abspath(os.path.join(current_path, '..', '..','backend-flask'))
-sys.path.append(parent_path)
-from lib.db import db
-
-def get_last_successful_run():
-  sql = """
-    SELECT last_successful_run
-    FROM public.schema_information
-    LIMIT 1
-  """
-  return int(db.query_value(sql,{},verbose=False))
-
-def set_last_successful_run(value):
-  sql = """
-  UPDATE schema_information
-  SET last_successful_run = %(last_successful_run)s
-  WHERE id = 1
-  """
-  db.query_commit(sql,{'last_successful_run': value})
-  return value
-
-last_successful_run = get_last_successful_run()
-
-migrations_path = os.path.abspath(os.path.join(current_path, '..', '..','backend-flask','db','migrations'))
-sys.path.append(migrations_path)
-migration_files = glob.glob(f"{migrations_path}/*")
-
-
-last_migration_file = None
-for migration_file in migration_files:
-  if last_migration_file == None:
-    filename = os.path.basename(migration_file)
-    module_name = os.path.splitext(filename)[0]
-    match = re.match(r'^\d+', filename)
-    if match:
-      file_time = int(match.group())
-      print("====")
-      print(last_successful_run, file_time)
-      print(last_successful_run > file_time)
-      if last_successful_run > file_time:
-        last_migration_file = module_name
-        mod = importlib.import_module(module_name)
-        print('===== rolling back: ',module_name)
-        mod.migration.rollback()
-        set_last_successful_run(file_time)
-
-print(last_migration_file)
-
-```
-Make the file executable by launching chmod u+x for the  **bin/db/migrate** 
-
-one called **rollback** with the following code
-```sh
-#!/usr/bin/env python3
-
-import os
-import sys
-import glob
-import re
-import time
-import importlib
-
-current_path = os.path.dirname(os.path.abspath(__file__))
-parent_path = os.path.abspath(os.path.join(current_path, '..', '..','backend-flask'))
-sys.path.append(parent_path)
-from lib.db import db
-
-def get_last_successful_run():
-  sql = """
-    SELECT last_successful_run
-    FROM public.schema_information
-    LIMIT 1
-  """
-  return int(db.query_value(sql,{},verbose=False))
-
-def set_last_successful_run(value):
-  sql = """
-  UPDATE schema_information
-  SET last_successful_run = %(last_successful_run)s
-  WHERE id = 1
-  """
-  db.query_commit(sql,{'last_successful_run': value})
-  return value
-
-last_successful_run = get_last_successful_run()
-
-migrations_path = os.path.abspath(os.path.join(current_path, '..', '..','backend-flask','db','migrations'))
-sys.path.append(migrations_path)
-migration_files = glob.glob(f"{migrations_path}/*")
-
-
-last_migration_file = None
-for migration_file in migration_files:
-  if last_migration_file == None:
-    filename = os.path.basename(migration_file)
-    module_name = os.path.splitext(filename)[0]
-    match = re.match(r'^\d+', filename)
-    if match:
-      file_time = int(match.group())
-      print("====")
-      print(last_successful_run, file_time)
-      print(last_successful_run > file_time)
-      if last_successful_run > file_time:
-        last_migration_file = module_name
-        mod = importlib.import_module(module_name)
-        print('===== rolling back: ',module_name)
-        mod.migration.rollback()
-        set_last_successful_run(file_time)
-
-print(last_migration_file)
-```
-
-Make the file executable by launching chmod u+x for the **bin/db/rollback** 
-
-from the **schema.sql** we need to add the new table that creates the schema_information that stores the last successful run and the last migration file. We need to enter to the psql using the script **./bin/db/connect**
+From the **schema.sql** add a new table that creates the schema_information and stores the last successful run and the last migration file. Connect to psql by running **./bin/db/connect** on your terminal and inputting these codes
 
 ```sh
 CREATE TABLE IF NOT EXISTS public.schema_information (
@@ -528,26 +282,8 @@ VALUES (1,'0')
 ON CONFLICT (id) DO NOTHING;
 ```
 
-from the **db.py**, change the following lines
-```sh
-def query_commit(self,sql,params={}):
-self.print_sql('commit with returning',sql,params)
-```
-```sh
-def query_array_json(self,sql,params={}):
-self.print_sql('array',sql,params)
-```
-```sh
-def query_object_json(self,sql,params={}):
-self.print_sql('json',sql,params)
-self.print_params(params)
-```
-```sh
-def query_value(self,sql,params={}):
-self.print_sql('value',sql,params)
-```
+From the **db.py**, the following lines were modified
 
-with the following
 ```sh
 def query_commit(self,sql,params={},verbose=True):
   if verbose:
@@ -570,101 +306,24 @@ def query_value(self,sql,params={},verbose=True):
     self.print_sql('value',sql,params)
 ```
 
-Note: to test the Migrate script and Roll script, you need to update manupulate the table schema information and the user.
+PS: To test the Migrate script and Roll script, you need to update and manipulate the table schema information and the user.
 
-this query update the value of last successful run to 0
+this query updates the value of the last successful run to 0
 ```sh
  update schema_information set last_successful_run = 0;
  ```
 
-this query remove the column bio from the table users
+this query removes the column bio from the table users
  ```sh
 ALTER TABLE public.users DROP COLUMN bio;
 ```
 
-use also the following command to see the bahaviour of the column
+use also the following command to see the behavior of the column
 ```sh
 \d users
 ```
 
-Change the **ProfileHeading.js**
-Need to set the new field visible on our page
-```sh
-import './ProfileHeading.css';
-import EditProfileButton from '../components/EditProfileButton';
-
-
-export default function ProfileHeading(props) {
-    const backgroundImage = 'url("https://assets.johnbuen.co.uk/banners/banner.jpg")';
-    const styles = {
-        backgroundImage: backgroundImage,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    };
-    return (
-    <div className='activity_feed_heading profile_heading'>
-        <div className='title'>{props.profile.display_name}</div>
-        <div className="cruds_count">{props.profile.cruds_count} Cruds</div>
-        <div className="banner" style={styles} >
-            <div className="avatar">
-                <img src="https://assets.johnbuen.co.uk/avatars/data.jpg"></img>
-            </div>
-        </div>
-        <div className="info">
-            <div className='id'>
-                <div className="display_name">{props.profile.display_name}</div>
-                <div className="handle">@{props.profile.handle}</div>
-            </div>
-            <EditProfileButton setPopped={props.setPopped} />
-        </div>
-        <div className="bio">{props.profile.bio}</div>
-    </div>
-    );
-}
-```
-
-from **profileheading.css** add the following code
-```sh
-.profile_heading .bio {
-  padding: 16px;
-  color: rgba (255,255,255,0.7);
-}
-```
-
-from **show.sql**, change the entire code so the new field will show on the profile page.
-```sh
-SELECT
-    (SELECT COALESCE(row_to_json(object_row),'{}'::json) FROM (
-        SELECT
-            users.uuid,
-            users.handle,
-            users.display_name,
-            users.bio
-            (SELECT count(true)
-            FROM public.activities
-            WHERE
-                activities.user_uuid = users.uuid            
-            ) as cruds_count
-    ) object_row) as profile,
-    (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
-        SELECT
-            activities.uuid,
-            users.display_name,
-            users.handle,
-            activities.message,
-            activities.created_at,
-            activities.expires_at
-        FROM public.activities
-        WHERE
-            activities.user_uuid = users.uuid
-        ORDER BY activities.created_at DESC
-        LIMIT 40
-    ) array_row) as activities
-FROM public.users
-WHERE
-    users.handle = %(handle)s
-```
-
+Here's reference to my ([repo]([https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/955f03ca349daa848d71b89f3ce81c7f3110ef46#diff-691fec3bd590373f2413b92b1d83b2a83ddc2852d21326ac2f8b8a2f66946672])
 
 
 ## Implementation Avatar Uploading
