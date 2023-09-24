@@ -10,30 +10,13 @@
 
 ---
 
-### Videos for week 8
-
-- [Week 8 Livestream](https://www.youtube.com/watch?v=YiSNlK4bk90)
-- [Serverless Image Process CDK](https://www.youtube.com/watch?v=jyUpZP2knBI)
-- [Serving Avatars via CloudFront](https://www.youtube.com/watch?v=Hl5XVb7dL6I)
-- [Implement Users Profile Page](https://www.youtube.com/watch?v=WdVPx-LLjQ8)
-- [Implement Migrations Backend Endpoint and Profile Form](https://www.youtube.com/watch?v=PTafksks528)
-- [Implement Avatar Uploading (Part 1)](https://www.youtube.com/watch?v=Bk2tq4pliy8)
-- [Fix CORS for API Gateway](https://www.youtube.com/watch?v=eO7bw6_nOIc)
-- [Fix CORS Final AWS Lambda Layers](https://www.youtube.com/watch?v=uWhdz5unipA)
-- [Render Avatar from CloudFront](https://www.youtube.com/watch?v=xrFo3QLoBp8)
-
----
-
 ## Serverless Image Process CDK
 
-This week we need to use CDK (Cloud Development Kit) to create S3 buckets, Lambda functions, SNS topics, etc., allowing users to upload their avatars to update their profiles.
+AWS CDK is an open-source software development framework that enables you to define cloud infrastructure in code and provision it using AWS CloudFormation.
 
-```sh
-cd /workspace/aws-bootcamp-crudder-2023/bin
-touch bootstrap prepare
-chmod u+x bootstrap prepare
-```
-Start by manually creating an S3 bucket named `assets.<domain_name>` (e.g., `assets.nwaliechinyere.xyz`), which will be used for serving the processed images in the profile page. In this bucket, create a folder named `banners`, and then upload a `banner.jpg` into the folder.
+This week, we are using CDK (Cloud Development Kit) to create S3 buckets, Lambda functions, SNS topics, etc. Allowing users to update their profiles with avatars.
+
+First, manually create an S3 bucket named `assets.<domain_name>` (e.g `assets.nwaliechinyere.xyz`), which will be used for serving the processed images on the profile page. In this bucket, create a folder named `banners`, and then upload a `banner.jpg` into the folder.
 
 Secondly, export the following env vars according to your domain name and another S3 bucket (e.g., `nwaliechinyere-cruddur-uploaded-avatars`), which will be created by CDK later for saving the original uploaded avatar images:
 
@@ -44,7 +27,7 @@ export UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
 gp env UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
 ```
 
-In order to process uploaded images into a specific dimension, a Lambda function will be created by CDK. This function and related packages are specified in the scripts ([repo](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/week-8/aws/lambdas/process-images)) created by the following commands:
+In order to process uploaded images into a specific dimension, a Lambda function will be created by CDK. This function and related packages are specified in the scripts ([code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/main/aws/lambdas/process-images)) It was created by with these commands:
 
 ```sh
 mkdir -p aws/lambdas/process-images
@@ -54,7 +37,7 @@ npm init -y
 npm install sharp @aws-sdk/client-s3
 ```
 
-To check if the created Lambda function works or not, create scripts  ([repo](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/week-8/bin/avatar)) by the following commands and then upload a profile picture named `data.jpg` inside the created folder `files`:
+To verify if the Lambda function we have created works, create these scripts ([code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/main/bin/avatar)) by the following commands and then upload a profile picture named `data.jpg` inside the created folder `files`:
 
 ```sh
 cd /workspace/aws-bootcamp-cruddur-2023
@@ -77,7 +60,7 @@ cdk init app --language typescript
 npm install dotenv
 ```
 
-Update `.env.example`  ([reference code](https://github.com/chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/week-8/thumbing-serverless-cdk/.env.example)), and run `cp .env.example .env`. Update `./bin/thumbing-serverless-cdk.ts` and `./lib/thumbing-serverless-cdk-stack.ts` 
+Update `.env.example`  ([reference code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/thumbing-serverless-cdk/.env.example)), and run `cp .env.example .env`. Update `./bin/thumbing-serverless-cdk.ts` and `./lib/thumbing-serverless-cdk-stack.ts` 
 
 In order to let the `sharp` dependency work in Lambda, run the script:
 
@@ -90,39 +73,58 @@ cd thumbing-serverless-cdk
 
 To create AWS CloudFormation stack `ThumbingServerlessCdkStack`:
 
-- Run `cdk synth` you can debug and observe the generated `cdk.out`
-- run `cdk bootstrap "aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION}"` (just once)
-- Finally run `cdk deploy`, you can observe your what have been created on AWS CloudFormation
+- Run `cdk synth`: Generates a CloudFormation template for an AWS CDK app 
+- run `cdk bootstrap "aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION}"` (just once): this command creates an S3 bucket to store the deployment artifacts, DynamoDB table to store CDK toolkit metadata, and an IAM role to grant CDK permissions to your AWS account.
+- Finally run `cdk deploy`: This will package and deploy your AWS resources and you'll observe an AWS CloudFormation has been created.
 
-Now, after running `./bin/avatar/upload`, at AWS I can observe that the `data.jpg` can be uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere..xyz` S3 bucket.
+After running `./bin/avatar/upload`, verify that the `data.jpg` has been uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere..xyz` S3 bucket.
 
 ---
 ## Serving avatar via CloudFront
 
-Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 content in a faster way. Also, using CloudFront to serve s3 content gives you a lot more flexibility and control. To create a CloudFront distribution, a certificate in the `us-east-1` zone for `*.<your_domain_name>` is required. If you don't have one yet, create one via AWS Certificate Manager, and click "Create records in Route 53" after the certificate is issued.
+Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 content in a faster way. Also, using CloudFront to serve s3 content gives you a lot more flexibility and control. 
 
-Create a distribution by:
+- To create a CloudFront distribution;
+  
+  - Make sure your domain name is registered; I am using [nwaliechinyere](https://nwaliechinyere.xyz) and it registered on [porkbun website](https://porkbun.com/)
+  - A certificate in the `us-east-1` zone for `*.<your_domain_name>` is required.
+  - Domain's name servers registered with Route 53. If you don't have one yet; create one via AWS Certificate Manager, and click "Create records in Route 53" after the certificate is issued.
+  
+- Create a distribution:
 
-- Set the Origin domain to point to `assets.<your_domain_name>`
-- Choose Origin access control settings (recommended) and create a control setting
-- Select Redirect HTTP to HTTPS for the viewer protocol policy
-- choose CachingOptimized, CORS-CustomOrigin as the optional Origin request policy, and SimpleCORS as the response headers policy
-- Set alternate domain name (CNAME) as `assets.<your_domain_name>`
-- Choose the previously created ACM for the Custom SSL certificate.
+  | Option | Value |
+| ----------- | ----------- |
+| Origin domain | **Choose Amazon S3 bucket** `assets.nwaliechinyere.xyz` |
+| Name | Set Automatically when you select the S3 bucket |
+| Origin access | **Select** Origin access control settings (recommended) |
+| Origin access control | `assets.nwaliechinyere.xyz` |
+| Create a control setting | Select and choose the following **Sign requests (recommended)**,**Origin type=S3** |
+| Viewer protocol policy | Redirect HTTP to HTTPS |
+| Cache policy and origin request policy (recommended) | **Selected** |
+| Cache policy | CachingOptimized |
+| Origin request policy | CORS-CustomOrigin |
+| Response headers policy | SimpleCORS |
+| Alternate domain name (CNAME) | `assets.nwaliechinyere.xyz` |
+| Custom SSL certificate | Certificate created for `nwaliechinyere.xyz` |
+
 
 Remember to copy the created policy to the `assets.<your_domain_name>` bucket by editing its bucket policy.
 
-In order to visit `https://assets.<your_domain_name>/avatars/data.jpg` to see the processed image, we need to create a record via Route 53:
+- In order to visit `https://assets.<your_domain_name>/avatars/data.jpg` to see the processed image, we need to create a record via Route 53:
+   - Go to `Route 53`
+   - Click `Create hosted zone`
+   - `Domain name` -> Set record name as `assets.<your_domain_name>`
+   - `Type` = `Public hosted zone`
+   - Click `Create Hosted Zone`
+   - Turn on alias, route traffic to alias to CloudFront distribution
+   - You can see my profile at ([link](https://assets.nwaliechinyere.xyz/avatars/data.jpg)
 
-- Set record name as `assets.<your_domain_name>`
-- Turn on alias, route traffic to alias to CloudFront distribution
-- In my case, you can see my profile at ([link](https://assets.nwaliechinyere.xyz/avatars/data.jpg
+- Note: When uploading a new version of an image CloudFront Edge caches old avatars. Until the old one expires, you will not immediately see the new avatar after updating the profile and it will keep displaying the old version of the file. To stop this from happening we need to enable [invalidation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html)
 
-Since we don't use versioned file names for a user's avatar, CloudFront Edge caches old avatar. Until the old one expires, you will not immediately see the new avatar after updating the profile. Therefore, we need to [invalidate files](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html) by creating an invalidation:
-
-- Go to the distribution we created
-- Under the Invalidations tab, click Create
-- add object path `/avatars/*`
+  - In `Cloudfront` select the Cloudfront distribution we created
+  - Under the Invalidations tab, click Create
+  - Add object path `/avatars/*` and click `Create Invalidation`
+  - It will take a minute or so for the change to take effect
 
 This ensures that CloudFront will always serve the latest avatar uploaded by the user.
 
@@ -165,15 +167,15 @@ For the Frontend, update/create the following scripts ([repo](https://github.com
 
 ## Implement Migrations Backend Endpoint & Profile Form
 
-1 Firstly we had to remodify ‘gitpod.yml file taking out the ‘source’ for each workspace and refactoring the file.
+Firstly, we re-modify the `gitpod.yml` file taking out the `source` for each workspace and refactoring the file.
 
 When I tried to compose it wasn’t working
 
 (screenshot 393. png)
 
-I had issues with composing until I remodified my scripts and then ran in my terminal ‘./bin/backend/generate-env’ for the front end too. This will generate the env files for a proper compose-up, and it worked.
+I had issues with composing up until ran in my terminal `./bin/backend/generate-env` for the backend and `./bin/frontend/generate-env` for the front end too. This will generate the env files for a proper compose-up, and it worked.
 
-In the Frontend I created ‘jsconfig.json’ file. This file is linked to the ‘src’ directory you can reference any frontend file you want to import from here.
+In the Frontend I created a `jsconfig.json` file. This file is linked to the `src` directory you can reference any frontend file when you want to import from here.
 
 ```sh
 {
@@ -230,7 +232,7 @@ from services.update_profile import *
 
 ```
 
-For the Bin & Backenf directory create these files;
+For the Bin & Backend directory create these files;
 
 - backend-flask/services/update_profile.py
 - bin/db/migrate
