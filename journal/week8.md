@@ -92,7 +92,7 @@ Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 conten
   
 - Create a distribution:
 
-  | Option | Value |
+| Option | Value |
 | ----------- | ----------- |
 | Origin domain | **Choose Amazon S3 bucket** `assets.nwaliechinyere.xyz` |
 | Name | Set Automatically when you select the S3 bucket |
