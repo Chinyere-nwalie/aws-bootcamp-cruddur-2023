@@ -117,7 +117,7 @@ Remember to copy the created policy to the `assets.<your_domain_name>` bucket by
    - `Type` = `Public hosted zone`
    - Click `Create Hosted Zone`
    - Turn on alias, route traffic to alias to CloudFront distribution
-   - You can see my profile at ([link](https://assets.nwaliechinyere.xyz/avatars/data.jpg)
+   - Here, you can see my ([profile](https://assets.nwaliechinyere.xyz/avatars/data.jpg)
 
 - Note: When uploading a new version of an image CloudFront Edge caches old avatars. Until the old one expires, you will not immediately see the new avatar after updating the profile and it will keep displaying the old version of the file. To stop this from happening we need to enable [invalidation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html)
 
