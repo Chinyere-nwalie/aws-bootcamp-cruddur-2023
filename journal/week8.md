@@ -374,13 +374,13 @@ gem "ox"
 gem "jwt"
 ```
 
-- After Installing the required packages with `bundle install` Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URLimg<>
+  - After Installing the required packages with `bundle install` Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URLimg<>
 
   - Update `function.rb` with this code [function.rb](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/cruddur-upload-avatar/function.rb)
   - Update the `Access-Control-Allow-Origin` sections with the URL of the frontend application e.g. `"Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io"`
 
   
-- To test API Endpoint; Copy the pre-signed URL and test its endpoint. Start my downloading Thunder Client
+- **To test API Endpoint**; Copy the pre-signed URL and test its endpoint. Start my downloading Thunder Client
 
   - Installing the Thunder Client extension: This step involves installing the Thunder Client extension, which is a tool that allows you to send HTTP requests and test API endpoints directly within Visual Studio Code.
   - Opening Thunder Client and pasting the pre-signed URL: After installing the extension, you open Thunder Client and paste the pre-signed URL that was generated for the avatar upload. This URL contains the necessary authorization and authentication information.
@@ -392,7 +392,7 @@ After successfully completing of these steps, you should receive a "200 OK" resp
 img<>
 
 
-- CruddurUploadAvatar Lambda Console
+- **CruddurUploadAvatar Lambda Console**
 
   - Create a new function in the AWS Lambda called **CruddurUploadAvatar**
   - Select the appropriate runtime as **Ruby 2.7**, for the Lambda function.
@@ -402,7 +402,7 @@ img<>
   - Create a new policy `PresignedUrlAvatarPolicy` as seen in `aws/policies/s3-upload-avatar-presigned-url-policy.json` [in my code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/policies/s3-upload-avatar-presigned-url-policy.json) and attach this policy to the role of this Lambda
 
 
-- The pre-signed URL Policy
+- **The pre-signed URL Policy**
 
   - Create this policy and assign it to your s3, add the code from the `function.rb` file to the Lambda CruddurUploadAvatarfunction.
   - Navigate to the Lambda function's configuration and access the **Permissions** section.
@@ -424,19 +424,18 @@ img<>
   }
 ```
 
-- CruddurApiGatewayLambdaAuthorizer: This Lambda Authorizer is responsible for authenticating and authorizing requests before they reach the Lambda function accountable for handling the upload.
+- **CruddurApiGatewayLambdaAuthorizer**: This Lambda Authorizer is responsible for authenticating and authorizing requests before they reach the Lambda function accountable for handling the upload.
 
   - In your gitpod create this folders `aws/lambdas/lambda-authorizer/`, create this file `index.js` to authorize API Gateway requests. Run the following command to install the required dependencies:
 ```bash
 npm install aws-jwt-verify --save
 ```
- - Zip the contents of the `aws/lambdas/lambda-authorizer/` directory into a file named `lambda_authorizer.zip` 
- - Create a new Lambda function which is CruddurApiGatewayLambdaAuthorizer in the console using the Node 18 runtime and upload `lambda_authorizer.zip` into the Lambda code source.
- - Add environment variables `USER_POOL_ID` and `CLIENT_ID`
+  - Zip the contents of the `aws/lambdas/lambda-authorizer/` directory into a file named `lambda_authorizer.zip` 
+  - Create a new Lambda function which is CruddurApiGatewayLambdaAuthorizer in the console using the Node 18 runtime and upload `lambda_authorizer.zip` into the Lambda code source.
+  - Add environment variables `USER_POOL_ID` and `CLIENT_ID`
 
 
-- API-Gateway-Authorizer: API Gateway acts as a gateway or entry point for incoming requests and enables you to define routes and integrations and handle upload avatar requests. To configure the API Gateway, follow these steps:
- 
+- **API-Gateway-Authorizer**: API Gateway acts as a gateway or entry point for incoming requests and enables you to define routes and integrations and handle upload avatar requests. To configure the API Gateway, follow these steps:
   - Open the API Gateway console and select **HTTP APIs**.
   - Click on **Build**.
   - Choose **Lambda** from the **Add integration** dropdown and select the **CruddurUploadAvatar** lambda function.
@@ -451,7 +450,7 @@ npm install aws-jwt-verify --save
   - Lambda integration: `CruddurAvatarUpload`
 
 - To configure and attach the authorizer for to the `POST` route:
-  
+
   - Select **Authorization** from the left pane.
   - **Attach authorizers to routes** tab, click on `POST`
   - Go to **Manage authorizers** and click **Create**.
@@ -463,19 +462,18 @@ npm install aws-jwt-verify --save
 - Note: There should be no CORS configuration; The Lambda CORS will take care of it, I faced several issues with this.
 
  
- - Optionally set API Gateway Logs group creation: I created a log group explicitly for the API gateway to debug the presigned URL process. Follow the instructions below to create one:.
- 
- - Open the AWS Management Console.
- - Navigate to the CloudWatch service.
- - In the left navigation pane, choose "Logs".
- - Click on "Create log group".
- - Provide a unique name for the log group I intergrated my already create log which is CruddurApiGatewayLambdaAuthorizer and click on "Create".
- - Navigate to the API Gateway service and click on the gateway you just created
- - In the left navigation pane, choose "Logs/Tracing".
- - Under "Access logging" section, click on "Edit".
- - Choose the previously created CloudWatch Logs and paste the `ARN`
- - Configure the log format and the log level.
- - Click on "Save" to create the API Gateway Logs Group.
+ - **Optionally set API Gateway Logs group creation**: I created a log group explicitly for the API gateway to debug the presigned URL process. Follow the instructions below to create one:
+  - Open the AWS Management Console.
+  - Navigate to the CloudWatch service.
+  - In the left navigation pane, choose "Logs".
+  - Click on "Create log group".
+  - Provide a unique name for the log group I intergrated my already create log which is CruddurApiGatewayLambdaAuthorizer and click on "Create".
+  - Navigate to the API Gateway service and click on the gateway you just created
+  - In the left navigation pane, choose "Logs/Tracing".
+  - Under "Access logging" section, click on "Edit".
+  - Choose the previously created CloudWatch Logs and paste the `ARN`
+  - Configure the log format and the log level.
+  - Click on "Save" to create the API Gateway Logs Group.
 
 View your Cloudwatch logs => Log groups and start troubleshooting.
 
