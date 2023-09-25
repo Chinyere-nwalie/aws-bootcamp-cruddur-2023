@@ -353,6 +353,7 @@ use also the following command to see the behavior of the column
 
 Here's a reference to my [commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/955f03ca349daa848d71b89f3ce81c7f3110ef46#diff-691fec3bd590373f2413b92b1d83b2a83ddc2852d21326ac2f8b8a2f66946672)
 
+---
 
 ## Implementation Avatar Uploading
 
@@ -372,40 +373,41 @@ gem "aws-sdk-s3"
 gem "ox"
 gem "jwt"
 ```
-  - After Installing the required packages with `bundle install` Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URL
 
-img<>
+- After Installing the required packages with `bundle install` Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URLimg<>
+
   - Update `function.rb` with this code [function.rb](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/cruddur-upload-avatar/function.rb)
   - Update the `Access-Control-Allow-Origin` sections with the URL of the frontend application e.g. `"Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io"`
 
   
-- To test API Endpoint; Copy the presigned URL and test its endpoint. Start my downloading Thunder Client
+- To test API Endpoint; Copy the pre-signed URL and test its endpoint. Start my downloading Thunder Client
 
   - Installing the Thunder Client extension: This step involves installing the Thunder Client extension, which is a tool that allows you to send HTTP requests and test API endpoints directly within Visual Studio Code.
   - Opening Thunder Client and pasting the pre-signed URL: After installing the extension, you open Thunder Client and paste the pre-signed URL that was generated for the avatar upload. This URL contains the necessary authorization and authentication information.
   - Selecting the binary option and choosing the image file: In the request body, you specify that you will be uploading a binary file (the image file). This ensures that the request is configured correctly to handle binary data.
   - Setting the request method to PUT and sending the request: You set the request method to PUT, indicating to upload the image file to the specified URL. Then, you send the request to initiate the upload process.
 
-Upon successfully completing of these steps, you should receive a "200 OK" response, indicating that the HTTP request was successful.
+After successfully completing of these steps, you should receive a "200 OK" response, indicating that the HTTP request was successful.
 
 img<>
 
 
-#### CruddurUploadAvatar Lambda Console
+- CruddurUploadAvatar Lambda Console
 
   - Create a new function in the AWS Lambda called **CruddurUploadAvatar**
   - Select the appropriate runtime as **Ruby 2.7**, for the Lambda function.
   - Click **Create a new role with basic Lambda permissions** as the default execution role.
   - Create the function.
   - Don't forget to set `UPLOADS_BUCKET_NAME` as an environment variable and the Lambda permissions.
-  - Create a new policy `PresignedUrlAvatarPolicy` as seen in `aws/policies/s3-upload-avatar-presigned-url-policy.json` [in my code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/policies/s3-upload-avatar-presigned-url-policy.json), and attach this policy to the role of this Lambda
+  - Create a new policy `PresignedUrlAvatarPolicy` as seen in `aws/policies/s3-upload-avatar-presigned-url-policy.json` [in my code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/policies/s3-upload-avatar-presigned-url-policy.json) and attach this policy to the role of this Lambda
 
 
-- The presigned URL Policy
+- The pre-signed URL Policy
 
   - Create this policy and assign it to your s3, add the code from the `function.rb` file to the Lambda CruddurUploadAvatarfunction.
   - Navigate to the Lambda function's configuration and access the **Permissions** section.
   - Open the settings of the execution role associated with the Lambda function.
+  - Modify the Lambda runtime handler to from `function.handler` to `function.rb`
   - Create an inline policy to define the required permissions. Review the policy before creating it. Here;
 
 ```JSON
@@ -421,11 +423,8 @@ img<>
     ]
   }
 ```
- - Modify the Lambda runtime handler to from `function.handler` to `function.rb`
 
-### CruddurApiGatewayLambdaAuthorizer
-
-This Lambda Authorizer is responsible for authenticating and authorizing requests before they reach the Lambda function accountable for handling the upload.
+- CruddurApiGatewayLambdaAuthorizer: This Lambda Authorizer is responsible for authenticating and authorizing requests before they reach the Lambda function accountable for handling the upload.
 
   - In your gitpod create this folders `aws/lambdas/lambda-authorizer/`, create this file `index.js` to authorize API Gateway requests. Run the following command to install the required dependencies:
 ```bash
@@ -436,10 +435,7 @@ npm install aws-jwt-verify --save
  - Add environment variables `USER_POOL_ID` and `CLIENT_ID`
 
 
-#### API-Gateway-Authorizer
-API Gateway acts as a gateway or entry point for incoming requests and enables you to define routes and integrations and handle upload avatar requests.
-
-- To configure the API Gateway, follow these steps:
+- API-Gateway-Authorizer: API Gateway acts as a gateway or entry point for incoming requests and enables you to define routes and integrations and handle upload avatar requests. To configure the API Gateway, follow these steps:
  
   - Open the API Gateway console and select **HTTP APIs**.
   - Click on **Build**.
@@ -454,7 +450,7 @@ API Gateway acts as a gateway or entry point for incoming requests and enables y
   - No authorizer
   - Lambda integration: `CruddurAvatarUpload`
 
-#### To configure and attach the authorizer for to the `POST` route:
+- To configure and attach the authorizer for to the `POST` route:
   
   - Select **Authorization** from the left pane.
   - **Attach authorizers to routes** tab, click on `POST`
@@ -466,9 +462,8 @@ API Gateway acts as a gateway or entry point for incoming requests and enables y
 
 - Note: There should be no CORS configuration; The Lambda CORS will take care of it, I faced several issues with this.
 
- #### Optionally set API Gateway Logs group creation
-
-- I created a log group explicitly for the API gateway to debug the presigned URL process. Follow the instructions below to create one:.
+ 
+ - Optionally set API Gateway Logs group creation: I created a log group explicitly for the API gateway to debug the presigned URL process. Follow the instructions below to create one:.
  
  - Open the AWS Management Console.
  - Navigate to the CloudWatch service.
