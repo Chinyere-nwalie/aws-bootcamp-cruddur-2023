@@ -426,10 +426,7 @@ img<>
 
 - **CruddurApiGatewayLambdaAuthorizer**: This Lambda Authorizer is responsible for authenticating and authorizing requests before they reach the Lambda function accountable for handling the upload.
 
-  - In your gitpod create this folders `aws/lambdas/lambda-authorizer/`, create this file `index.js` to authorize API Gateway requests. Run the following command to install the required dependencies:
-```bash
-npm install aws-jwt-verify --save
-```
+  - In your gitpod create this folders `aws/lambdas/lambda-authorizer/`, create this file `index.js` to authorize API Gateway requests. Run the following command to install the required dependencies: ```bash npm install aws-jwt-verify --save```
   - Zip the contents of the `aws/lambdas/lambda-authorizer/` directory into a file named `lambda_authorizer.zip` 
   - Create a new Lambda function which is CruddurApiGatewayLambdaAuthorizer in the console using the Node 18 runtime and upload `lambda_authorizer.zip` into the Lambda code source.
   - Add environment variables `USER_POOL_ID` and `CLIENT_ID`
