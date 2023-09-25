@@ -450,7 +450,6 @@ npm install aws-jwt-verify --save
   - Lambda integration: `CruddurAvatarUpload`
 
 - To configure and attach the authorizer for to the `POST` route:
-
   - Select **Authorization** from the left pane.
   - **Attach authorizers to routes** tab, click on `POST`
   - Go to **Manage authorizers** and click **Create**.
@@ -459,21 +458,21 @@ npm install aws-jwt-verify --save
   - Click **Create** or  **Attach Authorizer**.
 
 
-- Note: There should be no CORS configuration; The Lambda CORS will take care of it, I faced several issues with this.
+Note: There should be no CORS configuration; The Lambda CORS will take care of it, I faced several issues with this.
 
  
- - **Optionally set API Gateway Logs group creation**: I created a log group explicitly for the API gateway to debug the presigned URL process. Follow the instructions below to create one:
-  - Open the AWS Management Console.
-  - Navigate to the CloudWatch service.
-  - In the left navigation pane, choose "Logs".
-  - Click on "Create log group".
-  - Provide a unique name for the log group I intergrated my already create log which is CruddurApiGatewayLambdaAuthorizer and click on "Create".
-  - Navigate to the API Gateway service and click on the gateway you just created
-  - In the left navigation pane, choose "Logs/Tracing".
-  - Under "Access logging" section, click on "Edit".
-  - Choose the previously created CloudWatch Logs and paste the `ARN`
-  - Configure the log format and the log level.
-  - Click on "Save" to create the API Gateway Logs Group.
+- **Optionally set API Gateway Logs group creation**: I created a log group explicitly for the API gateway to debug the presigned URL process. Follow the instructions below to create one
+   - Open the AWS Management Console.
+   - Navigate to the CloudWatch service.
+   - In the left navigation pane, choose "Logs".
+   - Click on "Create log group".
+   - Provide a unique name for the log group I intergrated my already create log which is CruddurApiGatewayLambdaAuthorizer and click on "Create".
+   - Navigate to the API Gateway service and click on the gateway you just created
+   - In the left navigation pane, choose "Logs/Tracing"
+   - Under "Access logging" section, click on "Edit".
+   - Choose the previously created CloudWatch Logs and paste the `ARN`
+   - Configure the log format and the log level.
+   - Click on "Save" to create the API Gateway Logs Group.
 
 View your Cloudwatch logs => Log groups and start troubleshooting.
 
