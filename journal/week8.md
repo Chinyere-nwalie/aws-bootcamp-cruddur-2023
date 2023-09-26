@@ -88,7 +88,7 @@ cd /workspace/aws-bootcamp-cruddur-2023
 mkdir thumbing-serverless-cdk
 ```
 
-- Initialise CDK Pipeline**
+- **Initialise CDK Pipeline**
 
    - Navigate to the `thumbing-serverless-cdk` folder and initialise it for typescript.
 
@@ -173,33 +173,49 @@ createS3NotifyToLambda(prefix: string, lambda: lambda.IFunction, bucket: s3.IBuc
 
    - Run the `bin/avatar/upload` [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/avatar/upload) that uploads a file `data.jpg` to the source directory that the lambda is looking at
    - Verify that the image has been uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere.xyz` S3 bucket and that it has been resized to 512x512.
+ 
+Remember to always run `cdk synth` to check for errors, if the yaml is returned go ahead and `cdk deploy`
 
+---
+**IMAGES**
 My CDK synth in my Gitpod environment
-![image](340)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(340).png)
 
-My CDK synth in my Gitpod environment
-![image](332)
+My CDK Bootstrap in my Gitpod environment
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(332).png)
 
 Cloud formation Thumbing serverles cdk stack
-![image](456)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(456).png)
 
-Cloud formationCDK Toolkit
-![image](457)
+Cloud formation CDK Toolkit
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(457).png)
 
-s3 Bucket Trigger in Lambda Function
-![image](341)
+The Thumbing serverles cdk stack Lambda Function bucket
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(427).png)
+
+I set my Env vars for the bucket in Thumbing serverles cdk stack lambda
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(423).png)
+
+Gave it Cloudwatch log permission for Monitoring & debugging in Thumbing serverles cdk stack
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(424).png)
+
+s3 Bucket Trigger in Thumbing serverles cdk stack Lambda Function
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(341).png)
+
+I gave the Thumbing serverles cdk stack Lambda Function tags
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(422).png)
 
 s3 Event put notification
-![image](344)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(344).png)
 
-My jpg file in my bucket
-![image](456)
+A view of my s3 buckets in AWS Console
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(357).png)
 
-A view of my bucket
-![image](356)
+Successfully uploaded the image in my bucket
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(376).png)
 
-
-Remember to always run `cdk synth` to check for errors, if the yaml is returned go ahead and `cdk deploy`
+A view of the image in my bucket
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(356).png)
 
 ---
 
@@ -212,6 +228,8 @@ Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 conten
   - Make sure your domain name is registered. I am using [nwaliechinyere](https://nwaliechinyere.xyz) and it is registered on [porkbun website](https://porkbun.com/)
   - A certificate in the `us-east-1` zone for `*.<your_domain_name>` is required.
   - Domain name servers are registered with Route 53. If you don't have one yet; create one via AWS Certificate Manager, and click "Create records in Route 53" after the certificate is issued.
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(440).png)
   
 - Create a distribution:
 
@@ -250,6 +268,14 @@ Remember to copy the created policy to the `assets.<your_domain_name>` bucket by
   - It will take a minute or so for the change to take effect
 
 This ensures that CloudFront will always serve the latest avatar uploaded by the user.
+
+A view of the buckets in AWS `assets.nwaliechinyere.xyz`
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(374).png)
+
+A view of the CloudFront Invalidations I created 
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(455).png)
 
 ---
 
@@ -307,10 +333,27 @@ profileLink = <DesktopNavigationLink
       handle="profile"
       active={props.active} />
 ```
+---
+**IMAGES**
+The uploaded image in my Avaters **data.jpg**
 
-This shows the @nwaliechinyere profile when logged in as Chinyere
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(453).png)
 
-<src>image!
+The uploaded image in my Avaters **banner.jpg**
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(454).png)
+
+I broke a code in my profileheading.js everything went blank
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(378).png)
+
+I was hitting errors till I opened my frontend-logs debugged and rectified it
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(380).png)
+
+Now @nwaliechinyere profile Avatar data.jpg and background banner.jpg are displaying when logged in as Chinyere
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(389).png)
 
 ---
 
@@ -320,7 +363,7 @@ Firstly, we re-modify the `gitpod.yml` file taking out the `source` for each wor
 
 When I tried to compose it wasn’t working
 
-(screenshot 393. png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(393).png)
 
 I had issues with composing up until ran in my terminal `./bin/backend/generate-env` for the backend and `./bin/frontend/generate-env` for the front end too. This will generate the env files for a proper compose-up, and it worked.
 
@@ -347,6 +390,8 @@ Import the popup.css in app.js
 ``sh
 import './components/Popup.css';
 ``sh
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(391).png)
 
 Now it needs to create an Endpoint, add the following code to **app.py**
 
@@ -418,6 +463,8 @@ def rollback_sql():
 
 **Note** The name of the file is generated with the `timestamp + add_bio_column.py`
 
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(396).png)
+
 From the **schema.sql** add a new table that creates the schema_information and stores the last successful run and the last migration file. Connect to `psql` by running **./bin/db/connect** on your terminal and inputting these codes
 
 ```sh
@@ -432,6 +479,8 @@ INSERT INTO public.schema_information (id,last_successful_run)
 VALUES (1,'0')
 ON CONFLICT (id) DO NOTHING;
 ```
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(403).png)
 
 From the **db.py**, the following lines were modified
 
@@ -474,7 +523,13 @@ use also the following command to see the behavior of the column
 \d users
 ```
 
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(400).png)
+
 Here's a reference to my [commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/955f03ca349daa848d71b89f3ce81c7f3110ef46#diff-691fec3bd590373f2413b92b1d83b2a83ddc2852d21326ac2f8b8a2f66946672)
+
+Now my profile Bio is set correctly and is displaying
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(459).png)
 
 ---
 
