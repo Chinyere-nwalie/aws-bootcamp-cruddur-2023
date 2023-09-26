@@ -174,13 +174,30 @@ createS3NotifyToLambda(prefix: string, lambda: lambda.IFunction, bucket: s3.IBuc
    - Run the `bin/avatar/upload` [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/avatar/upload) that uploads a file `data.jpg` to the source directory that the lambda is looking at
    - Verify that the image has been uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere.xyz` S3 bucket and that it has been resized to 512x512.
 
-   - Verify Original Image was uploaded
-![image]()
-Check how it looks, it should be 1920x1080
-![image]()
+My CDK synth in my Gitpod environment
+![image](340)
 
-Confirm that the lambda has placed the file in the s3 bucket
-![image]()
+My CDK synth in my Gitpod environment
+![image](332)
+
+Cloud formation Thumbing serverles cdk stack
+![image](456)
+
+Cloud formationCDK Toolkit
+![image](457)
+
+s3 Bucket Trigger in Lambda Function
+![image](341)
+
+s3 Event put notification
+![image](344)
+
+My jpg file in my bucket
+![image](456)
+
+A view of my bucket
+![image](356)
+
 
 Remember to always run `cdk synth` to check for errors, if the yaml is returned go ahead and `cdk deploy`
 
