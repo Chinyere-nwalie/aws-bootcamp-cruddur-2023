@@ -14,72 +14,178 @@
 
 AWS CDK is an open-source software development framework that enables you to define cloud infrastructure in code and provision it using AWS CloudFormation.
 
-This week, we are using CDK (Cloud Development Kit) to create S3 buckets, Lambda functions, SNS topics, etc. Allowing users to update their profiles with avatars.
+This week, we are using CDK (Cloud Development Kit) to create S3 buckets, Lambda functions, SNS topics, etc. Allowing users to update their profiles with avatars via Serverless Image Process. To do so we use the [CDK - Cloud Development Kit](https://aws.amazon.com/cdk/) to create a CDK Pipeline.
 
-First, manually create an S3 bucket named `assets.<domain_name>` (e.g `assets.nwaliechinyere.xyz`), which will be used for serving the processed images on the profile page. In this bucket, create a folder named `banners`, and then upload a `banner.jpg` into the folder.
+[CDK Pipelines](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) can automatically build, test, and deploy new versions of our pipeline. CDK Pipelines are self-updating, once we add application stages or stacks, the pipeline automatically reconfigures itself to deploy them. We will use the CDK pipeline implemented in JavaScript,that will perform the following tasks for us.
 
-Secondly, export the following env vars according to your domain name and another S3 bucket (e.g., `nwaliechinyere-cruddur-uploaded-avatars`), which will be created by CDK later for saving the original uploaded avatar images:
+
+- **Pre-requisites**
+
+  - Use the sharp package to process an uploaded image and resize it to create a thumbnail
+  - Write an AWS Lambda and Deploy the Lambda function
+  - Import an existing S3 bucket that contains the source image
+  - Create an S3 bucket that will be used to process the uploaded image
+  - Add an SNS (Simple Notification Service) code to process on the PUT function and invoke our Lambda function
+---
+
+To invoke the lambda the following changes need to be made to the application
+
+  - Implement a file upload function in the frontend
+  - The PostGres database needs to be updated to include a biography field
+  - Update SQL scripts to retrieve this information when matched to the users cognito ID
+
+- These npm global packages were installed
+
+  - [aws-cdk](https://www.npmjs.com/package/aws-cdk), [aws-cdk-lib](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html), [dotenv](https://www.npmjs.com/package/dotenv)
+  -  [sharp](https://www.npmjs.com/package/sharp), [@aws-sdk/client-s3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/)
+  -  S3 Bucket which we will upload our images to assets with the name `assets.<domainname>`
+
+### BEGIN
+
+Sharp Installation script
+
+To use the sharp package within a lambda function the `node_modules` directory of the deployment package must include binaries for the Linux x64 platform. Once the npm package has been installed we need to run the following npm command.
 
 ```sh
-export DOMAIN_NAME=nwaliechinyere.xyz
-gp env DOMAIN_NAME=nwaliechinyere.xyz
-export UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
-gp env UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
+cd /workspace/aws-bootcamp-cruddur-2023/thumbing-serverless-cdk
+npm install
+rm -rf node_modules/sharp
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc sharp
 ```
 
-In order to process uploaded images into a specific dimension, a Lambda function will be created by CDK. This function and related packages are specified in the scripts ([code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/main/aws/lambdas/process-images)) It was created by with these commands:
+This process has been automated in the following script. [sharp code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/avatar/build)
+
+[Sharp Documentation](https://sharp.pixelplumbing.com/install#aws-lambda)
+
+
+
+**CDK Pipeline Creation and Installing Global Packages**
+
+Run the following command to install the required packages
 
 ```sh
-mkdir -p aws/lambdas/process-images
-cd aws/lambdas/process-images
-touch index.js s3-image-processing.js test.js  example.json
-npm init -y
-npm install sharp @aws-sdk/client-s3
+npm i aws-cdk aws-cdk-lib dotenv -g
 ```
 
-To verify if the Lambda function we have created works, create these scripts ([code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/main/bin/avatar)) by the following commands and then upload a profile picture named `data.jpg` inside the created folder `files`:
+To automate the installation of these packages and our lambda package for our gitpod environment, we can add a task by inserting the following section in our `.gitpod.yml`
 
-```sh
-cd /workspace/aws-bootcamp-cruddur-2023
-mkdir -p bin/avatar
-cd bin/avatar
-touch build upload clear
-chmod u+x build upload clear
-mkdir files
+```yml
+  - name: cdk
+    before: |
+      npm install aws-cdk -g
+      npm install aws-cdk-lib -g
+      cd thumbing-serverless-cdk
+      npm i      
+      cp env.example .env
 ```
 
-Now we can initialize CDK and install related packages:
+- Creating a Folder for Pipeline 
+
+   - We will create and store our Pipeline in a folder called `thumbing-serverless-cdk` in the root of our repository.
 
 ```sh
 cd /workspace/aws-bootcamp-cruddur-2023
 mkdir thumbing-serverless-cdk
-cd thumbing-serverless-cdk
-touch .env.example
-npm install aws-cdk -g
-cdk init app --language typescript
-npm install dotenv
 ```
 
-Update `.env.example`  ([reference code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/thumbing-serverless-cdk/.env.example)), and run `cp .env.example .env`. Update `./bin/thumbing-serverless-cdk.ts` and `./lib/thumbing-serverless-cdk-stack.ts` 
+- Initialise CDK Pipeline**
 
-In order to let the `sharp` dependency work in Lambda, run the script:
+   - Navigate to the `thumbing-serverless-cdk` folder and initialise it for typescript.
 
 ```sh
-cd /workspace/aws-bootcamp-cruddur-2023
-./bin/avatar/build
-
-cd thumbing-serverless-cdk
+cdk init app --language typescript
 ```
 
-To create AWS CloudFormation stack `ThumbingServerlessCdkStack`:
+- Prepare and define CDK Pipeline environment
+  - Created a S3 bucket manually named `assets.nwaliechinyere.xyz` in my AWS account which will be used for serving the processed images on the profile page. In this bucket, create a folder named `banners`, and then upload a `banner.jpg` into the folder. This will be used to store avatar images, banners for the website
+  - Create the following file `.env.example`. This will be used by the lamba application to define the source and output buckets
+  - Create lambda function that will be invoked by our CDK stack in `aws\lambdas\process-images`
+  - Add the following code in the `thumbing-serverless-cdk/lib`[thumbing-serverless-cdk-stack.ts](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/thumbing-serverless-cdk/lib/thumbing-serverless-cdk-stack.ts)
+  - Dont forget to export the following env vars according to your domain name and another S3 bucket (e.g., `nwaliechinyere-cruddur-uploaded-avatars`), which will be created by CDK later for saving the original uploaded avatar images:
 
-- Run `cdk synth`: Generates a CloudFormation template for an AWS CDK app 
-- run `cdk bootstrap "aws://${AWS_ACCOUNT_ID}/${AWS_DEFAULT_REGION}"` (just once): this command creates an S3 bucket to store the deployment artifacts, DynamoDB table to store CDK toolkit metadata, and an IAM role to grant CDK permissions to your AWS account.
-- Finally run `cdk deploy`: This will package and deploy your AWS resources and you'll observe an AWS CloudFormation has been created.
+    ```sh
+    export DOMAIN_NAME=nwaliechinyere.xyz
+    gp env DOMAIN_NAME=nwaliechinyere.xyz
+    export UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
+    gp env UPLOADS_BUCKET_NAME=nwaliechinyere-cruddur-uploaded-avatars
+   ```
 
-After running `./bin/avatar/upload`, verify that the `data.jpg` has been uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere..xyz` S3 bucket.
+- Create .env.example file
+   ```sh
+  cd /workspace/aws-bootcamp-cruddur-2023/thumbing-serverless-cdk
+  touch .env.example
+  ```
+  - View my [.env.example](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/thumbing-serverless-cdk/.env.example)
+
+
+### Create Lambda Function
+
+Create the application in `aws\lambdas\process-images`
+
+```sh
+cd /workspace/aws-bootcamp-cruddur-2023/
+mkdir -p aws/lambdas/
+cd aws/lambdas/process-images
+touch index.js s3-image-processing.js test.js
+npm init -y
+npm install sharp @aws-sdk/client-s3 --save
+```
+
+View the code for the [process-images](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/main/aws/lambdas/process-images)
+
+Optionally there is also an [example.json](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/process-images/example.json) file, this can be used to test the application using AWS Lambdas test function.
+
+[Read on AWS SDK for more in-depth knowledge](https://github.com/aws/aws-sdk-js-v3#getting-started)
+
+
+- **Bootstrap environment**
+
+   - [Bootstrapping](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) is the process of provisioning resources for the AWS CDK before you can deploy AWS CDK apps into an AWS environment. (An AWS environment is a combination of an AWS account and Region).
+   - Bootstrap the application using the command. The command assumes that you have set the AWS_ACCOUNT_ID and AWS_DEFAULT_REGIONS correctly.
+
+    `cdk bootstrap "aws://$AWS_ACCOUNT_ID/$AWS_DEFAULT_REGION"`
+
+**Note**: run  (just once): this command creates an S3 bucket to store the deployment artifacts, DynamoDB table to store CDK toolkit metadata, and an IAM role to grant CDK permissions to your AWS account.
+
+-  Once you've bootstrapped, create AWS CloudFormation stack `ThumbingServerlessCdkStack`then run the following:
+  - Run `cdk synth`: Generates a CloudFormation template for an AWS CDK app
+  - `cdk deploy`: This will package and deploy your AWS resources and you'll observe an AWS CloudFormation has been created.
+  - To verify the application has been deployed successfully, run the following command `cdk ls`
+
+- Add the following in `thumbing-serverless-cdk/lib/thumbing-serverless-cdk-stack.ts` for SNS (Simple Notification Service) to process on the PUT function and invoke our Lambda function
+
+```tsx
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+
+this.createS3NotifyToLambda(folderInput, lambda, bucket);
+
+createS3NotifyToLambda(prefix: string, lambda: lambda.IFunction, bucket: s3.IBucket): void {
+  const destination = new s3n.LambdaDestination(lambda);
+  bucket.addEventNotification(
+    s3.EventType.OBJECT_CREATED_PUT,
+    destination,
+    { prefix: prefix } // folder to contain the original image
+  );
+}
+```
+
+- Test Deployed Lambda
+
+   - Run the `bin/avatar/upload` [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/avatar/upload) that uploads a file `data.jpg` to the source directory that the lambda is looking at
+   - Verify that the image has been uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere.xyz` S3 bucket and that it has been resized to 512x512.
+
+   - Verify Original Image was uploaded
+![image]()
+Check how it looks, it should be 1920x1080
+![image]()
+
+Confirm that the lambda has placed the file in the s3 bucket
+![image]()
+
+Remember to always run `cdk synth` to check for errors, if the yaml is returned go ahead and `cdk deploy`
 
 ---
+
 ## Serving avatar via CloudFront Distribution
 
 Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 content in a faster way. Also, using CloudFront to serve s3 content gives you a lot more flexibility and control. 
@@ -373,11 +479,10 @@ gem "aws-sdk-s3"
 gem "ox"
 gem "jwt"
 ```
+After Installing the required packages with `bundle install` Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URLimg<>
 
-  - After Installing the required packages with `bundle install` Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URLimg<>
-
-  - Update `function.rb` with this code [function.rb](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/cruddur-upload-avatar/function.rb)
-  - Update the `Access-Control-Allow-Origin` sections with the URL of the frontend application e.g. `"Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io"`
+- Update `function.rb` with this code [function.rb](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/cruddur-upload-avatar/function.rb)
+   - Update the `Access-Control-Allow-Origin` sections with the URL of the frontend application e.g. `"Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io"`
 
   
 - **To test API Endpoint**; Copy the pre-signed URL and test its endpoint. Start my downloading Thunder Client
@@ -402,9 +507,9 @@ img<>
   - Create a new policy `PresignedUrlAvatarPolicy` as seen in `aws/policies/s3-upload-avatar-presigned-url-policy.json` [in my code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/policies/s3-upload-avatar-presigned-url-policy.json) and attach this policy to the role of this Lambda
 
 
-- **The pre-signed URL Policy**
+- **The PresignedUrlAvatarPolicy**
 
-  - Create this policy and assign it to your s3, add the code from the `function.rb` file to the Lambda CruddurUploadAvatarfunction.
+  - Create this policy and assign it to your s3, add modified codes from the `function.rb` file in gitpod environment to the Lambda CruddurUploadAvatar function.
   - Navigate to the Lambda function's configuration and access the **Permissions** section.
   - Open the settings of the execution role associated with the Lambda function.
   - Modify the Lambda runtime handler to from `function.handler` to `function.rb`
@@ -463,12 +568,12 @@ Note: There should be no CORS configuration; The Lambda CORS will take care of i
    - Navigate to the CloudWatch service.
    - In the left navigation pane, choose "Logs".
    - Click on "Create log group".
-   - Provide a unique name for the log group I intergrated my already create log which is CruddurApiGatewayLambdaAuthorizer and click on "Create".
+   - Provide a unique name for the log group, I intergrated my already created log which is **CruddurApiGatewayLambdaAuthorizer** and click on "Create".
    - Navigate to the API Gateway service and click on the gateway you just created
-   - In the left navigation pane, choose "Logs/Tracing"
-   - Under "Access logging" section, click on "Edit".
-   - Choose the previously created CloudWatch Logs and paste the `ARN`
-   - Configure the log format and the log level.
+   - Go through the console and choose "Logging"
+   - Inside "logging" section, click on "Edit"
+   - Enable the access logging, then enter the ARN of the cloudwatch log group to send your access logs to
+   - Then select your desired log format or log level; E.g YAML
    - Click on "Save" to create the API Gateway Logs Group.
 
 View your Cloudwatch logs => Log groups and start troubleshooting.
@@ -480,11 +585,12 @@ View your Cloudwatch logs => Log groups and start troubleshooting.
 - Render and display your Avatar image in your Cruddur application by serving it directly from the CloudFront content delivery network (CDN).
 
   - I created a new file `frontend-react-js/src/components/ProfileAvatar.js` and `ProfileAvatar.css` in my frontend directory. This file will serve as the component responsible for rendering the Avatars and CSS for  customized styling of the avatar component.
-  - Incorporate the `setUser` state within the `CheckAuth` function. This will enable the functionality to set the user state and ensure seamless avatar rendering.
-  - Integrate the `ProfileAvatar` component into `frontend-react-js/src/components/ProfileInfo.js` by importing it and updating the corresponding `<ProfileAvatar>` tag. By doing so, you will seamlessly incorporate the avatar into the profile information section of your application.
-  - Add the `<ProfileAvatar>` tag to `frontend-react-js/src/components/ProfileHeading.jsx`. This will prominently display the avatar within the profile heading, creating a visually engaging user interface.
+  - In the `frontend-react-js/src/lib/CheckAuth.js` directory I added  `cognito_user` in the `setUser` to narrow down to it's user. This will enable the functionality to set the user state and ensure seamless avatar rendering.
+  - Integrate the `ProfileAvatar` component into `frontend-react-js/src/components/ProfileInfo.js` by importing it and updating the corresponding `<ProfileAvatar>` tag. This will seamlessly incorporate the avatar into the profile information section of the Cruddur application.
+  - Add the `<ProfileAvatar>` tag to `frontend-react-js/src/components/ProfileHeading.js`. This will display the avatar within the profile heading, creating a visual user interface.
   - In the `show.sql` file, modify `users.cognito_user_id` to `cognito_user_uuid`. This adjustment guarantees the proper retrieval and utilization of the `cognito_user_uuid` as part of the avatar rendering process.
   - Re-modify the CSS styles in the `frontend-react-js/src/components/ProfileHeading.css` file such as `.profile_heading`, `.bio`, `.profile-avatar`, `.banner`, `.cruds_count`, `.info`, `.info .id`, `.info .id .display_name`, and `.info .id .handle`.
+  - See it all here in my [commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/4cb532534fc819f62792648266fade8d01a35d12)
  
 ---
 
