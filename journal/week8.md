@@ -14,31 +14,29 @@
 
 AWS CDK is an open-source software development framework that enables you to define cloud infrastructure in code and provision it using AWS CloudFormation.
 
-This week, we are using CDK (Cloud Development Kit) to create S3 buckets, Lambda functions, SNS topics, etc. Allowing users to update their profiles with avatars via Serverless Image Process. To do so we use the [CDK - Cloud Development Kit](https://aws.amazon.com/cdk/) to create a CDK Pipeline.
+This week, we are using CDK (Cloud Development Kit) to create S3 buckets, Lambda functions, SNS topics, etc. This will allow users to update their profile handles with avatars via the Serverless Image Process. We do this by using the [CDK - Cloud Development Kit](https://aws.amazon.com/cdk/) to create a CDK Pipeline.
 
-[CDK Pipelines](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) can automatically build, test, and deploy new versions of our pipeline. CDK Pipelines are self-updating, once we add application stages or stacks, the pipeline automatically reconfigures itself to deploy them. We will use the CDK pipeline implemented in JavaScript,that will perform the following tasks for us.
+[CDK Pipelines](https://docs.aws.amazon.com/cdk/v2/guide/cdk_pipeline.html) can automatically build, test, and deploy new versions of our pipeline. CDK Pipelines are self-updating, once we add application stages or stacks, the pipeline automatically reconfigures itself to deploy them. We will use the CDK pipeline implemented in JavaScript, which will perform the following tasks for us.
 
 
-- **Pre-requisites**
+- **What we will do**
 
   - Use the sharp package to process an uploaded image and resize it to create a thumbnail
   - Write an AWS Lambda and Deploy the Lambda function
-  - Import an existing S3 bucket that contains the source image
-  - Create an S3 bucket that will be used to process the uploaded image
-  - Add an SNS (Simple Notification Service) code to process on the PUT function and invoke our Lambda function
----
+  - Create an s3 bucket that will contain the source image, and be used to process the uploaded image
+  - Add an SNS (Simple Notification Service) code to process the PUT function and invoke our Lambda function
 
 To invoke the lambda the following changes need to be made to the application
 
   - Implement a file upload function in the frontend
-  - The PostGres database needs to be updated to include a biography field
+  - The PostGres database needs to be updated to include a 'User Bio' field
   - Update SQL scripts to retrieve this information when matched to the users cognito ID
 
 - These npm global packages were installed
 
   - [aws-cdk](https://www.npmjs.com/package/aws-cdk), [aws-cdk-lib](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html), [dotenv](https://www.npmjs.com/package/dotenv)
   -  [sharp](https://www.npmjs.com/package/sharp), [@aws-sdk/client-s3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/)
-  -  S3 Bucket which we will upload our images to assets with the name `assets.<domainname>`
+  -  s3 Bucket which we will upload our images to assets with the name `assets.<domainname>`
 
 ### BEGIN
 
@@ -79,9 +77,9 @@ To automate the installation of these packages and our lambda package for our gi
       cp env.example .env
 ```
 
-- Creating a Folder for Pipeline 
+- Created a Folder for Pipeline 
 
-   - We will create and store our Pipeline in a folder called `thumbing-serverless-cdk` in the root of our repository.
+   - We earlier created and stored our Pipeline in a folder called `thumbing-serverless-cdk` in the root of our repository.
 
 ```sh
 cd /workspace/aws-bootcamp-cruddur-2023
@@ -97,11 +95,11 @@ cdk init app --language typescript
 ```
 
 - Prepare and define CDK Pipeline environment
-  - Created a S3 bucket manually named `assets.nwaliechinyere.xyz` in my AWS account which will be used for serving the processed images on the profile page. In this bucket, create a folder named `banners`, and then upload a `banner.jpg` into the folder. This will be used to store avatar images, banners for the website
-  - Create the following file `.env.example`. This will be used by the lamba application to define the source and output buckets
-  - Create lambda function that will be invoked by our CDK stack in `aws\lambdas\process-images`
+  - Manually created an s3 bucket named `assets.nwaliechinyere.xyz` in my AWS account which will be used for serving the processed images on the profile page. In this bucket, create a folder named `banners`, and then upload a `banner.jpg` into the folder. This will be used to store avatar images, banners for the website
+  - Create the following file `.env.example`. This will be used by the lambda application to define the source and output buckets
+  - Create a lambda function that will be invoked by our CDK stack in `aws\lambdas\process-images`
   - Add the following code in the `thumbing-serverless-cdk/lib`[thumbing-serverless-cdk-stack.ts](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/thumbing-serverless-cdk/lib/thumbing-serverless-cdk-stack.ts)
-  - Dont forget to export the following env vars according to your domain name and another S3 bucket (e.g., `nwaliechinyere-cruddur-uploaded-avatars`), which will be created by CDK later for saving the original uploaded avatar images:
+  - Another s3 bucket was created it will be used by CDK later for saving the original uploaded avatar images: Do not forget to export the following env vars according to your domain name e.g;
 
     ```sh
     export DOMAIN_NAME=nwaliechinyere.xyz
@@ -141,21 +139,21 @@ Optionally there is also an [example.json](https://github.com/Chinyere-nwalie/aw
 - **Bootstrap environment**
 
    - [Bootstrapping](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) is the process of provisioning resources for the AWS CDK before you can deploy AWS CDK apps into an AWS environment. (An AWS environment is a combination of an AWS account and Region).
-   - Bootstrap the application using the command. The command assumes that you have set the AWS_ACCOUNT_ID and AWS_DEFAULT_REGIONS correctly.
+   - Bootstrap the application using the command: The command assumes that you have set the AWS_ACCOUNT_ID and AWS_DEFAULT_REGIONS correctly.
 
     `cdk bootstrap "aws://$AWS_ACCOUNT_ID/$AWS_DEFAULT_REGION"`
 
-**Note**: run  (just once): this command creates an S3 bucket to store the deployment artifacts, DynamoDB table to store CDK toolkit metadata, and an IAM role to grant CDK permissions to your AWS account.
+**Note**: Run (just once): the above command, it creates an S3 bucket to store the deployment artifacts, a DynamoDB table to store CDK toolkit metadata, and an IAM role to grant CDK permissions to your AWS account.
 
 -  Once you've bootstrapped, create AWS CloudFormation stack `ThumbingServerlessCdkStack`then run the following:
   - Run `cdk synth`: Generates a CloudFormation template for an AWS CDK app
   - `cdk deploy`: This will package and deploy your AWS resources and you'll observe an AWS CloudFormation has been created.
   - To verify the application has been deployed successfully, run the following command `cdk ls`
 
-- Add the following in `thumbing-serverless-cdk/lib/thumbing-serverless-cdk-stack.ts` for SNS (Simple Notification Service) to process on the PUT function and invoke our Lambda function
+- Add the following in `thumbing-serverless-cdk/lib/thumbing-serverless-cdk-stack.ts` for SNS (Simple Notification Service) to process the PUT function and invoke our Lambda function
 
 ```tsx
-import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import * as s3 from 'aws-cdk-lib/aws-s3-notifications';
 
 this.createS3NotifyToLambda(folderInput, lambda, bucket);
 
@@ -171,12 +169,13 @@ createS3NotifyToLambda(prefix: string, lambda: lambda.IFunction, bucket: s3.IBuc
 
 - Test Deployed Lambda
 
-   - Run the `bin/avatar/upload` [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/avatar/upload) that uploads a file `data.jpg` to the source directory that the lambda is looking at
-   - Verify that the image has been uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` S3 bucket, which triggers `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere.xyz` S3 bucket and that it has been resized to 512x512.
+   - Run the `bin/avatar/upload` Here's the content [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/avatar/upload) This uploads a file `data.jpg` to the source directory that the lambda is looking at
+   - Verify that the image has been uploaded into the `nwaliechinyere-cruddur-uploaded-avatars` s3 bucket, which triggers the `ThumbLambda` function to process the image, and then saves the processed image into the `avatars` folder in the `assets.nwaliechinyere.xyz` s3 bucket and that it has been resized to 512x512.
  
 Remember to always run `cdk synth` to check for errors, if the yaml is returned go ahead and `cdk deploy`
 
 ---
+
 **IMAGES**
 
 CDK synth in my Gitpod environment
@@ -212,7 +211,7 @@ s3 Event put notification
 s3  buckets in AWS Console
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(357).png)
 
-I successfully created a folder called Banners and uploaded an image banners in my bucket as the background picture for my cruddur profile
+I successfully created a folder called Banners and uploaded an image 'banner' in my bucket as the background picture for my cruddur application profile
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(376).png)
 
 Image in my bucket
@@ -222,7 +221,7 @@ Image in my bucket
 
 ## Serving avatar via CloudFront Distribution
 
-Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 content in a faster way. Also, using CloudFront to serve s3 content gives you a lot more flexibility and control. 
+Amazon CloudFront is designed to work seamlessly with s3 to serve your S3 content in a faster way. Also, using CloudFront to serve s3 content gives you a lot more flexibility and control. 
 
 - To create a CloudFront distribution;
   
@@ -250,7 +249,7 @@ Amazon CloudFront is designed to work seamlessly with S3 to serve your S3 conten
 | Custom SSL certificate | Certificate created for `nwaliechinyere.xyz` |
 
 
-Remember to copy the created policy to the `assets.<your_domain_name>` bucket by editing its bucket policy.
+Remember to create a bucket policy for  `assets.<your_domain_name>` 
 
 - In order to visit `https://assets.<your_domain_name>/avatars/data.jpg` to see the processed image, we need to create a record via Route 53:
    - Go to `Route 53`
@@ -263,7 +262,7 @@ Remember to copy the created policy to the `assets.<your_domain_name>` bucket by
 
 - Note: When uploading a new version of an image, CloudFront Edge caches the old avatars. Until the old one expires, you will not immediately see the new avatar after updating the profile and it will keep displaying the old version of the file. To stop this from happening, we need to enable [invalidation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html)
 
-  - In `Cloudfront` select the Cloudfront distribution we created
+  - In `Cloudfront` select the CloudFront distribution we created
   - Under the Invalidations tab, click Create
   - Add object path `/*` and click `Create Invalidation`
   - It will take a minute or so for the change to take effect
@@ -274,7 +273,7 @@ A view of the objects in AWS `assets.nwaliechinyere.xyz`
 
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(374).png)
 
-the CloudFront Invalidations I created 
+The CloudFront Invalidations I created 
 
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(455).png)
 
@@ -294,7 +293,6 @@ For the Frontend, I updated & created the following scripts;
 
 - `frontend-react-js/src/components/ActivityFeed.js`
 - `frontend-react-js/src/components/CrudButton.js`
-- `frontend-react-js/src/components/DesktopNavigation.js` to change the hardcoded URL into yours
 - `frontend-react-js/src/components/EditProfileButton.css`
 - `frontend-react-js/src/components/EditProfileButton.js`
 - `frontend-react-js/src/components/Popup.css`
@@ -342,7 +340,7 @@ profileLink = <DesktopNavigationLink
       active={props.active} />
 ```
 
-In the Boot-camp forum, it was mentioned that since the user had already passed, we should be able to access it. The above code was replaced with this;
+In the Boot-camp forum, it was mentioned that since the user had already been passed which is me `nwaliechinyere`, we should be able to access it. The above code was replaced with this;
 
 ```sh
 profileLink = <DesktopNavigationLink 
@@ -351,6 +349,7 @@ profileLink = <DesktopNavigationLink
       handle="profile"
       active={props.active} />
 ```
+Here in `frontend-react-js/src/components/DesktopNavigation.js` to change the hardcoded URL into yours
 
 Errors are all rectified, my handle is showing as @nwaliechinyere, profile Avatar data.jpg and background banner.jpg are displaying when logged in as Chinyere.
 
@@ -390,9 +389,7 @@ For the Frontend, update, edit & create the following scripts
 Import the popup.css in app.js
 ``sh
 import './components/Popup.css';
-`` and also added 'Bio' into our application where the user can add a short intro about them
-
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(391).png)
+`` 
 
 Now it needs to create an Endpoint, add the following code to **app.py**
 
@@ -426,6 +423,9 @@ and add the import update_profile to the **app.py**
 from services.update_profile import *
 
 ```
+After adding 'Display name' and  'Bio' click into our application where the user can add a short intro about themselves here's a picture
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(391).png)
 
 For the Bin & Backend directory create these files;
 
@@ -436,11 +436,13 @@ For the Bin & Backend directory create these files;
 - `bin/generate/migration`: Since there is no biofield in the DB, You need to create a migration script.
 
 Note: we can enforce that the name assigned is lowercase by changing the line with this
+
 ```sh
 name = sys.argv[1].lower()
 ```
 
 Inside the folder **backend-flask/db/migration** generate a migration file inside the `backend-flask/db/migrations/` directory using the following command:
+
 ```bash
 ./bin/generate/migration add_bio_column
 ```
@@ -481,9 +483,29 @@ VALUES (1,'0')
 ON CONFLICT (id) DO NOTHING;
 ```
 
+And if Table exits and is not going accurately run this;
+```sh
+drop table schema_information;
+DROP TABLE
+```
+and create a table again
+
+```sh
+CREATE TABLE IF NOT EXISTS public.schema_information (
+  id integer UNIQUE,
+  last_successful_run text
+);
+```
+and launch the following query again
+```sh
+INSERT INTO public.schema_information (id,last_successful_run)
+VALUES (1,'0')
+ON CONFLICT (id) DO NOTHING;
+```
+
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(403).png)
 
-From the **db.py**, the following lines were modified
+From the **db.py**, the following lines were modified adding **verbose=True): AND   if verbose:**
 
 ```sh
 def query_commit(self,sql,params={},verbose=True):
@@ -510,6 +532,7 @@ def query_value(self,sql,params={},verbose=True):
 PS: To test the Migrate script and Rollback script, you need to update and manipulate the table schema information and the user.
 
 this query updates the value of the last successful run to 0
+
 ```sh
  update schema_information set last_successful_run = 0;
  ```
@@ -519,7 +542,7 @@ this query removes the column bio from the table users
 ALTER TABLE public.users DROP COLUMN bio;
 ```
 
-use also the following command to see the behavior of the column
+Use the following command to see the output of the public users column
 ```sh
 \d users
 ```
@@ -552,22 +575,26 @@ gem "aws-sdk-s3"
 gem "ox"
 gem "jwt"
 ```
-After Installing the required packages with `bundle install` Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URLimg<>
 
-- Update `function.rb` with this code [function.rb](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/cruddur-upload-avatar/function.rb)
-   - Update the `Access-Control-Allow-Origin` sections with the URL of the frontend application e.g. `"Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io"`
-
-  
-- **To test API Endpoint**; Copy the pre-signed URL and test its endpoint. Start my downloading Thunder Client
+- **To test API Endpoint**; Copy the pre-signed URL and test its endpoint. Start by downloading Thunder Client
 
   - Installing the Thunder Client extension: This step involves installing the Thunder Client extension, which is a tool that allows you to send HTTP requests and test API endpoints directly within Visual Studio Code.
   - Opening Thunder Client and pasting the pre-signed URL: After installing the extension, you open Thunder Client and paste the pre-signed URL that was generated for the avatar upload. This URL contains the necessary authorization and authentication information.
   - Selecting the binary option and choosing the image file: In the request body, you specify that you will be uploading a binary file (the image file). This ensures that the request is configured correctly to handle binary data.
   - Setting the request method to PUT and sending the request: You set the request method to PUT, indicating to upload the image file to the specified URL. Then, you send the request to initiate the upload process.
 
-After successfully completing of these steps, you should receive a "200 OK" response, indicating that the HTTP request was successful.
+After Installing the required packages with `bundle install` and Installing Thuderclient, Verify that the lambda function works by running `bundle exec ruby function.rb`. This should return a pre-signed URL
 
-img<>
+After successfully completing these steps, you should receive a "200 OK" response, indicating that the HTTP request was successful.
+
+ThunderClient generated Presigned URL Errors for GET
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(464).png)
+
+ThunderClient generated Presigned URL Errors for PUT
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(465).png)
+
+- Update `function.rb` with this code [function.rb](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/cruddur-upload-avatar/function.rb)
+   - Update the `Access-Control-Allow-Origin` sections with the URL of the frontend application e.g. `"Access-Control-Allow-Origin": "https://3000-chinyerenwa-awsbootcamp-88ficdh3ade.ws-eu104.gitpod.io"`
 
 
 - **CruddurUploadAvatar Lambda Console**
@@ -576,7 +603,7 @@ img<>
   - Select the appropriate runtime as **Ruby 2.7**, for the Lambda function.
   - Click **Create a new role with basic Lambda permissions** as the default execution role.
   - Create the function.
-  - Don't forget to set `UPLOADS_BUCKET_NAME` as an environment variable and the Lambda permissions.
+  - Don't forget to set `UPLOADS_BUCKET_NAME` as an environment variable and give the Lambda permissions.
   - Create a new policy `PresignedUrlAvatarPolicy` as seen in `aws/policies/s3-upload-avatar-presigned-url-policy.json` [in my code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/policies/s3-upload-avatar-presigned-url-policy.json) and attach this policy to the role of this Lambda
 
 
@@ -585,7 +612,7 @@ img<>
   - Create this policy and assign it to your s3, add modified codes from the `function.rb` file in gitpod environment to the Lambda CruddurUploadAvatar function.
   - Navigate to the Lambda function's configuration and access the **Permissions** section.
   - Open the settings of the execution role associated with the Lambda function.
-  - Modify the Lambda runtime handler to from `function.handler` to `function.rb`
+  - Modify the Lambda runtime handler from `function.handler` to `function.rb`
   - Create an inline policy to define the required permissions. Review the policy before creating it. Here;
 
 ```JSON
@@ -604,9 +631,9 @@ img<>
 
 - **CruddurApiGatewayLambdaAuthorizer**: This Lambda Authorizer is responsible for authenticating and authorizing requests before they reach the Lambda function accountable for handling the upload.
 
-  - In your gitpod create this folders `aws/lambdas/lambda-authorizer/`, create this file `index.js` to authorize API Gateway requests. Run the following command to install the required dependencies: ```bash npm install aws-jwt-verify --save```
+  - In your gitpod environment create this folders `aws/lambdas/lambda-authorizer/`, create this file `index.js` to authorize API Gateway requests. Run the following command to install the required dependencies: ```bash npm install aws-jwt-verify --save```
   - Zip the contents of the `aws/lambdas/lambda-authorizer/` directory into a file named `lambda_authorizer.zip` 
-  - Create a new Lambda function which is CruddurApiGatewayLambdaAuthorizer in the console using the Node 18 runtime and upload `lambda_authorizer.zip` into the Lambda code source.
+  - Create a new Lambda function which is `CruddurApiGatewayLambdaAuthorizer` in the AWS console using the Node 18 runtime and upload `lambda_authorizer.zip` into the Lambda code source.
   - Add environment variables `USER_POOL_ID` and `CLIENT_ID`
 
 
@@ -624,7 +651,7 @@ img<>
   - No authorizer
   - Lambda integration: `CruddurAvatarUpload`
 
-- To configure and attach the authorizer for to the `POST` route:
+- To configure and attach the authorizer to the `POST` route:
   - Select **Authorization** from the left pane.
   - **Attach authorizers to routes** tab, click on `POST`
   - Go to **Manage authorizers** and click **Create**.
@@ -633,120 +660,114 @@ img<>
   - Click **Create** or  **Attach Authorizer**.
 
 
-Note: There should be no CORS configuration; The Lambda CORS will take care of it, I faced several issues with this.
+Note: There should be no CORS configuration; The Lambda CORS will take care of it, I faced several issues with this. See Below for the issues I faced;
 
- 
+When I clicked Inspect on my Application webpage it wasn't showing, nor returning any errors and my application still wasn't working, I cleared CORS as a step to curb this issue
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(496).png)
+
+Cleared all CORS for Apigateway
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(485).png)
+
+The inspect page still doesn't work, I always have to click on the websocket gitpod link in my inspect console to further troubleshoot, Before I cleared CORS, I had this issue for a long time, till I cleared CORS, stopped, and started my environment.
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(506).png)
+
+Now my inspect page is showing but my presigned url keeps showing undefined in my console
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(502).png)
+
+
 - **Optionally set API Gateway Logs group creation**: I created a log group explicitly for the API gateway to debug the presigned URL process. Follow the instructions below to create one
    - Open the AWS Management Console.
    - Navigate to the CloudWatch service.
    - In the left navigation pane, choose "Logs".
    - Click on "Create log group".
-   - Provide a unique name for the log group, I intergrated my already created log which is **CruddurApiGatewayLambdaAuthorizer** and click on "Create".
+   - Provide a unique name for the log group, I integrated my already created log which is **CruddurApiGatewayLambdaAuthorizer**, and clicked on "Create".
    - Navigate to the API Gateway service and click on the gateway you just created
    - Go through the console and choose "Logging"
-   - Inside "logging" section, click on "Edit"
-   - Enable the access logging, then enter the ARN of the cloudwatch log group to send your access logs to
-   - Then select your desired log format or log level; E.g YAML
+   - Inside the "logging" section, click on "Edit"
+   - Enable the access logging, then enter the ARN of the cloud watch log group to send your access logs to
+   - Then select your desired log format or log level; e.g. YAML
    - Click on "Save" to create the API Gateway Logs Group.
 
 View your Cloudwatch logs => Log groups and start troubleshooting.
 
 CruddurAvatarUpload Lambdas Function
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(460).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(460).png)
 
 Presigned URL Policy for CruddurAvatarUpload
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(469).png)
-
-ThunderClient generated Presigned URL Errors for GET
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(464).png)
-
-ThunderClient generated Presigned URL Errors for PUT
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(465).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(469).png)
 
 Code Test returned 200 successful
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(473).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(473).png)
 
 Apigateway
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(474).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(474).png)
 
 Authorization for Avatars in Apigateway
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(477).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(477).png)
 
 Cruddur-Api-Gateway-Lambdas-Authorizer Function
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(480).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(480).png)
 
 Added Upload Avatar and chose file in the application profile Component
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(490).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(490).png)
 
 Integration for Avatars in Apigateway
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(484).png)
-
-Cleared all CORS for Apigateway
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(485).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(484).png)
 
 Apigatway Custom domain for Cruddur Application
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(491).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(491).png)
 
 Properties of the object in nwaliechinyere.xyz bucket
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(493).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(493).png)
 
 Set CORS for nwaliechinyere.xyz bucket
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(494).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(494).png)
 
-When I clicked Inspect on my Application webpage it wasn't showing  returning any errors but my application wasn't working, I cleared CORS as a step to curb this issue
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(496).png)
-
-The inspect page still doesn't work, I always have to click on the websocket gitpod link in my inspect console to further troubleshoot, Before I cleared CORS, I had this issue for a long time, till I cleared CORS, stop and started my environment.
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(506).png)
-
-Now my inspect page is showing but my presigned url keeps showing undefined in my console
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(502).png)
-
-In my networks tab, my Presigned URL is showing undefined
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(503).png)
+In my networks tab, my presigned URL is showing undefined
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(503).png)
 
 Executed `irb` in my terminal to check the ruby function
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(505).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(505).png)
 
 Installing ruby-jwt
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(508).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(508).png)
 
 JWT Successfully Installed
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(510).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(510).png)
 
 Adding jwt layer in my CruddurAvatarUpload
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(511).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(511).png)
 
 Added JWT
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(512).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(512).png)
 
-My CruddurApiGatewayLambdaAuthorizer watch logs wasn't displaying, I fixed this issue by entirely stopping my environment, log out from AWS and starting over again
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(513).png)
+My CruddurApiGatewayLambdaAuthorizer watch logs weren't displaying, I fixed this issue by entirely stopping my environment, logging out from AWS, and starting over again
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(513).png)
 
 ERRORS;
 
 My pre-signed URL wasn't displaying still, I fixed this issue by fixing these lines of [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/e07ba5206b426cfe1f8ec45a95ac764f82ae0433)
 
 - In the Function.rb part it means that;
-  - decoded_token = JWT.decode token, nil, false; This line decodes a JWT using the JWT.decode function, token: This means the JWT that you want to decode, nil: This means no key will be used to verify the signature, the token will be decoded but not verified for authenticity.
-  - cognito_user_uuid = decoded_token[0]['sub']; After the token has been decoded, the code extracts the value of the 'sub' claim from the JWT, This 'sub' means the subject of the JWT, which is often used to identify the user associated with the token.
+  - `decoded_token = JWT.decode token, nil, false;` This line decodes a JWT using the JWT.decode function, `token:` This means the JWT that you want to decode, `nil:` This means no key will be used to verify the signature, the token will be decoded but not verified for authenticity.
+  - `cognito_user_uuid = decoded_token[0]['sub'];` After the token has been decoded, the code extracts the value of the 'sub' claim from the JWT, This `'sub'` means the subject of the JWT, which is often used to identify the user associated with the token.
 
 - In the index.js part it means that;
-  - const jwt = event.headers.authorization; This line means to retrieve the value of the 'authorization' header from the application HTTP event object. Header contains an authentication token, in JSON Web Token (JWT) format
-  - var token = jwt.substring(7, jwt.length); This line extracts a portion of the jwt string, starting from the 7th character to the end of the string, By using substring(7), this line effectively removes the "Bearer " prefix, leaving only the actual token.
-  - Then console.log(token); prints the extracted token to the console for debugging or logging purposes.
+  - `const jwt = event.headers.authorization;` This line means to retrieve the value of the 'authorization' header from the application HTTP event object. Header contains an authentication token, in JSON Web Token (JWT) format
+  - `var token = jwt.substring(7, jwt.length);` This line extracts a portion of the jwt string, starting from the 7th character to the end of the string, By using substring(7), this line effectively removes the "Bearer " prefix, leaving only the actual token.
+  - Then `console.log(token);` prints the extracted token to the console for debugging or logging purposes.
 
 Now everything is working fine in my Inspect page network tab
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(518).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(518).png)
 
 Now everything is working fine in my Inspect page console tab
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(519).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(519).png)
 
 CruddurAvatarUpload watch logs
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(522).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(522).png)
 
 CruddurApi Lambdas Authorizer watch logs
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(523).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(523).png)
 
 ---
 
@@ -754,15 +775,15 @@ CruddurApi Lambdas Authorizer watch logs
 
 - Render and display your Avatar image in your Cruddur application by serving it directly from the CloudFront content delivery network (CDN).
 
-  - I created a new file `frontend-react-js/src/components/ProfileAvatar.js` and `ProfileAvatar.css` in my frontend directory. This file will serve as the component responsible for rendering the Avatars and CSS for  customized styling of the avatar component.
-  - In the `frontend-react-js/src/lib/CheckAuth.js` directory I added  `cognito_user` in the `setUser` to narrow down to it's user. This will enable the functionality to set the user state and ensure seamless avatar rendering.
+  - I created a new file `frontend-react-js/src/components/ProfileAvatar.js` and `ProfileAvatar.css` in my frontend directory. This file will serve as the component responsible for rendering the Avatars and CSS for customized styling of the avatar component.
+  - In the `frontend-react-js/src/lib/CheckAuth.js` directory I added  `cognito_user` in the `setUser` to narrow it down to its user. This will enable the functionality to set the user state and ensure seamless avatar rendering.
   - Integrate the `ProfileAvatar` component into `frontend-react-js/src/components/ProfileInfo.js` by importing it and updating the corresponding `<ProfileAvatar>` tag. This will seamlessly incorporate the avatar into the profile information section of the Cruddur application.
   - Add the `<ProfileAvatar>` tag to `frontend-react-js/src/components/ProfileHeading.js`. This will display the avatar within the profile heading, creating a visual user interface.
   - In the `show.sql` file, modify `users.cognito_user_id` to `cognito_user_uuid`. This adjustment guarantees the proper retrieval and utilization of the `cognito_user_uuid` as part of the avatar rendering process.
   - Re-modify the CSS styles in the `frontend-react-js/src/components/ProfileHeading.css` file such as `.profile_heading`, `.bio`, `.profile-avatar`, `.banner`, `.cruds_count`, `.info`, `.info .id`, `.info .id .display_name`, and `.info .id .handle`.
  
 Now I have successfully changed my profile Avatar to another picture
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(524).png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(524).png)
 
 
   - See it all here in my [commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/4cb532534fc819f62792648266fade8d01a35d12)
