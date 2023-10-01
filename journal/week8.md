@@ -214,8 +214,11 @@ s3  buckets in AWS Console
 I successfully created a folder called Banners and uploaded an image 'banner' in my bucket as the background picture for my cruddur application profile
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(376).png)
 
-Image in my bucket
+In my bucket, the Object in my Avatar data.jpg for profile pic
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(356).png)
+
+In my bucket, the Object in my Banners banner.jpg for background pic
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Background%20picture%20star%20trek.jpeg)
 
 ---
 
@@ -702,8 +705,8 @@ Code Test returned 200 successful
 Apigateway
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(474).png)
 
-Authorization for Avatars in Apigateway
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(477).png)
+Authorization for Avatars and {proxy+} in Apigateway
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(526).png)
 
 Cruddur-Api-Gateway-Lambdas-Authorizer Function
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(480).png)
@@ -711,8 +714,8 @@ Cruddur-Api-Gateway-Lambdas-Authorizer Function
 Added Upload Avatar and chose file in the application profile Component
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(490).png)
 
-Integration for Avatars in Apigateway
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(484).png)
+Integration for Avatars and {proxy+} in Apigateway
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(525).png)
 
 Apigatway Custom domain for Cruddur Application
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(491).png)
