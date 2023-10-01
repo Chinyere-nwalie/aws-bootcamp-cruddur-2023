@@ -178,43 +178,44 @@ Remember to always run `cdk synth` to check for errors, if the yaml is returned 
 
 ---
 **IMAGES**
-My CDK synth in my Gitpod environment
+
+CDK synth in my Gitpod environment
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(340).png)
 
-My CDK Bootstrap in my Gitpod environment
+CDK Bootstrap in my Gitpod environment
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(332).png)
 
-Cloud formation Thumbing serverles cdk stack
+Cloud formation Thumbing serverless CDK stack
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(456).png)
 
 Cloud formation CDK Toolkit
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(457).png)
 
-The Thumbing serverles cdk stack Lambda Function bucket
+The Thumbing serverless CDK stack Lambda Function bucket
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(427).png)
 
-I set my Env vars for the bucket in Thumbing serverles cdk stack lambda
+I set Env vars for the bucket in Thumbing serverless CDK stack lambda
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(423).png)
 
-Gave it Cloudwatch log permission for Monitoring & debugging in Thumbing serverles cdk stack
+I gave it Cloudwatch log permission for Monitoring & debugging in the Thumbing serverless CDK stack
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(424).png)
 
 s3 Bucket Trigger in Thumbing serverles cdk stack Lambda Function
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(341).png)
 
-I gave the Thumbing serverles cdk stack Lambda Function tags
+I gave the Thumbing serverless CDK stack Lambda Function tags
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(422).png)
 
 s3 Event put notification
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(344).png)
 
-A view of my s3 buckets in AWS Console
+s3  buckets in AWS Console
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(357).png)
 
-Successfully uploaded the image in my bucket
+I successfully created a folder called Banners and uploaded an image banners in my bucket as the background picture for my cruddur profile
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(376).png)
 
-A view of the image in my bucket
+Image in my bucket
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(356).png)
 
 ---
@@ -269,11 +270,11 @@ Remember to copy the created policy to the `assets.<your_domain_name>` bucket by
 
 This ensures that CloudFront will always serve the latest avatar uploaded by the user.
 
-A view of the buckets in AWS `assets.nwaliechinyere.xyz`
+A view of the objects in AWS `assets.nwaliechinyere.xyz`
 
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(374).png)
 
-A view of the CloudFront Invalidations I created 
+the CloudFront Invalidations I created 
 
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(455).png)
 
@@ -310,9 +311,26 @@ For the Frontend, I updated & created the following scripts;
 - `frontend-react-js/src/App.js`
 - `frontend-react-js/jsconfig.json`
 
+
+Content of the uploaded file in my Avatars folder called **data.jpg**
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(453).png)
+
+Content of the uploaded file in my Banners folder called **banner.jpg**
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(454).png)
+
+While working on the user profile, I broke a code in my profileheading.js and everything went blank
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(378).png)
+
+I kept on hitting errors till I opened my frontend-logs debugged and rectified it
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(380).png)
+
 **Passing User-handle to profile**
 
-This makes the user profile handle unique by removing @andrewbrown as a hardcoded URL.
+This makes the user profile handle unique by removing @andrewbrown as a hardcoded URL and putting the specific user handle.
 
 In DesktopNavigation.js the following is hardcoded
 
@@ -333,25 +351,8 @@ profileLink = <DesktopNavigationLink
       handle="profile"
       active={props.active} />
 ```
----
-**IMAGES**
-The uploaded image in my Avaters **data.jpg**
 
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(453).png)
-
-The uploaded image in my Avaters **banner.jpg**
-
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(454).png)
-
-I broke a code in my profileheading.js everything went blank
-
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(378).png)
-
-I was hitting errors till I opened my frontend-logs debugged and rectified it
-
-![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(380).png)
-
-Now @nwaliechinyere profile Avatar data.jpg and background banner.jpg are displaying when logged in as Chinyere
+Errors are all rectified, my handle is showing as @nwaliechinyere, profile Avatar data.jpg and background banner.jpg are displaying when logged in as Chinyere.
 
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(389).png)
 
@@ -389,7 +390,7 @@ For the Frontend, update, edit & create the following scripts
 Import the popup.css in app.js
 ``sh
 import './components/Popup.css';
-``sh
+`` and also added 'Bio' into our application where the user can add a short intro about them
 
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(391).png)
 
@@ -650,6 +651,106 @@ Note: There should be no CORS configuration; The Lambda CORS will take care of i
 
 View your Cloudwatch logs => Log groups and start troubleshooting.
 
+CruddurAvatarUpload Lambdas Function
+![image](460)
+
+Presigned URL Policy for CruddurAvatarUpload
+![image](469)
+
+ThunderClient generated Presigned URL Errors for GET
+![image](464)
+
+ThunderClient generated Presigned URL Errors for PUT
+![image](465)
+
+Code Test returned 200 successful
+![image](473)
+
+Apigateway
+![image](474)
+
+Authorization for Avatars in Apigateway
+![image](477)
+
+Cruddur-Api-Gateway-Lambdas-Authorizer Function
+![image](480)
+
+Added Upload Avatar in the application profile Component
+![image](483)
+
+Integration for Avatars in Apigateway
+![image](484)
+
+Cleared all CORS for Apigateway
+![image](485)
+
+Apigatway Custom domain for Cruddur Application
+![image](491)
+
+Properties of the object in nwaliechinyere.xyz bucket
+![image](493)
+
+Set CORS for nwaliechinyere.xyz bucket
+![image](494)
+
+When I clicked Inspect on my Application webpage it wasn't showing till I unset CORS
+![image](496)
+
+when I try to inspect my page, it doesn't work till I click o the websocket gitpod link in my inspect console, I had this issue for long till after I stop and started my workspace.
+![image](507)
+
+Now my inspect page is showing but my presigned url keeps showing undefined in my console
+![image](502)
+
+In my networks tab, my Presigned URL is showing undefined
+![image](503)
+
+Executed `irb` in my terminal to check the ruby function
+![image](505)
+
+Installing ruby-jwt
+![image](508)
+
+JWT Successfully Installed
+![image](510)
+
+Adding jwt layer in my CruddurAvatarUpload
+![image](511)
+
+Added JWT
+![image](512)
+
+My CruddurApiGatewayLambdaAuthorizer watch logs wasn't displaying, I fixed this issue by entirely stopping my environment, log out from AWS and starting over again
+![image](513)
+
+ERRORS;
+
+My pre-signed URL wasn't displaying still, I fixed this issue by fixing these lines of [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/e07ba5206b426cfe1f8ec45a95ac764f82ae0433)
+
+- In the Function.rb part it means that;
+  - decoded_token = JWT.decode token, nil, false; This line decodes a JWT using the JWT.decode function, token: This means the JWT that you want to decode, nil: This means no key will be used to verify the signature, the token will be decoded but not verified for authenticity.
+  - cognito_user_uuid = decoded_token[0]['sub']; After the token has been decoded, the code extracts the value of the 'sub' claim from the JWT, This 'sub' means the subject of the JWT, which is often used to identify the user associated with the token.
+
+- In the index.js part it means that;
+  - const jwt = event.headers.authorization; This line means to retrieve the value of the 'authorization' header from the application HTTP event object. Header contains an authentication token, in JSON Web Token (JWT) format
+  - var token = jwt.substring(7, jwt.length); This line extracts a portion of the jwt string, starting from the 7th character to the end of the string, By using substring(7), this line effectively removes the "Bearer " prefix, leaving only the actual token.
+  - Then console.log(token); prints the extracted token to the console for debugging or logging purposes.
+
+Now everything is working fine in my Inspect page network tab
+![image](518)
+
+Now everything is working fine in my Inspect page console tab
+![image](519)
+
+CruddurAvatarUpload watch logs
+![image](522)
+
+CruddurApi Lambdas Authorizer watch logs
+![image](523)
+
+
+
+
 ---
 
 ## Rendering Avatar using Cloudfront
@@ -662,6 +763,9 @@ View your Cloudwatch logs => Log groups and start troubleshooting.
   - Add the `<ProfileAvatar>` tag to `frontend-react-js/src/components/ProfileHeading.js`. This will display the avatar within the profile heading, creating a visual user interface.
   - In the `show.sql` file, modify `users.cognito_user_id` to `cognito_user_uuid`. This adjustment guarantees the proper retrieval and utilization of the `cognito_user_uuid` as part of the avatar rendering process.
   - Re-modify the CSS styles in the `frontend-react-js/src/components/ProfileHeading.css` file such as `.profile_heading`, `.bio`, `.profile-avatar`, `.banner`, `.cruds_count`, `.info`, `.info .id`, `.info .id .display_name`, and `.info .id .handle`.
+ 
+Now I have successfully changed my profile Avatar to another picture
+
   - See it all here in my [commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/4cb532534fc819f62792648266fade8d01a35d12)
  
 ---
