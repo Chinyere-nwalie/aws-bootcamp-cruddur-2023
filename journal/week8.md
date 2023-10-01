@@ -534,7 +534,7 @@ Now my profile Bio is set correctly and is displaying
 
 ---
 
-## Implementation Avatar Uploading
+## Implementation Of Avatar Uploading
 
 We require a pre-signed URL that grants temporary access to perform the upload operations on our s3 bucket. This is a secure way to authorize the upload operation without compromising the overall system's security.
 
@@ -652,76 +652,76 @@ Note: There should be no CORS configuration; The Lambda CORS will take care of i
 View your Cloudwatch logs => Log groups and start troubleshooting.
 
 CruddurAvatarUpload Lambdas Function
-![image](460)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(460).png)
 
 Presigned URL Policy for CruddurAvatarUpload
-![image](469)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(469).png)
 
 ThunderClient generated Presigned URL Errors for GET
-![image](464)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(464).png)
 
 ThunderClient generated Presigned URL Errors for PUT
-![image](465)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(465).png)
 
 Code Test returned 200 successful
-![image](473)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(473).png)
 
 Apigateway
-![image](474)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(474).png)
 
 Authorization for Avatars in Apigateway
-![image](477)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(477).png)
 
 Cruddur-Api-Gateway-Lambdas-Authorizer Function
-![image](480)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(480).png)
 
-Added Upload Avatar in the application profile Component
-![image](483)
+Added Upload Avatar and chose file in the application profile Component
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(490).png)
 
 Integration for Avatars in Apigateway
-![image](484)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(484).png)
 
 Cleared all CORS for Apigateway
-![image](485)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(485).png)
 
 Apigatway Custom domain for Cruddur Application
-![image](491)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(491).png)
 
 Properties of the object in nwaliechinyere.xyz bucket
-![image](493)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(493).png)
 
 Set CORS for nwaliechinyere.xyz bucket
-![image](494)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(494).png)
 
-When I clicked Inspect on my Application webpage it wasn't showing till I unset CORS
-![image](496)
+When I clicked Inspect on my Application webpage it wasn't showing  returning any errors but my application wasn't working, I cleared CORS as a step to curb this issue
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(496).png)
 
-when I try to inspect my page, it doesn't work till I click o the websocket gitpod link in my inspect console, I had this issue for long till after I stop and started my workspace.
-![image](507)
+The inspect page still doesn't work, I always have to click on the websocket gitpod link in my inspect console to further troubleshoot, Before I cleared CORS, I had this issue for a long time, till I cleared CORS, stop and started my environment.
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(506).png)
 
 Now my inspect page is showing but my presigned url keeps showing undefined in my console
-![image](502)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(502).png)
 
 In my networks tab, my Presigned URL is showing undefined
-![image](503)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(503).png)
 
 Executed `irb` in my terminal to check the ruby function
-![image](505)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(505).png)
 
 Installing ruby-jwt
-![image](508)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(508).png)
 
 JWT Successfully Installed
-![image](510)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(510).png)
 
 Adding jwt layer in my CruddurAvatarUpload
-![image](511)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(511).png)
 
 Added JWT
-![image](512)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(512).png)
 
 My CruddurApiGatewayLambdaAuthorizer watch logs wasn't displaying, I fixed this issue by entirely stopping my environment, log out from AWS and starting over again
-![image](513)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(513).png)
 
 ERRORS;
 
@@ -737,19 +737,16 @@ My pre-signed URL wasn't displaying still, I fixed this issue by fixing these li
   - Then console.log(token); prints the extracted token to the console for debugging or logging purposes.
 
 Now everything is working fine in my Inspect page network tab
-![image](518)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(518).png)
 
 Now everything is working fine in my Inspect page console tab
-![image](519)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(519).png)
 
 CruddurAvatarUpload watch logs
-![image](522)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(522).png)
 
 CruddurApi Lambdas Authorizer watch logs
-![image](523)
-
-
-
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(523).png)
 
 ---
 
@@ -765,6 +762,8 @@ CruddurApi Lambdas Authorizer watch logs
   - Re-modify the CSS styles in the `frontend-react-js/src/components/ProfileHeading.css` file such as `.profile_heading`, `.bio`, `.profile-avatar`, `.banner`, `.cruds_count`, `.info`, `.info .id`, `.info .id .display_name`, and `.info .id .handle`.
  
 Now I have successfully changed my profile Avatar to another picture
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(524).png)
+
 
   - See it all here in my [commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/4cb532534fc819f62792648266fade8d01a35d12)
  
