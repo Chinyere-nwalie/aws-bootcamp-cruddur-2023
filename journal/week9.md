@@ -13,7 +13,9 @@
 
 Here's our Instructor Andrews Notes for week-9 : <https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-9-again/journal/week9.md>
 
-The aim of this week was to automate building the backend-flask image with a build pipeline using CodeBuild and CodePipeline. This would provide us with a complete CI/CD pipeline [Further Knowledge](https://aws.amazon.com/blogs/devops/complete-ci-cd-with-aws-codecommit-aws-codebuild-aws-codedeploy-and-aws-codepipeline/)
+CI/CD means: Codes can easily deploy to production without the need to manually do it
+
+The aim of this week was to automate building the backend-flask image with a build pipeline using CodeBuild and CodePipeline. This would provide us with a complete CI/CD pipeline, Read here for [Further Knowledge](https://aws.amazon.com/blogs/devops/complete-ci-cd-with-aws-codecommit-aws-codebuild-aws-codedeploy-and-aws-codepipeline/)
 
 Prior to implementing the CI/CD pipeline, these scripts had to be run in the following order manually
 
@@ -41,13 +43,22 @@ CodePipeline would then deploy the changes automatically.
 
 - Buildspec.yml - This needs to be created in backend-flask i.e `backend-flask/buildspec.yml` [buildspec.yml](<https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/backend-flask/buildspec.yml>)
 - Policy for permissions required for codebuild to run successfully [policy-file](<https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/ecr-permissions.json>)
-- Prod branch in repository. Any Pull requests will be detected by CodeBuild; Create a new Branch called **prod** in your Bootcamp Github Repository, In your **main branch** for the Bootcamp, open a Gitpod workspace and do the following steps for week 9 tasks, in the end changes are committed to the main branch and then merged to the prod branch of [Week-9](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/prod)
+- Prod branch in the repository. CodeBuild will detect any Pull requests; Create a new Branch called **prod** in your Bootcamp Github Repository, In your **main branch** for the Bootcamp, open a Gitpod workspace and do the following steps for week 9 tasks, in the end changes are committed to the main branch and then merged to the prod branch of [Week-9](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/prod)
 
 ![image](521)
 
-The deployment will work whether or not the cruddur application is running which means whenever the cluster on or not it will automatically use the latest image.
+The deployment will work whether or not the cruddur application is running which means whether the cluster is on or not it will automatically use the latest image.
 
 ---
+
+Some AWS services are used here, with CodePipeline as the central control point for managing the stages.
+
+
+- **CodePipeline** is the main service of the CI/CD pipeline, co-ordinating the different stages and automating the release process.
+- **CodeBuild** is integrated with ECR, the Amazon Elastic Container Registry, enabling the creation and management of container images. CodeBuild executes build processes, such as compiling code, running tests, and generating the container image that will be deployed.
+- **CodeDeploy** This technology is attached to all stages of the pipeline and facilitates the smooth deployment of the application. It automates the process of rolling out new versions of the application, manages traffic routing, and provides rollback capabilities if issues arise.
+- **S3 Bucket** CodeBuild and CodeDeploy leverage an S3 bucket to store artifacts, such as build output and deployment packages. This allows for easy access to these artifacts during the pipeline execution.
+
 
 ## Configuring CodeBuild
 
