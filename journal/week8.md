@@ -786,6 +786,9 @@ CruddurApi Lambdas Authorizer watch logs
   - Re-modify the CSS styles in the `frontend-react-js/src/components/ProfileHeading.css` file such as `.profile_heading`, `.bio`, `.profile-avatar`, `.banner`, `.cruds_count`, `.info`, `.info .id`, `.info .id .display_name`, and `.info .id .handle`.
  
 Now I have successfully changed my profile Avatar to another picture
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/winnie.jpg)
+
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(524).png)
 
 
