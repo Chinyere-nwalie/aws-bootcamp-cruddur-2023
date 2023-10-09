@@ -139,7 +139,7 @@ Once these options have been selected, click **Create Build Project**
 
 ![image](543)
 
-After the successful creation of codebuild project, I copied the badge URL and pasted it in my chrome browser and it displayed `AWS odebuild`. I also pasted the badge URL in my Bootcamp Repository readme.MD file as instructed by Andrew our bootcamp Instructor
+After the successful creation of codebuild project, I copied the badge URL and pasted it in my chrome browser and it displayed `AWS Codebuild`. I also pasted the badge URL in my Bootcamp Repository readme.MD file as instructed by Andrew our bootcamp Instructor
 
 ![image](557)
 
@@ -328,23 +328,62 @@ The push refers to repository [454949276804.dkr.ecr.us-east-1.amazonaws.com/back
 34 | [Container] 2023/10/04 17:55:11 Running command printf "[{\"name\":\"$CONTAINER_NAME\",\"imageUri\":\"$IMAGE_URL/$REPO_NAME\"}]" > imagedefinitions.json
 35 | [Container] 2023/10/04 17:55:11 Phase complete: UPLOAD_ARTIFACTS State: SUCCEEDED
 ```
+
+![image](585)
+
+![image](581)
+
 ---
 
 ## Test Pipeline
 
-Update `backend-flask/app.py` by changing the return in `health_check` function from `return {"success": True}, 200` to `return {"success": True, "ver": 1}, 200`.
+In this stage, we are to trigger build and deploy by pushing codes to GitHub. When logging to Codepipeline, it kept returning failed.
+
+We had to First edit our Build stage action group
+![image](587)
+
+![image](586)
+
+Now Bake action group is working but, deploy kept failing
+
+![image](588)
+
+I had to edit my Deploy
+
+![image](590)
+
+After editing deploy, I went to GitHub to Update `backend-flask/app.py` by changing the return in the `health_check` function from `return {"success": True}, 200` to `return {"success": True, "ver": 1}, 200`.
 
 ![image](594)
 
+![image](607)
+
 Now merge this `week-9` branch to the `prod` branch. This will trigger the pipeline we created.
+![image](604)
 
-Go to `https://api.<domain_name>/api/health-check`, it will show `{"success":true,"ver":1}`.
+I went to My backend-flask container in my fargate and a new task in provisioning
+![image](597)
 
-Below is a screenshot that proofs my successful pipeline after merging pull request from `week-9`:
+In my Ec2 Target group, the new healthy check is provisioning and the old one is draining
+![image](598)
 
-![image]()
+The new task is working
+![image](599)
 
-![image]()
+Health check running successful
+![image](600)
+
+Go to `https://api.<domain_name>/api/health-check, it will show {"success":true,"ver":1}`.
+
+![image](601)
+
+Below is a screenshot that proves my successful pipeline after merging pull request from `week-9`:
+
+![image](602)
+
+![image](603)
+
+![image](592)
 
 
 ## CI/CD Security Best Practices
@@ -372,7 +411,7 @@ Adhering to the above practices is crucial to ensure the development and deliver
 
 ## Issues journal and Summary
 
-Week 9 task/Homework was completed successfully.
+**Week 9 task/Homework was completed successfully**
 
 Builds would timeout and not proceed. An earlier build which I deleted kept running for 45 minutes without progressing. Investigation showed that the environment had been misconfigured.
 
@@ -382,7 +421,7 @@ Builds would timeout and not proceed. An earlier build which I deleted kept runn
 
 Once the above had been configured, builds would fail with permission errors.
 
-Logs showed the CodeBuild role was not authorised to perform various tasks required to build successfully. The CodeBuild role had to be granted permission to perform build-related roles.
+Logs showed the CodeBuild role was not authorized to perform various tasks required to build successfully. The CodeBuild role had to be granted permission to perform build-related roles.
 
 - Added this for a guide to unset your environment variables on Gitpod workspace just in case this would be helpful to someone
   - How to unset env vars in Gitpod
@@ -391,7 +430,7 @@ Logs showed the CodeBuild role was not authorised to perform various tasks requi
   unset AWS_Environment_URL
   ```
   
-- Also while I was commiting my codes to triggers when you save the code changes to code build & code pipeline, It returned a Git error stating there are divergent branches
+- Also while I was committing my codes to triggers when you save the code changes to code build & code pipeline, It returned a Git error stating there are divergent branches
   - Divergent branches mean a conflict of branches this occurred when I wanted to push a code to Github and that was because I was working on something on Github and didn't clear it before committing my codes on Gitpod hence it errored out conflict of branches. I resolved this by running it on my terminal
     ```sh
     git config pull.rebase false
