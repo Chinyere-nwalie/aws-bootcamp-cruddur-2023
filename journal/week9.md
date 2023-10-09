@@ -11,7 +11,7 @@
 
 ## Requirements
 
-Here's our Instructor Andrews Notes for week-9 : <https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-9-again/journal/week9.md>
+Here are our Instructor Andrews's Notes for week-9 : <https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-9-again/journal/week9.md>
 
 CI/CD means: Codes can easily deploy to production without the need to manually do it
 
@@ -24,12 +24,12 @@ Prior to implementing the CI/CD pipeline, these scripts had to be run in the fol
 3. Push the image to the ECR repository using `bin/backend/push` [push](<https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/backend/push>)
 4. Deploy a new task definition for the backend task and force it to deploy using `bin/backend/deploy` [deploy](<https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/backend/deploy>)
 
-![image](561)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(561).png)
 
 While running these 4 scripts, missing one of the scripts would mean the latest image would not deploy. Also, if a shell script could be written to simplify this, it does not allow us to fully utilise the benefits of CI/CD.
 
 ## A new port was created 
-![image](591)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(591).png)
 
 **Integration**
 Codebuild would be configured to detect any changes made in the prod branch of our repository.
@@ -45,7 +45,7 @@ CodePipeline would then deploy the changes automatically.
 - Policy for permissions required for codebuild to run successfully [policy-file](<https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/ecr-permissions.json>)
 - Prod branch in the repository. CodeBuild will detect any Pull requests; Create a new Branch called **prod** in your Bootcamp Github Repository, In your **main branch** for the Bootcamp, open a Gitpod workspace and do the following steps for week 9 tasks, in the end changes are committed to the main branch and then merged to the prod branch of [Week-9](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/tree/prod)
 
-![image](521)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(527).png)
 
 The deployment will work whether or not the cruddur application is running which means whether the cluster is on or not it will automatically use the latest image.
 
@@ -71,7 +71,7 @@ Create a new CodeBuild Project with the following options. **Everything else can
 | Project Name | cruddur-backend-flask-image |
 | Build Badge | Enabled |
 
-![create code-build project](529)
+![create code-build project](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(529).png)
 
 ### Source
 
@@ -87,9 +87,11 @@ Create a new CodeBuild Project with the following options. **Everything else can
 |Required attributes|name,preferred_username|
 |Event type |PULL_REQUEST_MERGED|
 
-![Connect to GitHub using OAuth](530)
-![Source-1-GitHub](533)
-![Webhook-events](534)
+![Connect to GitHub using OAuth](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(530).png)
+
+![Source-1-GitHub](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(533).png)
+
+![Webhook-events](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(534).png)
 
 ### Environment
 
@@ -104,9 +106,9 @@ Create a new CodeBuild Project with the following options. **Everything else can
 | Privileged | Check **Enable this flag if you want to build Docker images or want your builds to get elevated privileges** |
 | Role name | codebuild-cruddur-backend-flask-image-service-role |
 
-![image](536)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(536).png)
 
-![image](537)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(537).png)
 
 ### Buildspec
 
@@ -115,7 +117,7 @@ Create a new CodeBuild Project with the following options. **Everything else can
 | Build specifications | Use a buildspec file |
 | Client secret | backend-flask/buildspec.yml |
 
-![image](540)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(540).png)
 
 ### Artifacts
 
@@ -124,7 +126,7 @@ Create a new CodeBuild Project with the following options. **Everything else can
 | Type | No artifacts |
 | Client secret | backend-flask/buildspec.yml |
 
-![image](541)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(541).png)
 
 ### Logs
 
@@ -133,15 +135,15 @@ Create a new CodeBuild Project with the following options. **Everything else can
 | CloudWatch logs - optional | **Checked** |
 | Stream name| backend-flask |
 
-![image](542)
+![Logs](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(542).png)
 
 Once these options have been selected, click **Create Build Project**
 
-![image](543)
+![Create Build Project](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(543).png)
 
 After the successful creation of codebuild project, I copied the badge URL and pasted it in my chrome browser and it displayed `AWS Codebuild`. I also pasted the badge URL in my Bootcamp Repository readme.MD file as instructed by Andrew our bootcamp Instructor
 
-![image](557)
+![Badge](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(557).png)
 
 ## Configuring CodePipeline
 
@@ -159,7 +161,7 @@ Create a new CodePipeline Project with the following options. **Everything else 
 | Artifact store| Default Location|
 | Encryption key|Default AWS Managed Key|
 
-![image](544)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(544).png)
 
 ### Add Source Stage
 
@@ -175,21 +177,21 @@ Create a new CodePipeline Project with the following options. **Everything else 
 |Change detection options | **Check** Start the pipeline on source code change |
 |Output artifact format | CodePipeline default |
 
-![image](545)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(545).png)
 |
-![image](546)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(546).png)
 |
-![image](547)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(547).png)
 |
-![image](548)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(548).png)
 |
-![image](549)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(549).png)
 |
-![image](550)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(550).png)
 |
-![image](551)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(551).png)
 |
-![image](552)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(552).png)
 
 ### Build
 
@@ -200,7 +202,7 @@ Create a new CodePipeline Project with the following options. **Everything else 
 |Project name| **Select existing project** cruddur-backend-flask-image|
 |Build type | Single |
 
-![image](555g)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(555).png)
 
 ### Deploy
 
@@ -212,17 +214,17 @@ Create a new CodePipeline Project with the following options. **Everything else 
 |Service name | backend-flask |
 |Output artifact format | CodePipeline default |
 
-![image](553)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(553).png)
 
-![image](554)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(554).png)
 
-![image](556)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(556).png)
 
 Click Next and **Create Pipeline**
 
 This should create a pipeline which will automatically start running. If successful then nothing further needs to be done. If not then further troubleshooting needs to be carried out.
 
-![image](660)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(606).png)
 
 ---
 
@@ -232,25 +234,24 @@ This should create a pipeline which will automatically start running. If success
 
 For my Build, It kept throwing timeout and wasn't successful. Also after committing my codes to trigger the build which I deleted was running for 45 minutes without progress
 
-![image](564)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(564).png)
 
-![image](567)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(567).png)
 
-![image](563)
 
 ### No logs were visible when source was failing
 
-![image](563)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(563).png)
 
-![image](569)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(569).png)
 
 ### Troubleshooting showed builds were hanging at downloading source
 
-![image](574)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(574).png)
 
 ### Misconfigured Environment
 
-![image](538)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(538).png)
 
 The Above pic showed that the environment had been misconfigured.
 
@@ -263,13 +264,13 @@ Despite resolving this issue builds still failed. Logs showed the code build rol
 
 Remodification of the codebuild role
 
-![image](584)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(584).png)
 
-![image](583)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(583).png)
 
 Create Inline Policy
 
-![image](576)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(576).png)
 
 ### Add ecr-permissions to JSON Policy
 
@@ -297,13 +298,13 @@ The following permissions need to be applied to the role [policy-file](<<https:/
   ]
 }
 ```
-![image](577)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(577).png)
 
-![image](578)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(578).png)
 
 ### Builds run successfully once permissions have been granted
 
-![image](580)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(580).png)
 
 ### Successful Text from log files
 
@@ -329,9 +330,9 @@ The push refers to repository [454949276804.dkr.ecr.us-east-1.amazonaws.com/back
 35 | [Container] 2023/10/04 17:55:11 Phase complete: UPLOAD_ARTIFACTS State: SUCCEEDED
 ```
 
-![image](585)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(585).png)
 
-![image](581)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(581).png)
 
 ---
 
@@ -340,50 +341,50 @@ The push refers to repository [454949276804.dkr.ecr.us-east-1.amazonaws.com/back
 In this stage, we are to trigger build and deploy by pushing codes to GitHub. When logging to Codepipeline, it kept returning failed.
 
 We had to First edit our Build stage action group
-![image](587)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(587).png)
 
-![image](586)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(586).png)
 
 Now Bake action group is working but, deploy kept failing
 
-![image](588)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(588).png)
 
 I had to edit my Deploy
 
-![image](590)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(590).png)
 
 After editing deploy, I went to GitHub to Update `backend-flask/app.py` by changing the return in the `health_check` function from `return {"success": True}, 200` to `return {"success": True, "ver": 1}, 200`.
 
-![image](594)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(594).png)
 
-![image](607)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(607).png)
 
 Now merge this `week-9` branch to the `prod` branch. This will trigger the pipeline we created.
-![image](604)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(604).png)
 
 I went to My backend-flask container in my fargate and a new task in provisioning
-![image](597)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(597).png)
 
 In my Ec2 Target group, the new healthy check is provisioning and the old one is draining
-![image](598)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(598).png)
 
 The new task is working
-![image](599)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(599).png)
 
 Health check running successful
-![image](600)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(600).png)
 
 Go to `https://api.<domain_name>/api/health-check, it will show {"success":true,"ver":1}`.
 
-![image](601)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(601).png)
 
 Below is a screenshot that proves my successful pipeline after merging pull request from `week-9`:
 
-![image](602)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(602).png)
 
-![image](603)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(603).png)
 
-![image](592)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(592).png)
 
 
 ## CI/CD Security Best Practices
@@ -437,4 +438,4 @@ Logs showed the CodeBuild role was not authorized to perform various tasks requi
     git pull
     git push
     ```
-![image](565)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(565).png)
