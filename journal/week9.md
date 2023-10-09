@@ -230,47 +230,46 @@ This should create a pipeline which will automatically start running. If success
 
 ### Builds failing when unable to download source
 
-Builds would timeout and not proceed. An earlier build which I deleted kept running for 45 minutes without progressing
+For my Build, It kept throwing timeout and wasn't successful. Also after committing my codes to trigger the build which I deleted was running for 45 minutes without progress
 
-![image]()
+![image](564)
+
+![image](567)
+
+![image](563)
 
 ### No logs were visible when source was failing
 
-![image]()
+![image](563)
+
+![image](569)
 
 ### Troubleshooting showed builds were hanging at downloading source
 
-![image]()
+![image](574)
 
 ### Misconfigured Environment
 
-![image]()
+![image](538)
 
-Investigation showed that the environment had been misconfigured.
+The Above pic showed that the environment had been misconfigured.
 
 - VPC had been configured, this was not needed
 - Security Groups had been configured
-- Environment variables had been configured in the CodeBuild project. Andrew had configured this in his buildspec.yml however configuring it in the project had the same issue and was the main reason for why the builds had been failing without logs.
-
-### Builds failing with permissions errors
-
-Despite resolving this issue builds still failed. Logs showed the codebuild role was not authorised to perform various tasks required to build successfully.
-
-![image]()
+- Environment variables had been configured in the CodeBuild project. Andrew had configured this in his buildspec.yml; however, configuring it in the project had the same issue and was the main reason for the builds failing without logs.
 
 ### IAM Role required changing
+Despite resolving this issue builds still failed. Logs showed the code build role was not authorized to perform the assigned tasks required to make it successful.
 
-The codebuild role needed to be amended
+Remodification of the codebuild role
 
-![image]()
+![image](584)
 
-### Locate Role in IAM
+![image](583)
 
-![image]()
+Create Inline Policy
 
-### Create Inline Policy
-
-![image]()
+![image](576)
 
 ### Add ecr-permissions to JSON Policy
 
@@ -298,42 +297,44 @@ The following permissions need to be applied to the role [policy-file](<<https:/
   ]
 }
 ```
-![image]()
+![image](577)
 
-### Name Policy to ECRPermissions
-
-![image]()
+![image](578)
 
 ### Builds run successfully once permissions have been granted
 
-![image]()
+![image](580)
 
-### Successfull Text from log files
+### Successful Text from log files
 
 ```sh
-20 | [Container] 2023/05/03 23:07:48 Phase complete: DOWNLOAD_SOURCE State: SUCCEEDED
+20 | [Container] 2023/10/04 17:54:27 Phase complete: DOWNLOAD_SOURCE State: SUCCEEDED
 -- | --
-21 | [Container] 2023/05/03 23:07:48 Phase context status code:  Message:
-22 | [Container] 2023/05/03 23:07:48 Entering phase INSTALL
-23 | [Container] 2023/05/03 23:07:48 Running command echo "cd into $CODEBUILD_SRC_DIR/backend"
-24 | cd into /codebuild/output/src377814590/src/github.com/shehzadashiq/aws-bootcamp-cruddur-2023/backend
+21 | [Container] 2023/10/04 17:54:27 Phase context status code:  Message:
+22 | [Container] 2023/10/04 17:54:27 Entering phase INSTALL
+23 | [Container] 2023/10/04 17:54:27 Running command echo "cd into $CODEBUILD_SRC_DIR/backend"
+24 | cd into /codebuild/output/src3549108726/src/github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/backend
 25 |  
-26 | [Container] 2023/05/03 23:07:48 Running command cd $CODEBUILD_SRC_DIR/backend-flask
+26 | [Container] 2023/10/04 17:54:27 Running command cd $CODEBUILD_SRC_DIR/backend-flask
 27 |  
-28 | [Container] 2023/05/03 23:07:48 Running command aws ecr get-login-password --region $AWS_DEFAULT_REGION \| docker login --username AWS --password-stdin $IMAGE_URL
+28 | [Container] 2023/10/04 17:54:27 Running command aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_URL
 29 |  
-30 | An error occurred (AccessDeniedException) when calling the GetAuthorizationToken operation: User: arn:aws:sts::797130574998:assumed-role/codebuild-cruddur--service-role/AWSCodeBuild-b0931d7a-83c6-4df9-a555-f341715bf817 is not authorized to perform: ecr:GetAuthorizationToken on resource: * because no identity-based policy allows the ecr:GetAuthorizationToken action
-31 | Error: Cannot perform an interactive login from a non TTY device
+30 | [Container] 2023/10/04 17:54:44 Entering phase BUILD
+31 | [Container] 2023/10/04 17:54:44 Running command docker build -t backend-flask.
+Sending build context to Docker daemon  84.99kB
 32 |  
-33 | [Container] 2023/05/03 23:08:01 Command did not exit successfully aws ecr get-login-password --region $AWS_DEFAULT_REGION \| docker login --username AWS --password-stdin $IMAGE_URL exit status 1
-34 | [Container] 2023/05/03 23:08:01 Phase complete: INSTALL State: FAILED
-35 | [Container] 2023/05/03 23:08:01 Phase context status code: COMMAND_EXECUTION_ERROR Message: Error while executing command: aws ecr get-login-password --region $AWS_DEFAULT_REGION \| docker login --username AWS --password-stdin $IMAGE_URL. Reason: exit status 1
+33 | [Container] 2023/10/04 17:55:05 Running command docker push $IMAGE_URL/$REPO_NAME
+The push refers to repository [454949276804.dkr.ecr.us-east-1.amazonaws.com/backend-flask]
+34 | [Container] 2023/10/04 17:55:11 Running command printf "[{\"name\":\"$CONTAINER_NAME\",\"imageUri\":\"$IMAGE_URL/$REPO_NAME\"}]" > imagedefinitions.json
+35 | [Container] 2023/10/04 17:55:11 Phase complete: UPLOAD_ARTIFACTS State: SUCCEEDED
 ```
 ---
 
 ## Test Pipeline
 
 Update `backend-flask/app.py` by changing the return in `health_check` function from `return {"success": True}, 200` to `return {"success": True, "ver": 1}, 200`.
+
+![image](594)
 
 Now merge this `week-9` branch to the `prod` branch. This will trigger the pipeline we created.
 
@@ -397,4 +398,4 @@ Logs showed the CodeBuild role was not authorised to perform various tasks requi
     git pull
     git push
     ```
-![image]()
+![image](565)
