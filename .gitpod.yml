@@ -1,4 +1,8 @@
 tasks:
+  - name: cfn
+    before: |
+      pip install cfn-lint
+      cargo install cfn-guard
   - name: aws-cli
     env:
       AWS_CLI_AUTO_PROMPT: on-partial
@@ -53,7 +57,6 @@ tasks:
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
-
     - cweijan.vscode-postgresql-client2
 
 ports:
