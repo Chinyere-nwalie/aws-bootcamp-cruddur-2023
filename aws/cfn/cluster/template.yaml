@@ -215,6 +215,7 @@ Resources:
         HttpCode: 200
       Protocol: HTTP
       ProtocolVersion: HTTP2
+      TargetType: ip
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 0
@@ -245,6 +246,7 @@ Resources:
         HttpCode: 200
       Protocol: HTTP
       ProtocolVersion: HTTP2
+      TargetType: ip
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 0
@@ -264,3 +266,11 @@ Outputs:
     Value: !GetAtt ALBSG.GroupId
     Export:
       Name: !Sub "${AWS::StackName}ALBSecurityGroupId"
+  FrontendTGArn:
+    Value: !Ref FrontendTG
+    Export:
+      Name: !Sub "${AWS::StackName}FrontendTGArn"
+  BackendTGArn:
+    Value: !Ref BackendTG
+    Export:
+      Name: !Sub "${AWS::StackName}BackendTGArn"
