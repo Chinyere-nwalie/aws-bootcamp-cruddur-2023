@@ -1,0 +1,16 @@
+#! /usr/bin/env bash
+set -e # stop execution of the script if it fails
+
+#This script will pass the value of the main root
+
+FUNC_DIR="/workspace/aws-bootcamp-cruddur-2023/aws/lambdas/cruddur-messaging-stream/"
+TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/ddb/template.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/cfn/ddb/config.toml"
+
+#https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-build.html
+sam build \
+--config-file $CONFIG_PATH \
+--template  $TEMPLATE_PATH \
+--build-dir  $FUNC_DIR \
+--base-dir $FUNC_DIR 
+#--parameter-overrides

@@ -1,4 +1,13 @@
 tasks:
+  - name: aws-sam
+    before: |
+      cd /workspace
+      wget https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+      unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
+      sudo ./sam-installation/install
+      sudo rm -rf ./aws-sam-cli-linux-x86_64.zip
+      sudo rm -rf ./sam-installation
+      cd $THEIA_WORKSPACE_ROOT
   - name: cfn
     before: |
       pip install cfn-lint
