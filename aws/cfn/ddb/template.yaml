@@ -37,7 +37,7 @@ Resources:
         WriteCapacityUnits: 5
       BillingMode: PROVISIONED
       # active in production
-      DeletionProtectionEnabled: true
+      DeletionProtectionEnabled: false
       GlobalSecondaryIndexes:
           - IndexName: message-group-sk-index
             KeySchema:
@@ -56,10 +56,10 @@ Resources:
     #https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
     Type: AWS::Serverless::Function
     Properties:
-      Architecture: arm64
-      CodeUri: .
-      #InlineCode: ???
-      PackageType: Zip
+      Architectures: arm64
+      CodeUri: ???
+      InlineCode : ???
+      PackageType: ZIP
       Handler: lambda_handler
       Runtime: !Ref PythonRuntime
       Role: !GetAtt ExecutionRole.Arn
