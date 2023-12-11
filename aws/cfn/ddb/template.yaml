@@ -37,7 +37,7 @@ Resources:
         WriteCapacityUnits: 5
       BillingMode: PROVISIONED
       # active in production
-      DeletionProtectionEnabled: false
+      DeletionProtectionEnabled: true
       GlobalSecondaryIndexes:
           - IndexName: message-group-sk-index
             KeySchema:
@@ -56,7 +56,7 @@ Resources:
     #https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: .
+      CodeUri: aws/lambdas/cruddur-messaging-stream
       #InlineCode : ???
       PackageType: Zip
       Handler: lambda_handler
@@ -78,7 +78,7 @@ Resources:
   LambdaLogGroup:
     Type: "AWS::Logs::LogGroup"
     Properties:
-      LogGroupName: "/aws/lambda/cruddur-messaging-stream-1"
+      LogGroupName: "/aws/lambda/cruddur-messaging-stream"
       RetentionInDays: 14
   LambdaLogStream:
     Type: "AWS::Logs::LogStream"
