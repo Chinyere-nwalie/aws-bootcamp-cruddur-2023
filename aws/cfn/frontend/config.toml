@@ -1,0 +1,10 @@
+[deploy]
+bucket = 'nwaliechinyere-cfn-artifacts'
+region = 'us-east-1'
+stack_name = 'CrdFrontend'
+
+[parameters]
+CertificateArn = 'arn:aws:acm:us-east-1:454949276804:certificate/5412fa90-2cf6-4be5-a8e4-1ac3cb752100'
+WwwBucketName = 'www.nwaliechinyere.xyz'
+RootBucketName = 'nwaliechinyere.xyz'
+HostedZoneId = 'Z079229834ZZPOLGEXS81'
