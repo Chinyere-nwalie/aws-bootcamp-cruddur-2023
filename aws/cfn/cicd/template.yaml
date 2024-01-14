@@ -17,6 +17,8 @@ Parameters:
     Type: String
   ArtifactBucketName:
     Type: String
+  BuildSpec:
+    Type: String
 
 Resources:
   Codebuild:
@@ -24,6 +26,9 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: nested/codebuild.yaml
+      Parameters:
+        ArtifactBucketName: !Ref ArtifactBucketName
+        BuildSpec: !Ref BuildSpec
   CodeStarConnection:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codestarconnections-connection.html
     Type: AWS::CodeStarConnections::Connection
@@ -105,6 +110,16 @@ Resources:
         Version: '2012-10-17'
       Path: /
       Policies: 
+        - PolicyName: !Sub ${AWS::StackName}S3ArtifactAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - s3:*
+                Effect: Allow
+                Resource:
+                  - !Sub arn:aws:s3:::${ArtifactBucketName}
+                  - !Sub arn:aws:s3:::${ArtifactBucketName}/*
         - PolicyName: !Sub ${AWS::StackName}EcsDeployPolicy
           PolicyDocument:
             Version: '2012-10-17'
@@ -155,6 +170,9 @@ Resources:
                   - codebuild:StartBuild
                   - codebuild:StopBuild
                   - codebuild:RetryBuild
+                  # even though we are not Batch for CodeBuild
+                  # AWS Still requires permissions
+                  - codebuild:BatchGetBuilds
                 Effect: Allow
                 Resource: !Join
                   - ''

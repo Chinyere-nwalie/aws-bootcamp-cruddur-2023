@@ -8,7 +8,7 @@ INSERT INTO
         cognito_user_id
     )
 VALUES (
-        'nwalie \qchinyere',
+        'nwalie chinyere',
         'nwaliechinyere@example.com',
         'nwaliechinyere',
         'MOCK'
