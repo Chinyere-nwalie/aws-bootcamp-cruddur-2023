@@ -4,5 +4,5 @@ region = 'us-east-1'
 stack_name = 'CrdSrvBackendFlask'
 
 [parameters]
-EnvFrontendUrl = 'nwaliechinyere.xyz'
-EnvBackendUrl = 'api.nwaliechinyere.xyz'
+EnvFrontendUrl = 'https://nwaliechinyere.xyz'
+EnvBackendUrl = 'https://api.nwaliechinyere.xyz'
