@@ -1,7 +1,7 @@
 from flask_cors import CORS
 import os
 
-def init_cors():
+def init_cors(app):
   frontend = os.getenv('FRONTEND_URL')
   backend = os.getenv('BACKEND_URL')
   origins = [frontend, backend]
@@ -11,3 +11,4 @@ def init_cors():
     headers=['Content-Type', 'Authorization'], 
     expose_headers='Authorization',
     methods="OPTIONS,GET,HEAD,POST"
+  )
