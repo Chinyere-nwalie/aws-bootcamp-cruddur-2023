@@ -1,0 +1,12 @@
+-- UPDATE public.users
+--     SET uuid = <PROD_UUID>
+--     WHERE
+--       users.handle = <USER_HANDLE>;
+
+UPDATE public.users 
+SET uuid = '2290b744-8381-4409-a3f2-f4c417a952de'
+WHERE users.handle = 'nwalie chinyere';
+
+UPDATE public.users 
+SET uuid = 'ab7423df-5546-4974-8819-c283a90e8b78'
+WHERE users.handle = 'cloudgeekchie';

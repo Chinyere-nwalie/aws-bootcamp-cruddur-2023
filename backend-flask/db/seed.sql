@@ -9,7 +9,7 @@ INSERT INTO
     )
 VALUES (
         'nwalie chinyere',
-        'nwaliechinyere@example.com',
+        'nwaliechinyerejessica@gmail.com',
         'nwaliechinyere',
         'MOCK'
     ), (
