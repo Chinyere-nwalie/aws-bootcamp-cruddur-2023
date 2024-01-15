@@ -13,7 +13,7 @@ VALUES (
         'nwaliechinyere',
         'MOCK'
     ), (
-        'Chiechee Nwalie',
+        'chiechee nwalie',
         'nwaliechinyere+1@gmail.com',
         'cloudgeekchie',
         'MOCK'
