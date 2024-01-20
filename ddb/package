@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+set -e # stop execution of the script if it fails
+
+#This script will pass the value of the main root
+
+ARTIFACTS_BUCKET="nwaliechinyere-cfn-artifacts"
+TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/template.yaml"
+OUTPUT_TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/packaged.yaml"
+CONFIG_PATH="/workspace/aws-bootcamp-cruddur-2023/ddb/config.toml"
+
+echo "==package"
+
+sam package \
+--s3-bucket $ARTIFACTS_BUCKET \
+--config-file $CONFIG_PATH \
+--output-template-file $OUTPUT_TEMPLATE_PATH \
+--template-file $TEMPLATE_PATH \
+--s3-prefix "ddb"
