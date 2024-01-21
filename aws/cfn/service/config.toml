@@ -6,3 +6,4 @@ stack_name = 'CrdSrvBackendFlask'
 [parameters]
 EnvFrontendUrl = 'https://nwaliechinyere.xyz'
 EnvBackendUrl = 'https://api.nwaliechinyere.xyz'
+DDBMessageTable = 'CrdDdb-DynamoDBTable-1F96ZNVI057JW'
