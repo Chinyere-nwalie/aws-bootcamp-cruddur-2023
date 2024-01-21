@@ -4,7 +4,7 @@ import sys
 from flask import Flask
 from flask import request, g
 
-from lib.rollbar import init_rollbar
+# from lib.rollbar import init_rollbar
 from lib.xray import init_xray
 from lib.cors import init_cors
 from lib.cloudwatch import init_cloudwatch
@@ -20,8 +20,8 @@ app = Flask(__name__)
 
 ## initalization --------
 init_xray(app)
-with app.app_context():
-  g.rollbar = init_rollbar(app)
+# with app.app_context():
+#   g.rollbar = init_rollbar(app)
 init_honeycomb(app)
 init_cors(app)
 
