@@ -32,6 +32,7 @@ export default function ActivityShowPage() {
     get(url,{
       auth: false,
       success: function(data){
+        console.log("data", data.activity)
         setActivity(data.activity)
         setReplies(data.replies)
       }

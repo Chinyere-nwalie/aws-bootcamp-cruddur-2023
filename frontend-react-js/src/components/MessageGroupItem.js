@@ -1,10 +1,33 @@
-import './MessageGroupItem.css';
+import "./MessageGroupItem.css";
+import React from "react";
+
 import { Link } from "react-router-dom";
-import { format_datetime, message_time_ago } from '../lib/DateTimeFormats';
-import { useParams } from 'react-router-dom';
+import { format_datetime, message_time_ago } from "../lib/DateTimeFormats";
+import { useParams } from "react-router-dom";
+import { get } from "lib/Requests";
+import ProfileAvatar from "./ProfileAvatar";
 
 export default function MessageGroupItem(props) {
   const params = useParams();
+
+  const [setuserCognitoId, setsetuserCognitoId] = React.useState("");
+  const dataFetchedRef = React.useRef(false);
+
+  const loadData = async () => {
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/users/@${props.message_group.handle}/short`;
+    get(url, {
+      auth: true,
+      success: function (data) {
+        setsetuserCognitoId(data.cognito_user_id);
+      },
+    });
+  };
+  React.useEffect(() => {
+    //prevents double call
+    if (dataFetchedRef.current) return;
+    dataFetchedRef.current = true;
+    loadData();
+  }, []);
 
   const classes = () => {
     let classes = ["message_group_item"];
@@ -16,7 +39,7 @@ export default function MessageGroupItem(props) {
 
   return (
     <Link className={classes()} to={`/messages/` + props.message_group.uuid}>
-      <div className='message_group_avatar'></div>
+      <ProfileAvatar className="message_group_avatar" id={setuserCognitoId} />
       <div className='message_content'>
         <div classsName='message_group_meta'>
           <div className='message_group_identity'>

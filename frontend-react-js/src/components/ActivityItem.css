@@ -1,32 +1,40 @@
 .activity_item {
   display: flex;
   flex-direction: column;
-  border-bottom: solid 1px rgb(60,54,79);
+  border-bottom: solid 1px rgb(31, 36, 49);
   overflow: hidden;
+}
+
+.activity_item:last-child {
+  border-bottom: none;
 }
 
 .activity_item.clickable:hover {
   cursor: pointer;
 }
 
-.activity_item.clickable:hover {
-  background: rgba(255,255,255,0.15);
+.activity_item.clickable:hover:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .replies {
   padding-left: 24px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.2);
 }
-.replies .activity_item{
+
+.replies .activity_item {
   background: var(--fg);
 }
 
-.acitivty_main {
+.activity_main {
   padding: 16px;
+  border-bottom: solid 8px var(--fg);
+
 }
 
-.activity_item:last-child {
-  border-bottom: none;
+.reply_main {
+  padding: 16px;
+  border-bottom: solid 8px var(--fg);
 }
 
 .activity_item .activity_actions {
@@ -36,7 +44,7 @@
   padding-left: 60px;
 }
 
-.activity_item .activity_actions .action{
+.activity_item .activity_actions .action {
   flex-grow: 1;
   cursor: pointer;
   padding: 8px;
@@ -46,28 +54,37 @@
   gap: 12px
 }
 
-.activity_item .activity_actions .action .counter{
-  color: rgba(255,255,255,0.8);
+.activity_item .activity_actions .action .counter {
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 800;
 }
 
-.activity_item .activity_actions .icon{
+.activity_item .activity_actions .icon {
   height: 18px;
   width: 18px;
   fill: #fff;
 }
 
 .activity_item .activity_actions .action:hover {
-  background: rgba(149,0,255,0.2);
+  background: rgba(149, 0, 255, 0.2);
 }
 
 .activity_item .activity_actions .action:hover .icon {
-  fill: rgb(149,0,255);
+  fill: rgb(149, 0, 255);
+}
+
+.activity_avatar {
+  height: 60px;
+  width: 60px;
+  border-radius: 999px;
+  border: solid 8px var(--fg);
+  background: rgb(149, 0, 255);
+}
+
+/* .activity_item.expanded .activity_content {
+  display: flex;
 }
 
 .activity_item.expanded .activity_content {
-  display: flex;
-}
-.activity_item.expanded .activity_content .activity_identity{
-  flex-grow: 1;
-}
+
+} */
