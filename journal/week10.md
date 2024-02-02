@@ -2001,10 +2001,6 @@ aws cloudformation deploy \
 
 > *Execute the changeset*.
 
-
-Consult additional *IaC workload Incl CFN, SAM, TF* and more for the following [Week Eleven](week11.md).
-
-
 ### **Reference**
 
 - [CFN Template basics YAML VS JSON](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html)
@@ -2014,6 +2010,8 @@ Consult additional *IaC workload Incl CFN, SAM, TF* and more for the following [
 - [OWASP IaC Security Cheatsheet](https://cheatsheetseries.owasp.org/cheatsheets/Infrastructure_as_Code_Security_Cheat_Sheet.html)
 - [NetDevOps modern approach to networking deployments](https://aws.amazon.com/fr/blogs/networking-and-content-delivery/netdevops-a-modern-approach-to-aws-networking-deployments/)
 
-> *In case you want to convert an already provisioned resource to the was cloud formation stack with the current configuration use [this](https://former2.com/) or try this [link](https://github.com/sentialabs/cloudformer2) [link](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/validate-template.html)* 
+> *In case you want to convert an already provisioned resource to the was cloud formation stack with the current configuration use [this](https://former2.com/) or try this [link](https://github.com/sentialabs/cloudformer2) [link](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/validate-template.html)*
 
-----
+---
+
+> CloudFormation Part 2 in [Week Eleven](week11.md).
