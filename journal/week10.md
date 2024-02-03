@@ -42,10 +42,9 @@ Handler operations are: `CREATE`, `UPDATE`, `DELETE`, `READ`, or `LIST` actions 
 - Develop a process for continuously verifying if there is a change that may break the CICD pipeline
 - [Ashish Security Podcast](https://cloudsecuritypodcast.tv/listen-to-the-episodes/)
 
-## What is AWS CloudFormation?
+## AWS CloudFormation?
 
-CFN is a powerful IaC provided by AWS. It allows you to define and provision your cloud infrastructure using declarative templates either in JSON or **YAML** format as is the case for our scenario.
-These templates describe the desired state, including resources, configurations, and dependencies in a very readable code.
+AWS CFN is an IaC tool provided by AWS. It allows you to define and provision your cloud infrastructure using declarative templates either in JSON or **YAML** format, as in our scenario. These templates describe the desired state, including resources, configurations, and dependencies in a very readable code.
 
 ![AWS CFN Banner](assets/week10/image.png)
 
@@ -275,13 +274,10 @@ To learn more about TOML and how to leverage it effectively, refer to my previou
 **HINTS:** You can streamline the installation of `cfn-lint`, `cfn-guard`, `cfn-toml` in your `gitpod.yml`.
 
 
-> [OWASP Infrastructure as Code Security Cheatsheet](https://cheatsheetseries.owasp.org/cheatsheets/Infrastructure_as_Code_Security_Cheat_Sheet.html)
-
-
 ![](assets/week10/diagram.png)
 
 
-Below are more detailed descriptions on Cruddur main component's
+Below are more detailed descriptions on Cruddur's main component's
 
 **Networking**
 - Virtual Private Cloud (VPC): A dedicated VPC is established using CloudFormation, providing isolated network resources for the application.
@@ -307,7 +303,7 @@ Below are more detailed descriptions on Cruddur main component's
 
 This CloudFormation template is designed to create foundational networking components for the app stack and assure cloud connectivity.
 
-Diagramming [the CFN-AllArch.](assets/week10/diagramming.png)
+[Diagramming](assets/week10/diagramming.png)
 
 Cruddur network resources include the following:
 
@@ -318,13 +314,12 @@ Cruddur network resources include the following:
 | `RouteTable`      | Sets up a route table that enables routing to the Internet Gateway and local resources. It includes routes to the Internet Gateway and local destinations.                        |
 | `Subnets`          | Creates six subnets, each associated explicitly with the route table. There are three public subnets (numbered 1 to 3) and three private subnets (numbered 1 to 3).       |
 
-
-As a good practice, we can specify it in the `template.yaml` itself.
+Writing the  `template.yaml` file.
 
 ```YAML
 AWSTemplateFormatVersion: 2010-09-09
 Description: |
-This CloudFormation template establishes the essential networking components for your stack, ensuring a solid foundation. 
+This CloudFormation template is essential in the networking components of your stack, ensuring a strong foundation. 
 
 It includes the following key components
   - VPC
@@ -339,20 +334,61 @@ It includes the following key components
     - 3 Private Subnets numbered 1 to 3
 ```
 
-## The Template Parameters
+**Creating the Networking Deploy Script**
+
+I modified the script to not have hardcoded values as I am using my local environment so when I spin up my container it doesn't error out in my GitPod workspace.
+
+```sh
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="CFN_NETWORK_DEPLOY"
+printf "${CYAN}====== ${LABEL}${NO_COLOR}\n"
+
+# Get the absolute path of this script
+ABS_PATH=$(readlink -f "$0")
+CFN_BIN_PATH=$(dirname $ABS_PATH)
+BIN_PATH=$(dirname $CFN_BIN_PATH)
+PROJECT_PATH=$(dirname $BIN_PATH)
+CFN_PATH="$PROJECT_PATH/aws/cfn/networking/template.yaml"
+CONFIG_PATH="$PROJECT_PATH/aws/cfn/networking/config.toml"
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --s3-prefix networking \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-networking \
+  --capabilities CAPABILITY_NAMED_IAM
+```
+
+I always run `./bin/cfn/networking-deploy` to initiate a new changeset for the CFN stack when being modified.
+
+## Networking Template Components
 
 - `VpcCidrBlock`: Specifies the CIDR block for the VPC. The default value is `10.0.0.0/16`.
-- `Az1`: Defines the Availability Zone for the first subnet. The default value is `ca-central-1a`.
+- `Az1`: Defines the Availability Zone for the first subnet. The default value is `us-east-1a`.
 - **`SubnetCidrBlocks`**: Comma-delimited list of CIDR blocks for the private and public subnets. Please provide the CIDR blocks for all six subnets. Example: `10.0.0.0/24, 10.0.4.0/24, 10.0.8.0/24, 10.0.12.0/24, 10.0.16.0/24, 10.0.20.0/24`.
-- `Az2`: Defines the Availability Zone for the second subnet. The default value is `ca-central-1b`.
-- `Az3`: Defines the Availability Zone for the third subnet. The default value is `ca-central-1d`.
+- `Az2`: Defines the Availability Zone for the second subnet. The default value is `us-east-1b`.
+- `Az3`: Defines the Availability Zone for the third subnet. The default value is `us-east-1c`.
+  
 ```YAML
   VpcCidrBlock:
     Type: String
     Default: 10.0.0.0/16
   Az1:
     Type: AWS::EC2::AvailabilityZone::Name
-    Default: ca-central-1a
+    Default: us-east-1a
   SubnetCidrBlocks: 
     Description: "Comma-delimited list of CIDR blocks for our private public subnets"
     Type: CommaDelimitedList
@@ -365,18 +401,15 @@ It includes the following key components
       10.0.20.0/24
   Az2:
     Type: AWS::EC2::AvailabilityZone::Name
-    Default: ca-central-1b
+    Default: us-east-1b
   Az3:
     Type: AWS::EC2::AvailabilityZone::Name
-    Default: ca-central-1d
+    Default: us-east-1c
 ```
-
-
-
 
 ### Virtual Private Cloud
 
-The VPC  is a logically isolated section of the AWS cloud where you can launch AWS resources, It serves as the foundational networking component for Yarcrud app architecture, providing the network environment for all the other resources.
+The VPC  is an entirely different section in the AWS cloud where you launch AWS resources, It serves as the foundational networking component for the Cruddur app architecture, providing the network environment for all the other resources.
 
 - **Type**: `AWS::EC2::VPC`
 - **Properties**:
@@ -418,9 +451,9 @@ The IGW enables internet connectivity for resources within the VPC, allowing you
 ```
 
 
-### Attach VPC Gateway
+### Attaching VPC Gateway
 
-Attaching the IGW to the VPC establishes the connectivity between your VPC and the internet, enabling inbound and outbound internet traffic for yacrud app.
+The IGW in VPC establishes the connectivity between your VPC and the internet, enabling inbound and outbound internet traffic for the crud app.
 
 - **Type**: `AWS::EC2::VPCGatewayAttachment`
 - **Properties**:
@@ -457,7 +490,7 @@ A route table contains a set of rules (routes) that determine where network traf
 
 ### Route To Internet Gateway
 
-This component defines a route in the route table to direct internet-bound traffic to the Internet Gateway to ensure that traffic destined for the internet is directed to the IGW.
+This component defines a route in the route table to direct internet-bound traffic to the Internet Gateway to ensure that traffic destined for the Internet is directed to the IGW.
 
 - **Type**: `AWS::EC2::Route`
 - **DependsOn**: Depends on the successful attachment of the InternetGateway to the VPC.
@@ -478,7 +511,7 @@ This component defines a route in the route table to direct internet-bound traff
 
 ### Public Subnets
 
-Public subnets are used to host our resources to have direct internet access and allow app to serve requests from the internet.
+Public subnets are used to host our resources to have direct internet access and allow apps to serve requests from the internet.
 
 
 - **Type**: `AWS::EC2::Subnet`
