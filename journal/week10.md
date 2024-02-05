@@ -1,55 +1,55 @@
 # Week 10 — CloudFormation Part 1
 
-For weeks Ten and Eleven, we will focus more on Infrastructure as Code to provision and manage the main components of our Cruddur app with designs to complete the BootCamp. The app completion can easily manage updates to the application consistently and enable automation of the deployment process when needed.
+For weeks 10 & 11, we will focus more on Infrastructure as Code to provision and manage the main components of our Cruddur app with designs to complete the BootCamp. The app completion can easily manage updates to the application consistently and enable automation of the deployment process when needed.
 
 ## CloudFormation Part 1 Tasks
-- [CloudFormation Practices ](#cloudformation-practices)
+- [AWS CloudFormation](#aws-cloudformation)
   - [Cost](#cost)
   - [Security](#Security)
-  - [Cost](#cost)
-- [AWS CloudFormation](#what-is-aws-cloudformation)
-  - [Provision ECS Cluster](#first-task)
+  - [Prerequisite for Our Task ](#prerequisite-for-our-task )
 - [AWS CloudFormation — Policy As Code](#AWS-cloudformation-policy-as-code)
-  - [CFN Guard](#onboard-cfn-guard)
+  - [CFN Guard](#cfn-guard)
   - [CFN Validate](#cfn-validate)
   - [CFN Lint](#cfn-lint)
   - [TOML Config ](#toml-and-config-management)
-- [CloudFormation Stack](#yacrud-cfn-stack)
-  - [CFN Bucket 🪣](#setting-up-cfn-artifact-bucket)
+- [CloudFormation Stack](#cruddur-cfn-stack)
+  - [CFN Bucket](#creating-cfn-artifact-bucket)
   - [Networking Layer](#cfn-network-layer)
   - [Cluster Template](#cluster-template)
-  - [AWS RDS Template](#aws-rds-template)
+  - [CFN DDB STACK](#cfn-ddb-stack)
+
+--- 
+
+### AWS CloudFormation?
+
+AWS CFN  is a service and an IaC tool provided by AWS that helps you model and set up your AWS resources so that you can spend less time managing those resources and more time focusing on your applications that run in AWS, It also allows you to define and provision your cloud infrastructure using templates in JSON or **YAML** format. These templates show and explain the desired state, including resources, configurations, and dependencies in codes, and you don't need to individually create and configure AWS resources and figure out what's dependent on what; CloudFormation handles that.
 
 ## Cost
-In Cloudformation, you only pay for what you use, with no minimum fees and no required upfront commitment, when you're using a registry extension with Cloudformation, you incur charges per handler operation.
-Handler operations are: `CREATE`, `UPDATE`, `DELETE`, `READ`, or `LIST` actions on a resource type and `CREATE`, `UPDATE`, or `DELETE` actions for Hook type.
+In AWS Cloudformation, you only pay for what you use, with no minimum fees and no required upfront commitment. When you deploy a stack extension with AWS Cloudformation, you incur charges per stack operation.
+Stack operations are: `CREATE`, `UPDATE`, `DELETE`, `READ`, or `LIST` actions on a resource type and `CREATE`, `UPDATE`, or `DELETE` actions for Hook type.
 
 ## Security
 
 **Amazon Side** - Security Best Practice
-- Compliance standard is what your business requires from IaC service and is available in the region you need to operate
-- Amazon Organization SCP - restrict action (create, delete, modification) on production template/resource.
+- Compliance standard is what your business requires from IaC (Infrastructure as a code) service and is available in the region you need to operate
+- Amazon Organization SCP (Service control policies) - restrict action are; (create, delete, modify) on production template/resource.
 - AWS Cloudtrail is enabled & monitored to trigger alerts for malicious activity.
 - AWS Audit Manager, IAM Access Analyzer
 
 **Application Side** - Security Best Practice
 
-- Use the linting to avoid hardcoded secrets and fix eventually indentation
-- IAM to control who can access the CFN template
-- Security of the cloudformation configuration access
-- Security in the cloudformation.
+- Use the linting to avoid hardcoded secrets and fix indentation
+- Use cfn-init to update an existing file, it creates a backup copy of the original file in the same directory
+- IAM (Identity and Access Management) to control who can access the CFN template
+- Security in and of the cloud formation configuration access
 - Security of the cloudformation entry point.
 - Develop a process for continuously verifying if there is a change that may break the CICD pipeline
-- [Ashish Security Podcast](https://cloudsecuritypodcast.tv/listen-to-the-episodes/)
+-  Reference podcasts from our security instructor Ashish[Ashish Security Podcast](https://cloudsecuritypodcast.tv/listen-to-the-episodes/)
 
-## AWS CloudFormation?
+---
 
-AWS CFN is an IaC tool provided by AWS. It allows you to define and provision your cloud infrastructure using declarative templates either in JSON or **YAML** format, as in our scenario. These templates describe the desired state, including resources, configurations, and dependencies in a very readable code.
-
-![AWS CFN Banner](assets/week10/image.png)
-
-### CloudFormation Management
-CloudFormation management is handled differently than  IaC tools like Terraform and Ansible, the key differences are below.
+**CloudFormation Insights**
+CloudFormation is handled differently than IaC tools like Terraform and Ansible, the key differences are below.
 
 |          | CloudFormation                         | Terraform                                 | Ansible                                   |
 |----------|----------------------------------------|-------------------------------------------|-------------------------------------------|
@@ -57,36 +57,38 @@ CloudFormation management is handled differently than  IaC tools like Terraform 
 | Approach | Immutable infrastructure                | Mutable infrastructure                    | Idempotent execution                       |
 | Stacks   | Yes                                    | No                                        | No                                        |
 
-## First Task
+---
+
+###  Prerequisite for Our Task 
 
 How provisioning of a Cluster works.
 
-![CFN Example](assets/week10/CFN Cluster)
+![AWS CFN cluster](assets/week10/image.png)
 
 1.  Create a file in a given directory with the name `template.yaml`
-      - Specify the header for `AWSTemplateFormatVersion` and add `Description`
+    - Specify the header for `AWSTemplateFormatVersion` and add `Description`
 
 ```YAML
   AWSTemplateFormatVersion: '2010-09-09'
   Description: ECS Fargate Cluster
 ```
 
-2.  Define the resources you want to create using AWS, we said **ECS Cluster**:
+2. Define the resources you want to create using AWS, we used **ECS Cluster**:
 ```YAML
 Resources:
   ECSCluster: #LogicalName
     Type: 'AWS::ECS::Cluster'
 ```
 
-3.  Specify any additional configurations needed e.g. security groups, IAM roles.
-     - Create a Bucket for the template artifact
+3. Specify any additional configurations needed e.g. security groups, IAM roles.
+    - Create a Bucket for the template artifact
 ```sh
 aws s3 mb s3://cfn-artifacts
 ```
 
-4.  Set your environement variables for `$STACK_NAME`, `$BUCKET` and your AWS `$REGION` e.g.
+4. Set your environement variables for `$STACK_NAME`, `$BUCKET` and your AWS `$REGION` e.g.
 ```
-export BUCKET="cfn-sartifacts"
+export BUCKET="cfn-artifacts"
 export CFN_PATH="<path-to-ur-template>"
 ```
 
@@ -102,51 +104,30 @@ aws cloudformation deploy \
   --tags group=best-cluster \
   --parameter-overrides $PARAMETERS \
 ```
-6. Navigate to the AWS Management Console and manually execute the changeset to initiate the provisioning of the infrastructure.
+
+6. Proceed to the AWS Management Console and manually execute the changeset to initiate the provisioning of the infrastructure.
 
 ![Cluster Changeset](assets/image.png)
 
 Note: 
-- The   `--no-execute-changeset` will validate the code but not execute it.
-- Once you run the command, the CLI will create a script to check the outcome. you can use the code generated or check it on the cloud formation via the console.
+- The `--no-execute-changeset` will validate the code but not execute it.
+- Once you run the command, the CLI will create a script to check the outcome, and afterward check it on the cloud formation via the console.
 - Changeset in the console is useful to understand the behavior of the change and to see if there is a difference in your infrastructure (i.e. a critical database run in production. By seeing the changeset you know if the resource will be removed). check also the Update requires voice in the [documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ecs-service.html)
 - check the tab `replacement` if it is `true`. this helps to see if one part of the stack will be replaced.
 
-
-**Run**
-
-```sh
-aws cloudformation validate-template --template-body file:///workspace/aws-bootcamp-cruddur-2023/aws/cfn/template.yaml
-```
-The output was
-
-```sh
-aws cloudformation describe-change-set --change-set-name arn:aws:cloudformation:us-east-1:454949276804:changeSet/awscli-cloudformation-package-deploy-1698421599/d6a53456-c98a-4e9c-a378-2eec2aff9ebd
-```
-
-```sh
-{
-    "Parameters": [],
-    "Description": "Setup ECS Cluster\n"
-}
-```
-
-![aws-cluster-deploy-cli](assets/week10/aws-cluster-deploy-cli.png)
-
-The important aspect of working with CFN is in developing efficient and secure templates.
-
-> Check [Project Templates](../aws/cfn/README.md)
+---
 
 ##  AWS CloudFormation — Policy As Code 
 
-[AWS CFN](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html) is a policy-as-code evaluation tool that manages policies in the form of code. In CFN implementations, it is as important to add compliance and PaC this helps ensure that the deployed infrastructure works in line with the organization's policies and standards. 
+[AWS CFN](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html) is a policy-as-code evaluation tool that manages policies in the form of code. In CFN, it is important to add compliance and PaC, this helps ensure that the deployed infrastructure works in line with the organization's policies and standards. 
 
-## Application CFN Guard
+---
 
-CFN Guard allows us to define custom rules and policies that are enforced during the CloudFormation stack deployment process. This ensures that our infrastructure deployments comply with **security**, **compliance**, and **governance** requirements.
+## CFN Guard
 
+CFN Guard allows us to define custom rules and policies that are enforced during the CloudFormation stack deployment process. This ensures that our infrastructure deployments complies with **security**, **compliance**, and **governance** requirements.
 
-To get started with CFN Guard and leverage capabilities for validating your (CFN) templates, follow these steps:
+To get started with CFN Guard for validating your (CFN) templates, follow these steps:
 
 1.  First run this to generated a guard DSL template for version 2.0
 ```sh
@@ -175,131 +156,129 @@ install cfn-guard
 
 ![image](assets/week10/cfn guard.png)
 
-6. The generated file in [my ecs guard folder](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/ecs-cluster.guard).
-7. Validate the CFN template 
+5. The generated file in [my ecs guard folder](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/ecs-cluster.guard).
+   
+6. Validate the CFN template 
 ```sh
  cfn-guard validate
 ```
+---
 
 ## CFN validate
-This tool helps prevent common security risks that could potentially impact your infrastructure. Ensuring the templates are well-formed and follow the recommended CloudFormation syntax, reducing the likelihood of introducing vulnerabilities or misconfigurations.
+This tool helps prevent common security risks that could affect your infrastructure. Ensuring the templates are well-written and follow the recommended CloudFormation syntax, reducing vulnerabilities or misconfigurations.
 
-To validate a **CloudFormation template**, you can use the below command 
+To validate a **CloudFormation template**, use the below command example
 ```sh
 aws cloudformation validate-template --template-body <value> [--template-url <value>]
 ```
 - `--template-body` or `-t`: Specifies the CloudFormation template to validate, either as a string or a file path. You must provide either `--template-body` or `--template-url`.
-- `--template-url`: The URL of the CloudFormation template to validate. You must provide either `--template-body` or `--template-url`.
+- `--template-url`: The URL of the CloudFormation template to validate, you must provide either `--template-body` or `--template-url`.
+
+**Run --**
+
 ```sh
-aws cloudformation validate-template --template-body file:////path/to/your/cfn/template.yaml
-``` 
+aws cloudformation validate-template --template-body file:///workspace/aws-bootcamp-cruddur-2023/aws/cfn/template.yaml
+```
+The output was
 
- 
-AWS CloudFormation will examine the syntax and validate the contents of the template. If any errors or warnings are detected, they will be displayed in the command output.
+```sh
+aws cloudformation describe-change-set --change-set-name arn:aws:cloudformation:us-east-1:454949276804:changeSet/awscli-cloudformation-package-deploy-1698421599/d6a53456-c98a-4e9c-a378-2eec2aff9ebd
+```
 
+```sh
+{
+    "Parameters": [],
+    "Description": "Setup ECS Cluster\n"
+}
+```
+![aws-cluster-deploy-cli](assets/week10/aws-cluster-deploy-cli.png)
+
+The important aspect of working with CFN requires a deep understanding of infrastructure as code (IaC) principles, and writing templates.
 
 > Another potential tool to validate your CFN is [taskcat](https://github.com/aws-ia/taskcat)
 
 
 ## CFN Lint
 
-Cfn-lint is tool that provides linting capabilities for CFN templates to identify and address potential issues, errors, and security risks.
+Cfn-lint is a tool that provides linting capabilities for CFN templates to identify and address potential issues, errors, and security risks.
 
-Integrating cfn-lint into your preferred IDE is a breeze. Simply install it using this command
+Integrating cfn-lint into your preferred IDE (Integrated developement environment), you must first install it using this command
 ```sh
 pip install cfn-lint
 ```
 
-Running linter Just execute the command to analyze your CFN template and receive valuable feedback. 
+To run lint, execute the command below to know your CFN template path
 ```sh
 cfn-lint <path-to-template> 
 ```
 
 ## TOML and Config Management
-Another thing that you may employ is the TOML, The obvious config Language built by the multi-billionaire and GitHub CEO Tom for storing configuration data and make It change consistent and agile to config.
+Another thing that you may deploy is the TOML, this is a config language built for storing configuration and data files.
 
-0. Make sure you have `Ruby` and install `TOML` from `Gem`
+- Make sure you have `Ruby` and install `TOML` from `Gem`
 ```rb
 gem install cfn-toml
 ```
-1. Create a new file `aws/cfn/cluster/config.toml`
 
-```cfn
-[deploy]
-bucket = 'cfn-artifacts'
-region = 'us-east-1'
-stack_name = 'CrdCluster'
-
-[parameters]
-CertificateArn = 'arn:aws:acm:<region>:<aws-id>:certificate/4b87772d-385b-8764-3f2s-fhfhf14ffbd50'
-NetworkingStack = 'CrdNet'
-```
-
-
-2. Pass the parameters to `bin/cfn/cluster` script  
-
-```sh
-#! /usr/bin/env bash
-set -e 
-
-CFN_PATH="/workspace/aws-cloud-project-bootcamp/aws/cfn/cluster/template.yaml"
-CONFIG_PATH="/workspace/aws-cloud-project-bootcamp/aws/cfn/cluster/config.toml"
-echo $CFN_PATH
-
-cfn-lint $CFN_PATH
-
-# TOML Zone
-BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
-REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
-STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
-PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
-# TOML Zone
-
-aws cloudformation deploy \
-  --stack-name $STACK_NAME \
-  --s3-bucket $BUCKET \
-  --region $REGION \
-  --template-file "$CFN_PATH" \
-  --no-execute-changeset \
-  --tags group=cruddur-cluster \
-  --parameter-overrides $PARAMETERS \
-  --capabilities CAPABILITY_NAMED_IAM
-```
-
-3. Run the bash script file `./bin/cfn/cluster-deploy` to fetch from Toml.
-
-To learn more about TOML and how to leverage it effectively, refer to my previous work with SAM available [here.](../ddb/README.md) 
-
-
-**HINTS:** You can streamline the installation of `cfn-lint`, `cfn-guard`, `cfn-toml` in your `gitpod.yml`.
-
+**HINTS:** You can run these commands `cfn-lint`, `cfn-guard`, `cfn-toml` for the installation in your Gitpod environment.
 
 ![](assets/week10/diagram.png)
 
+---
 
-Below are more detailed descriptions on Cruddur's main component's
+### Setting Up CFN Artifact Bucket
+
+[**Follow the setting up bucket section**](#setting-up-cfn-artifact-bucket) to create a bucket just like the initial deployment
+
+As shown in the stack architecture diagram, CFN artifacts will be stored in a bucket.
+
+Follow these steps to do so:
+
+1. Create an S3 bucket named `cfn-artifacts-bucket` for the CFN artifact. This bucket will be used for all future templates.
+
+```rb
+aws s3 mb s3://cfn-artifact-bucket
+```
+2. Save the bucket name in your IDE for effective purposes example is below.
+
+```cfn
+export CFN_BUCKET="cfn-artifacts-bucket"
+gp env CFN_BUCKET="cfn-artifacts-bucket"
+```
+
+We can now reference the bucket name in the scripts and get the artifacts on deployments in AWS.
+
+![My CFN Artifacts bucket in s3](assets/week10/network/CFN Artifactsbucket in s3.png)
+
+> Bucket names are globally unique, *please personalize the bucket name as yours*
+
+---
+
+**Prerequisit information for Networking**
+
+Below are more detailed descriptions on our Cruddur App main component's
 
 **Networking**
-- Virtual Private Cloud (VPC): A dedicated VPC is established using CloudFormation, providing isolated network resources for the application.
-- Ensuring the right CIDR block size is crucial , [use this tool](https://cidr.xyz/) to select an appropriate CIDR block.
+- Virtual Private Cloud (VPC): A dedicated VPC is essential using CloudFormation, providing isolated network resources for the application.
+- Ensuring the right CIDR (Classless Inter-Domain Routing) block size is vital, [use this tool](https://cidr.xyz/) to select an appropriate CIDR block.
 - Public Subnet: Within the VPC, a public subnet is created, allowing external access to the application.
 - Availability Zones: The architecture spans across multiple availability zones to enhance fault tolerance and ensure high availability.
 
 **Cluster**
-- Deployment: The cluster template is utilized to deploy a cluster, leveraging the VPC ID and Public Subnet from the Networking exports.
-- Cluster Exports: Essential information such as the VPC ID, Service Security Group ID, and Target Groups are included in the Cluster Exports.
+- Deployment: The cluster template is utilized to deploy a cluster, using the VPC ID and Public Subnet from the Networking exports.
+- Cluster: Essential information such as the VPC ID, Service Security Group ID, and Target Groups are included in the Cluster templates.
 
 **Frontend**
-- Integration: The Frontend template integrates with the cluster's Frontend Target Group, leveraging CloudFront for improved content delivery and scalability.
+- Integration: The Frontend template integrates with the cluster's Frontend Target Group, using CloudFront for improved content delivery and scalability.
 
 **Backend Services**
-- Secure Communication: The Backend Services make use of the Cluster Exports' VPC ID to ensure secure communication within the VPC.
-- Databases: An RDS database instance is included in the Backend Services for dealing with cruds and Dynamo for dealing with messages.
+- Secure Communication: The Backend Services make use of the Cluster templates; 'VPC ID' to ensure secure communication within the VPC.
+- Databases: An RDS database instance is included in the Backend Services for dealing with cruds and Dynamodb for dealing with messages and tables.
 
 **CI/CD**
 - Integration: Provision CodePipelines, and CodeBuild and configure the buildspec all using code.
 
-## CFN Network Layer
+### CFN Network Layer
 
 This CloudFormation template is designed to create foundational networking components for the app stack and assure cloud connectivity.
 
@@ -314,7 +293,7 @@ Cruddur network resources include the following:
 | `RouteTable`      | Sets up a route table that enables routing to the Internet Gateway and local resources. It includes routes to the Internet Gateway and local destinations.                        |
 | `Subnets`          | Creates six subnets, each associated explicitly with the route table. There are three public subnets (numbered 1 to 3) and three private subnets (numbered 1 to 3).       |
 
-Writing the  `template.yaml` file.
+Writing the  `template.yaml` file for Networking stack.
 
 ```YAML
 AWSTemplateFormatVersion: 2010-09-09
@@ -334,11 +313,36 @@ It includes the following key components
     - 3 Private Subnets numbered 1 to 3
 ```
 
+**MY YAML FILE*
+
+```YAML
+ VpcCidrBlock:
+    Type: String
+    Default: 10.0.0.0/16
+  Az1:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-1a
+  SubnetCidrBlocks: 
+    Description: "Comma-delimited list of CIDR blocks for our private public subnets"
+    Type: CommaDelimitedList
+    Default: >
+      10.0.0.0/24, 
+      10.0.4.0/24, 
+      10.0.8.0/24, 
+      10.0.12.0/24,
+      10.0.16.0/24,
+      10.0.20.0/24
+  Az2:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-1b
+  Az3:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-1c
+```
+
 **Creating the Networking Deploy Script**
 
-I modified the script to not have hardcoded values as I am using my local environment so when I spin up my container it doesn't error out in my GitPod workspace.
-
-```sh
+```YAML
 #! /usr/bin/env bash
 set -e # stop the execution of the script if it fails
 
@@ -371,41 +375,17 @@ aws cloudformation deploy \
   --tags group=cruddur-networking \
   --capabilities CAPABILITY_NAMED_IAM
 ```
+I modified the script to not have hardcoded values as I am using my local environment so when I spin up my container it doesn't error out in my GitPod workspace.
 
-I always run `./bin/cfn/networking-deploy` to initiate a new changeset for the CFN stack when being modified.
+ > I always run `./bin/cfn/networking-deploy` to initiate a new changeset for the CFN stack when being modified.
 
 ## Networking Template Components
 
 - `VpcCidrBlock`: Specifies the CIDR block for the VPC. The default value is `10.0.0.0/16`.
 - `Az1`: Defines the Availability Zone for the first subnet. The default value is `us-east-1a`.
-- **`SubnetCidrBlocks`**: Comma-delimited list of CIDR blocks for the private and public subnets. Please provide the CIDR blocks for all six subnets. Example: `10.0.0.0/24, 10.0.4.0/24, 10.0.8.0/24, 10.0.12.0/24, 10.0.16.0/24, 10.0.20.0/24`.
+- `SubnetCidrBlocks`: Comma-delimited list of CIDR blocks for the private and public subnets. Please provide the CIDR blocks for all six subnets. Example: `10.0.0.0/24, 10.0.4.0/24, 10.0.8.0/24, 10.0.12.0/24, 10.0.16.0/24, 10.0.20.0/24`.
 - `Az2`: Defines the Availability Zone for the second subnet. The default value is `us-east-1b`.
 - `Az3`: Defines the Availability Zone for the third subnet. The default value is `us-east-1c`.
-  
-```YAML
-  VpcCidrBlock:
-    Type: String
-    Default: 10.0.0.0/16
-  Az1:
-    Type: AWS::EC2::AvailabilityZone::Name
-    Default: us-east-1a
-  SubnetCidrBlocks: 
-    Description: "Comma-delimited list of CIDR blocks for our private public subnets"
-    Type: CommaDelimitedList
-    Default: >
-      10.0.0.0/24, 
-      10.0.4.0/24, 
-      10.0.8.0/24, 
-      10.0.12.0/24,
-      10.0.16.0/24,
-      10.0.20.0/24
-  Az2:
-    Type: AWS::EC2::AvailabilityZone::Name
-    Default: us-east-1b
-  Az3:
-    Type: AWS::EC2::AvailabilityZone::Name
-    Default: us-east-1c
-```
 
 ### Virtual Private Cloud
 
@@ -706,7 +686,7 @@ The above networking components have been covered for the foundation of our Crud
 <details>
 
 <summary>
-❗Expand and apply the networking layer template. 
+❗Expand and view the networking layer full template. 
 </summary>
 
 
@@ -730,7 +710,7 @@ Parameters:
     Default: 10.0.0.0/16
   Az1:
     Type: AWS::EC2::AvailabilityZone::Name
-    Default: ca-central-1a
+    Default: us-east-1a
   SubnetCidrBlocks: 
     Description: "Comma-delimited list of CIDR blocks for our private public subnets"
     Type: CommaDelimitedList
@@ -743,10 +723,10 @@ Parameters:
       10.0.20.0/24
   Az2:
     Type: AWS::EC2::AvailabilityZone::Name
-    Default: ca-central-1b
+    Default: us-east-1b
   Az3:
     Type: AWS::EC2::AvailabilityZone::Name
-    Default: ca-central-1d
+    Default: us-east-1c
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -920,101 +900,63 @@ Outputs:
 
 </details>
 
-Save the template in `aws/cfn/networking/template.yaml`
-
-[**Follow the setting up bucket section**](#setting-up-cfn-artifact-bucket) to create a bucket just like your first deployement.
-
-#### Deploy Networking Layer
-
-1. Create Script to deploy the template, It make use of [TOML](#toml-and-config-management)
-```sh
-#! /usr/bin/bash
-
-set -e # stop execution if anything fails
-
-abs_filepath="/workspace/aws-cloud-project-bootcamp/aws/cfn/networking/template.yaml"
-FilePath=$(realpath --relative-base="$PWD" "$abs_filepath")
-
-abs_config_filepath="/workspace/aws-cloud-project-bootcamp/aws/cfn/networking/config.toml"
-ConfigFilePath=$(realpath --relative-base="$PWD" "$abs_config_filepath")
-
-BUCKET=$(cfn-toml key deploy.bucket -t $ConfigFilePath)
-REGION=$(cfn-toml key deploy.region -t $ConfigFilePath)
-STACK_NAME=$(cfn-toml key deploy.stack_name -t $ConfigFilePath)
-
-cfn-lint $FilePath
-
-aws cloudformation deploy \
-  --stack-name $STACK_NAME \
-  --s3-bucket $BUCKET \
-  --s3-prefix networking \
-  --region $REGION \
-  --template-file "$FilePath" \
-  --no-execute-changeset \
-  --tags group=cruddur-networking \
-  --capabilities CAPABILITY_NAMED_IAM
-```
-2. save it in `bin/cfn/networking` and make it executable.
-3. Create toml config.toml and add the required variables.
-```TOML
-[deploy]
-bucket = 'cfn-artifacts-111'
-region = 'ca-central-1'
-stack_name = 'CrdNet'
-```
-4. save the file in `aws/cfn/networking/config.toml`
-5. Deploy the template using `./bin/cfn/networking`
-6. Execute changeset from the console
-
-![CFN Deploy](assets/week10/network/cruddur.png)
-
---- 
-
-### Setting Up CFN Artifact Bucket
-
-As shown in the stack architecture, CFN artifacts will be stored in a bucket.
-
-Follow these steps to do so:
-
-1. Create an S3 bucket named `cfn-artifacts-bucket` for the CFN artifact. This bucket will be used for all future templates.
-
-```sh
-aws s3 mb s3://cfn-artifact-bucket
-```
-2. Save the bucket name in your development environment for future reference.
-
-```sh
-export CFN_BUCKET="cfn-artifacts-bucket"
-gp env CFN_BUCKET="cfn-artifacts-bucket"
-```
-
-We can now reference the bucket name in the scripts and get the artifacts on deployments in AWS.
-
-![My CFN Artifacts bucket in s3](assets/week10/network/CFN Artifactsbucket in s3.png)
-
-> Bucket names are globally unique, *please personalize the bucket name as yours*
+This template was saved in `aws/cfn/networking/template.yaml`
 
 ---
 
-## Cluster Template
+## Cluster Stack
 
-Create `aws/cfn/cluster/config.toml` and add the below variables.
+This stack builds upon our networking stack and takes the output from it to build our cluster. It specifically requires the ARN of our domain certificate to create a HTTPS listener and the name of our networking stack to be able to reference its outputs (Public Subnets etc.)
 
-```TOML
+1. Create a new TOML file `aws/cfn/cluster/config.toml`
+
+```cfn
 [deploy]
-bucket = 'cfn-artifacts-111'
-region = '<region>'
+bucket = 'cfn-artifacts'
+region = 'us-east-1'
 stack_name = 'CrdCluster'
 
 [parameters]
-CertificateArn = 'arn:aws:acm:<region>:<aws-id>:certificate/dde234bf-7796-4c97-a977-b1d0a19e978d'
+CertificateArn = 'arn:aws:acm:<region>:<aws-id>:certificate/4b87772d-385b-8764-3f2s-fhfhf14ffbd50'
 NetworkingStack = 'CrdNet'
 ```
 
 
+2. Pass the parameters to bin directory for deploying here; `bin/cfn/cluster` in the cluster-deploy script  
+
+```YAML
+#! /usr/bin/env bash
+set -e 
+
+CFN_PATH="/workspace/aws-cloud-project-bootcamp/aws/cfn/cluster/template.yaml"
+CONFIG_PATH="/workspace/aws-cloud-project-bootcamp/aws/cfn/cluster/config.toml"
+echo $CFN_PATH
+
+cfn-lint $CFN_PATH
+
+# TOML Zone
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+PARAMETERS=$(cfn-toml params v2 -t $CONFIG_PATH)
+# TOML Zone
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-cluster \
+  --parameter-overrides $PARAMETERS \
+  --capabilities CAPABILITY_NAMED_IAM
+```
+
+3. Run the bash script file `./bin/cfn/cluster-deploy` this fetches information from Toml.
+
 ### Cluster Description
 
-Create `aws/cfn/cluster/template.yaml` and reflect on the description.
+Create `aws/cfn/cluster/template.yaml` and view below the description.
 
 
 | Resource                        | Description                                                     |
@@ -1028,7 +970,7 @@ Create `aws/cfn/cluster/template.yaml` and reflect on the description.
 | Backend Target Group            | Routes traffic to the backend service.                           |
 | Frontend Target Group           | Routes traffic to the frontend service.                          |
 
-Add the section to your  `Description` in `template.yaml`
+Add the section to your  `Description` in cluster `template.yaml`
 
 ```YAML
 AWSTemplateFormatVersion: 2010-09-09
@@ -1053,6 +995,7 @@ Description: |
 Parameters:
 - **NetworkingStack**: This parameter represents the base layer of networking components, such as VPC and subnets. It allows you to specify the networking stack to use as the foundation for the Fargate cluster. 
 - **CertificateArn**: This parameter is of type string and is used to specify the ARN (Amazon Resource Name) of the certificate attached from Amazon Certification Manager (ACM). It allows you to associate an SSL/TLS certificate with the Application Load Balancer (ALB) for secure communication.
+  
 ```yaml
 Parameters:
   NetworkingStack:
@@ -1071,7 +1014,7 @@ Parameters:
 - **FrontendHealthCheckPort**: This defines the port that the ALB uses for health checks on the frontend service.
 - **FrontendHealthCheckProtocol**: used for health checks on the frontend service. It specifies whether HTTP or HTTPS is used for the health check.
 - **FrontendHealthCheckTimeoutSeconds**: determines how long the ALB waits for a response before considering the health check as failed.
-- **FrontendHealthyThresholdCount**: Thisdefines the number of consecutive successful health checks required to consider the frontend service as healthy.
+- **FrontendHealthyThresholdCount**: This defines the number of consecutive successful health checks required to consider the frontend service as healthy.
 - **FrontendUnhealthyThresholdCount**: This specifies the number of consecutive failed health checks required to consider the frontend service as unhealthy. 
 
 ```YAML
@@ -1311,6 +1254,7 @@ The `ServiceSG` resource represents the security group for the Fargate services.
 - `GroupDescription`: The description of the security group.
 - `VpcId`: The ID of the VPC in which the security group resides.
 - `SecurityGroupIngress`: The inbound rules for the security group, specifying the allowed protocols, ports, and source security group.
+  
 ```YAML
   ServiceSG:
     Type: AWS::EC2::SecurityGroup
@@ -1360,6 +1304,7 @@ The `BackendTG` resource represents the target group for the backend services. I
 ```
 ### Frontend Target Group
 The `FrontendTG` resource represents the target group for the frontend services. It defines the health checks and routing configuration for the services. 
+
 ```YAML
  FrontendTG:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -1421,7 +1366,7 @@ Outputs:
 <details>
 
 <summary>
-❗Expand and apply the entire Cluster template. 
+❗Expand and view the Cluster full template. 
 </summary>
 
 ```YAML
@@ -1692,7 +1637,8 @@ Outputs:
 
 
 
-Create `bin/cfn/cluster` script and make it executable.
+Create `bin/cfn/cluster` script and make it executable by running `chmod u+x` in terminal before deploying cluster
+
 ```sh
 #! /usr/bin/bash
 
@@ -1729,23 +1675,86 @@ aws cloudformation deploy \
 > *Execute the changeset*
 
 
-## AWS RDS Template
+### AWS CFN RDS STACK
 
-Create `aws/cfn/db/config.toml` and add the below variables.
+1. Create DB Template file and script
 
-```TOML
+```sh
+cd /workspace/aws-bootcamp-cruddur-2023
+mkdir -p  aws/cfn/db
+cd aws/cfn/db
+touch template.yaml config.toml.example config.toml
+```
+
+As I did with the networking-deploy script I modified the script to not have hardcoded values.
+
+2. Create and Update DB Deploy Script `aws/cfn/db/template.yaml`
+
+the following [code](../bin/cfn/db-deploy)
+
+
+3. Update config.toml with the following settings that specify the bucket, region and name of the CFN stack.
+
+```toml
 [deploy]
-bucket = 'cfn-artifacts-111'
-region = '<region>'
+bucket = 'nwaliechinyere-cfn-artifacts'
+region = 'us-east-1'
 stack_name = 'CrdDb'
 
 [parameters]
 NetworkingStack = 'CrdNet'
-ClusterStack = 'CrdDb'
+ClusterStack = 'CrdCluster'
 MasterUsername = 'cruddurroot'
 ```
 
-Create `aws/cfn/db/template.yaml` and start developing.
+4. Seed DB
+
+Before seeding we need to update the value for `PROD_CONNECTION_URL` to our new database. I updated it in both Parameter Store and GitPod.
+
+We need to update it both locations because a connection will be made by the application `/cruddur/backend-flask/CONNECTION_URL` in parameter store. The GitPod `PROD_CONNECTION_URL` needs to be updated to allow seeding.
+
+Once `PROD_CONNECTION_URL` has been set correctly, seed the database with data by running the following.
+
+`./bin/db/setup prod`
+
+5. Creat CFN DDB Stack Script
+
+- Create `.aws-sam` with `./bin/cfn/ddb-build`
+- Package with `./bin/cfn/ddb-package`
+- Create CFN stack with ths command `./bin/cfn/ddb-deploy`, in order to create CrdDdb stack.
+
+The DDB table created now needs to be added to the following location `/aws/cfn/service/config.toml` and should look as below. Update the parameters for your domain and DDBMessageTable is obtained from the resources section of `CrdDdb`
+
+```config
+[deploy]
+bucket = 'nwaliechinyere-cfn-artifacts'
+region = 'us-east-1'
+stack_name = 'CrdSrvBackendFlask'
+
+[parameters]
+EnvFrontendUrl = 'https://nwaliechinyere.xyz'
+EnvBackendUrl = 'https://api.nwaliechinyere.xyz'
+DDBMessageTable = 'CrdDdb-DynamoDBTable-<the digit and alphabet>'
+```
+
+Update `aws/cfn/service/template.yaml`
+
+Place this entry under parameters
+
+```yaml
+  DDBMessageTable:
+    Type: String
+    Default: cruddur-messages
+```
+
+The following needs to be added to the `Environment:` section under `TaskDefinition:`
+
+```yaml
+            - Name: DDB_MESSAGE_TABLE
+              Value: !Ref DDBMessageTable       
+```
+
+Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB entry.
 
 ### Describing the template
 
@@ -2000,9 +2009,9 @@ Resources:
 </details>
 
 
-
 Create `bin/cfn/db` script and make it executable.
-```sh
+
+```YAML
 #! /usr/bin/env bash
 set -e # stop the execution of the script if it fails
 
@@ -2032,7 +2041,72 @@ aws cloudformation deploy \
 
 ![Deployed CrdDb Cluster](assets/week11/cfn-stack/Deployed CrdDb Cluster.png)
 
-> *Execute the changeset*.
+> *Execute the changeset*
+
+---
+
+### CFN Deploy Service Stack
+
+**Create Service Template**
+
+1. As I did with the networking-deploy script I modified the script to not have hardcoded values, and Updated config.toml with the following settings that specify the bucket, region and name of the CFN stack.
+
+ > With all the pre-requisites in place the service stack script can now be created
+
+2.  Create the cfn service deploy script, It make use of toml
+   
+```sh
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="CFN_NETWORK_DEPLOY"
+printf "${CYAN}====== ${LABEL}${NO_COLOR}\n"
+
+# Get the absolute path of this script
+ABS_PATH=$(readlink -f "$0")
+CFN_BIN_PATH=$(dirname $ABS_PATH)
+BIN_PATH=$(dirname $CFN_BIN_PATH)
+PROJECT_PATH=$(dirname $BIN_PATH)
+CFN_PATH="$PROJECT_PATH/aws/cfn/networking/template.yaml"
+CONFIG_PATH="$PROJECT_PATH/aws/cfn/networking/config.toml"
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --s3-prefix networking \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-networking \
+  --capabilities CAPABILITY_NAMED_IAM
+```
+
+3. Save this toml file in a bin directory here; `bin/cfn/service-deploy` and always make it executable e.g `chmod u+x`
+   
+4. Create toml config.toml and add the required variables.
+```TOML
+[deploy]
+bucket = 'cfn-artifacts'
+region = 'us-east-1'
+stack_name = 'CrdNet'
+```
+5. Save the file in `aws/cfn/service/config.toml`
+   
+6. Deploy the template uwith this command `./bin/cfn/service` in your Gitpod or IDE terminal
+   
+7. Running `./bin/cfn/service-deploy` now initiates a changeset for the CFN stack.
+
+![CFN sevice-deploy](assets/week10/network/cruddur.png)
+
+---
 
 ### **Reference**
 
