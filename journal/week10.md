@@ -1,6 +1,6 @@
 # Week 10 — CloudFormation Part 1
 
-For weeks 10 & 11, we will focus more on Infrastructure as Code to provision and manage the main components of our Cruddur app with designs to complete the BootCamp. The app completion can easily manage updates to the application consistently and enable automation of the deployment process when needed.
+ This week we'll be doing rigorous tasks, For weeks 10 & 11, we will focus more on Infrastructure as Code to provision and manage the main components of our Cruddur app with designs to complete the BootCamp. The app completion manages updates to the application consistently and enables automation of the deployment process when needed.
 
 ## CloudFormation Part 1 Tasks
 - [AWS CloudFormation](#aws-cloudformation)
@@ -12,11 +12,12 @@ For weeks 10 & 11, we will focus more on Infrastructure as Code to provision and
   - [CFN Validate](#cfn-validate)
   - [CFN Lint](#cfn-lint)
   - [TOML Config ](#toml-and-config-management)
-- [CloudFormation Stack](#cruddur-cfn-stack)
-  - [CFN Bucket](#creating-cfn-artifact-bucket)
+  - [Setting Up CFN Artifact Bucket](#setting-up-cfn-artifact-bucket)
+- [AWS CFN Stack Prerequisite information](#aws-cfn-stack-prerequisite-information)
   - [Networking Layer](#cfn-network-layer)
   - [Cluster Template](#cluster-template)
-  - [CFN DDB STACK](#cfn-ddb-stack)
+  - [AWS CFN RDS STACK](#aws-cfn-rds-stack)
+  - [CFN Service Deploy Stack](#cfn-service-deploy-stack)
 
 --- 
 
@@ -212,7 +213,7 @@ To run lint, execute the command below to know your CFN template path
 cfn-lint <path-to-template> 
 ```
 
-## TOML and Config Management
+### TOML and Config Management
 Another thing that you may deploy is the TOML, this is a config language built for storing configuration and data files.
 
 - Make sure you have `Ruby` and install `TOML` from `Gem`
@@ -227,8 +228,6 @@ gem install cfn-toml
 ---
 
 ### Setting Up CFN Artifact Bucket
-
-[**Follow the setting up bucket section**](#setting-up-cfn-artifact-bucket) to create a bucket just like the initial deployment
 
 As shown in the stack architecture diagram, CFN artifacts will be stored in a bucket.
 
@@ -254,7 +253,7 @@ We can now reference the bucket name in the scripts and get the artifacts on dep
 
 ---
 
-**Prerequisit information for Networking**
+### AWS CFN Stack Prerequisite Information
 
 Below are more detailed descriptions on our Cruddur App main component's
 
@@ -278,7 +277,7 @@ Below are more detailed descriptions on our Cruddur App main component's
 **CI/CD**
 - Integration: Provision CodePipelines, and CodeBuild and configure the buildspec all using code.
 
-### CFN Network Layer
+### CFN Network Stack
 
 This CloudFormation template is designed to create foundational networking components for the app stack and assure cloud connectivity.
 
@@ -313,7 +312,7 @@ It includes the following key components
     - 3 Private Subnets numbered 1 to 3
 ```
 
-**MY YAML FILE*
+**MY YAML FILE**
 
 ```YAML
  VpcCidrBlock:
@@ -379,7 +378,7 @@ I modified the script to not have hardcoded values as I am using my local enviro
 
  > I always run `./bin/cfn/networking-deploy` to initiate a new changeset for the CFN stack when being modified.
 
-## Networking Template Components
+**Networking Template Components**
 
 - `VpcCidrBlock`: Specifies the CIDR block for the VPC. The default value is `10.0.0.0/16`.
 - `Az1`: Defines the Availability Zone for the first subnet. The default value is `us-east-1a`.
@@ -387,7 +386,7 @@ I modified the script to not have hardcoded values as I am using my local enviro
 - `Az2`: Defines the Availability Zone for the second subnet. The default value is `us-east-1b`.
 - `Az3`: Defines the Availability Zone for the third subnet. The default value is `us-east-1c`.
 
-### Virtual Private Cloud
+**Virtual Private Cloud**
 
 The VPC  is an entirely different section in the AWS cloud where you launch AWS resources, It serves as the foundational networking component for the Cruddur app architecture, providing the network environment for all the other resources.
 
@@ -412,7 +411,7 @@ The VPC  is an entirely different section in the AWS cloud where you launch AWS 
           Value: !Sub "${AWS::StackName}VPC"
 ```
 
-### InternetGateway
+**InternetGateway**
 
 The IGW enables internet connectivity for resources within the VPC, allowing your app to communicate with external services and users on the internet.
 
@@ -431,7 +430,7 @@ The IGW enables internet connectivity for resources within the VPC, allowing you
 ```
 
 
-### Attaching VPC Gateway
+**Attaching VPC Gateway**
 
 The IGW in VPC establishes the connectivity between your VPC and the internet, enabling inbound and outbound internet traffic for the crud app.
 
@@ -449,7 +448,7 @@ The IGW in VPC establishes the connectivity between your VPC and the internet, e
 ```
 
 
-### Route Table
+**Route Table**
 
 A route table contains a set of rules (routes) that determine where network traffic is directed within a VPC.
 
@@ -468,7 +467,7 @@ A route table contains a set of rules (routes) that determine where network traf
           Value: !Sub "${AWS::StackName}RT"
 ```
 
-### Route To Internet Gateway
+**Route To Internet Gateway**
 
 This component defines a route in the route table to direct internet-bound traffic to the Internet Gateway to ensure that traffic destined for the Internet is directed to the IGW.
 
@@ -489,7 +488,7 @@ This component defines a route in the route table to direct internet-bound traff
       DestinationCidrBlock: 0.0.0.0/0
 ```
 
-### Public Subnets
+**Public Subnets**
 
 Public subnets are used to host our resources to have direct internet access and allow apps to serve requests from the internet.
 
@@ -541,7 +540,7 @@ Public subnets are used to host our resources to have direct internet access and
           Value: !Sub "${AWS::StackName}SubnetPub3"
 ```
 
-### Private Subnets
+**Private Subnets**
 
 We used these private subnets to host resources that should not be directly accessible from the internet, such as RDS and DynamoDB connections.
 - **Type**: `AWS::EC2::Subnet`
@@ -589,7 +588,7 @@ We used these private subnets to host resources that should not be directly acce
           Value: !Sub "${AWS::StackName}SubnetPriv3"
 ```
 
-### Subnet Associations
+**Subnet Associations**
 
 Subnet associations establish the link between subnets and the route table. Mainly, to control the flow of network traffic and ensure that it follows the desired routing paths within your VPC.
 
@@ -618,7 +617,7 @@ Subnet associations establish the link between subnets and the route table. Main
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
 ```
-### Outputs
+**Outputs**
 CloudFormation templates allow you to export certain values or resources for use in other stacks or AWS services.
 
 - **VpcId**:
@@ -667,7 +666,8 @@ Outputs:
 ```
 
 
-#### **Availability Zones**
+**Availability Zones**
+
   - **Value**: This output joins the `Az1`, `Az2`, and `Az3` parameters using a comma-separated format.
   - **Export**:
     - **Name**: The name of the export is generated using the `AWS::StackName` and appended with `AvailabilityZones`. For example, if the stack name is `MyStack`, the export name would be `${AWS::StackName}AvailabilityZones`.
@@ -904,7 +904,7 @@ This template was saved in `aws/cfn/networking/template.yaml`
 
 ---
 
-## Cluster Stack
+### Cluster Stack
 
 This stack builds upon our networking stack and takes the output from it to build our cluster. It specifically requires the ARN of our domain certificate to create a HTTPS listener and the name of our networking stack to be able to reference its outputs (Public Subnets etc.)
 
@@ -954,7 +954,7 @@ aws cloudformation deploy \
 
 3. Run the bash script file `./bin/cfn/cluster-deploy` this fetches information from Toml.
 
-### Cluster Description
+**Cluster Description**
 
 Create `aws/cfn/cluster/template.yaml` and view below the description.
 
@@ -990,7 +990,8 @@ Description: |
   - Backend Target Group
   - Frontend Target Group
 ```
-### Cluster Parameters
+
+**Cluster Parameters**
 
 Parameters:
 - **NetworkingStack**: This parameter represents the base layer of networking components, such as VPC and subnets. It allows you to specify the networking stack to use as the foundation for the Fargate cluster. 
@@ -1084,6 +1085,7 @@ Parameters:
 ```
 
 **Cluster Required Resources**
+
 ### FargateCluster
 The `FargateCluster` resource represents an ECS cluster using Fargate. It is the foundation of the containerized infrastructure. The properties for this resource include:
 
@@ -1111,7 +1113,8 @@ Resources:
         Namespace: cruddur
 ```
 
-### Application Load Balancer
+**Application Load Balancer**
+
 The `ALB` resource represents an Application Load Balancer. It acts as the entry point for incoming traffic and distributes it to the appropriate target groups. The properties for this resource include:
 
 - `Name`: The name of the load balancer.
@@ -1150,7 +1153,8 @@ The `ALB` resource represents an Application Load Balancer. It acts as the entry
           Value: false
 ```
 
-### HTTPS Listener
+**HTTPS Listener**
+
 The `HTTPSListener` resource represents the HTTPS listener of the Application Load Balancer. It listens for incoming HTTPS traffic on port 443. The properties for this resource include:
 
 - `Protocol`: The protocol for the listener, set to `HTTPS`.
@@ -1171,7 +1175,9 @@ The `HTTPSListener` resource represents the HTTPS listener of the Application Lo
         - Type: forward
           TargetGroupArn:  !Ref FrontendTG
 ```
-### HTTP Listener
+
+**HTTP Listener**
+
 The `HTTPListener` resource represents the HTTP listener of the Application Load Balancer. It listens for incoming HTTP traffic on port 80 and redirects it to HTTPS. The properties for this resource include:
 
 - `Protocol`: The protocol for the listener, set to `HTTP`.
@@ -1196,7 +1202,9 @@ The `HTTPListener` resource represents the HTTP listener of the Application Load
               Query: "#{query}"
               StatusCode: "HTTP_301"
 ```
-### API ALB Listerner Rule
+
+**API ALB Listerner Rule**
+
 The `ApiALBListernerRule` resource represents a listener rule for the API subdomain. It defines conditions and actions for routing requests to the backend target group. The properties for this resource include:
 
 - `Conditions`: The conditions that must be met for the rule to be applied.
@@ -1218,7 +1226,9 @@ The `ApiALBListernerRule` resource represents a listener rule for the API subdom
       ListenerArn: !Ref HTTPSListener
       Priority: 1
 ```
-### ALB Security Group
+
+**ALB Security Group**
+
 The `ALBSG` resource represents the security group associated with the Application Load Balancer. It controls the inbound and outbound traffic for the load balancer. The properties for this resource include:
 
 - `GroupName`: The name of the security group.
@@ -1247,7 +1257,8 @@ The `ALBSG` resource represents the security group associated with the Applicati
           Description: INTERNET HTTP
 ```
 
-### Fargate Service Security Group
+**Fargate Service Security Group**
+
 The `ServiceSG` resource represents the security group for the Fargate services. It controls the inbound and outbound traffic for the services. The properties for this resource include:
 
 - `GroupName`: The name of the security group.
@@ -1271,7 +1282,9 @@ The `ServiceSG` resource represents the security group for the Fargate services.
           ToPort: !Ref BackendPort
           Description: ALB HTTP
 ```
-### Backend Target Group
+
+**Backend Target Group**
+
 The `BackendTG` resource represents the target group for the backend services. It defines the health checks and routing configuration for the services. The properties for this resource include:
 ```YAML
  BackendTG:
@@ -1302,7 +1315,9 @@ The `BackendTG` resource represents the target group for the backend services. I
         - Key: target-group-name
           Value: backend
 ```
-### Frontend Target Group
+
+**Frontend Target Group**
+
 The `FrontendTG` resource represents the target group for the frontend services. It defines the health checks and routing configuration for the services. 
 
 ```YAML
@@ -1335,7 +1350,7 @@ The `FrontendTG` resource represents the target group for the frontend services.
           Value: frontend
 ```
 
-### Cluster Outputs
+**Cluster Outputs**
 
 Specify the output values for `ClusterName`, `ServiceSecurityGroupId`, `ALBSecurityGroupId`, `FrontendTGArn`and `BackendTGArn`.
 
@@ -1636,7 +1651,6 @@ Outputs:
 </details>
 
 
-
 Create `bin/cfn/cluster` script and make it executable by running `chmod u+x` in terminal before deploying cluster
 
 ```sh
@@ -1670,93 +1684,14 @@ aws cloudformation deploy \
 ```
 5. Deploy the template using `./bin/cfn/cluster`
 
-![Deployed CrdCluster](assets/week10/Deployed CrdCluster.png)
+![Deployed CrdCluster](assets/week10/DeployedCrdCluster.png)
 
-> *Execute the changeset*
+ > *Execute the changeset*
 
 
 ### AWS CFN RDS STACK
 
-1. Create DB Template file and script
-
-```sh
-cd /workspace/aws-bootcamp-cruddur-2023
-mkdir -p  aws/cfn/db
-cd aws/cfn/db
-touch template.yaml config.toml.example config.toml
-```
-
-As I did with the networking-deploy script I modified the script to not have hardcoded values.
-
-2. Create and Update DB Deploy Script `aws/cfn/db/template.yaml`
-
-the following [code](../bin/cfn/db-deploy)
-
-
-3. Update config.toml with the following settings that specify the bucket, region and name of the CFN stack.
-
-```toml
-[deploy]
-bucket = 'nwaliechinyere-cfn-artifacts'
-region = 'us-east-1'
-stack_name = 'CrdDb'
-
-[parameters]
-NetworkingStack = 'CrdNet'
-ClusterStack = 'CrdCluster'
-MasterUsername = 'cruddurroot'
-```
-
-4. Seed DB
-
-Before seeding we need to update the value for `PROD_CONNECTION_URL` to our new database. I updated it in both Parameter Store and GitPod.
-
-We need to update it both locations because a connection will be made by the application `/cruddur/backend-flask/CONNECTION_URL` in parameter store. The GitPod `PROD_CONNECTION_URL` needs to be updated to allow seeding.
-
-Once `PROD_CONNECTION_URL` has been set correctly, seed the database with data by running the following.
-
-`./bin/db/setup prod`
-
-5. Creat CFN DDB Stack Script
-
-- Create `.aws-sam` with `./bin/cfn/ddb-build`
-- Package with `./bin/cfn/ddb-package`
-- Create CFN stack with ths command `./bin/cfn/ddb-deploy`, in order to create CrdDdb stack.
-
-The DDB table created now needs to be added to the following location `/aws/cfn/service/config.toml` and should look as below. Update the parameters for your domain and DDBMessageTable is obtained from the resources section of `CrdDdb`
-
-```config
-[deploy]
-bucket = 'nwaliechinyere-cfn-artifacts'
-region = 'us-east-1'
-stack_name = 'CrdSrvBackendFlask'
-
-[parameters]
-EnvFrontendUrl = 'https://nwaliechinyere.xyz'
-EnvBackendUrl = 'https://api.nwaliechinyere.xyz'
-DDBMessageTable = 'CrdDdb-DynamoDBTable-<the digit and alphabet>'
-```
-
-Update `aws/cfn/service/template.yaml`
-
-Place this entry under parameters
-
-```yaml
-  DDBMessageTable:
-    Type: String
-    Default: cruddur-messages
-```
-
-The following needs to be added to the `Environment:` section under `TaskDefinition:`
-
-```yaml
-            - Name: DDB_MESSAGE_TABLE
-              Value: !Ref DDBMessageTable       
-```
-
-Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB entry.
-
-### Describing the template
+**Describing the template**
 
 This is the cfn for the primary Postgres RDS Database for crud function.
 
@@ -1767,7 +1702,8 @@ Description: |
   - RDS Instance
   - Database Security Group
 ```
-### Parameters
+
+**Parameters**
 
 - `NetworkingStack`: This parameter represents the base layer of networking components, such as VPC and subnets.
 - `ClusterStack`: This parameter represents the Fargate cluster.
@@ -1818,7 +1754,9 @@ Parameters:
     Type: String
     NoEcho: true
 ```
-### PostgreSQL Resource
+
+**PostgreSQL Resource**
+
 - Type: AWS::EC2::SecurityGroup
 - Description: Public Facing SG for our Cruddur ALB
 - Properties:
@@ -1847,7 +1785,9 @@ Resources:
           ToPort: 5432
           Description: ALB HTTP
 ```
-#### PosgreSQL Subnet Group
+
+**PosgreSQL Subnet Group** 
+
 - Type: AWS::RDS::DBSubnetGroup
 - Properties:
   - `DBSubnetGroupName`: The name of the DB subnet group.
@@ -1861,7 +1801,9 @@ Resources:
       DBSubnetGroupDescription: !Sub "${AWS::StackName}DBSubnetGroup"
       SubnetIds: { 'Fn::Split' : [ ','  , { "Fn::ImportValue": { "Fn::Sub": "${NetworkingStack}PublicSubnetIds" }}] }
 ```
-#### Database
+
+**Database**
+
 - Type: AWS::RDS::DBInstance
 - Properties:
   - `AllocatedStorage`: The amount of storage to allocate to the database instance.
@@ -1884,7 +1826,9 @@ Resources:
       DBInstanceClass: !Ref DBInstanceClass
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
 ```
-- **DB Connection Properties:**
+
+**DB Connection Properties:**
+
   - `DBName`: The name of the database.
   - `DBSubnetGroupName`: The name of the DB subnet group to associate with the database instance.
   - `DeletionProtection`: Indicates whether deletion protection is enabled.
@@ -1895,6 +1839,7 @@ Resources:
   - `MasterUserPassword`: The master user password for the database instance.
   - `PubliclyAccessible`: Indicates whether the database instance is publicly accessible.
   - `VPCSecurityGroups`: Security groups associated with the database instance.
+    
 ```YAML
       DBName: !Ref DBName
       DBSubnetGroupName: !Ref DBSubnetGroup
@@ -2008,8 +1953,25 @@ Resources:
 
 </details>
 
+## CONFIGURING STEPS
 
-Create `bin/cfn/db` script and make it executable.
+1. Create DB Template file and script
+
+```sh
+cd /workspace/aws-bootcamp-cruddur-2023
+mkdir -p  aws/cfn/db
+cd aws/cfn/db
+touch template.yaml config.toml.example config.toml
+```
+
+As I did with the networking-deploy script I modified the script to not have hardcoded values.
+
+2. Create and Update DB Deploy Script `aws/cfn/db/template.yaml`
+
+View the db template [code]((https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/db/template.yaml))
+
+
+3. Create `bin/cfn/db` script and make it executable.
 
 ```YAML
 #! /usr/bin/env bash
@@ -2037,15 +1999,61 @@ aws cloudformation deploy \
   --parameter-overrides $PARAMETERS MasterUserPassword=$DB_PASSWORD \
   --capabilities CAPABILITY_NAMED_IAM
 ```
-5. Deploy the template using `./bin/cfn/db`
 
-![Deployed CrdDb Cluster](assets/week11/cfn-stack/Deployed CrdDb Cluster.png)
+
+4. Update config.toml with the following settings that specify the bucket, region and name of the CFN stack.
+
+```toml
+[deploy]
+bucket = 'nwaliechinyere-cfn-artifacts'
+region = 'us-east-1'
+stack_name = 'CrdDb'
+
+[parameters]
+NetworkingStack = 'CrdNet'
+ClusterStack = 'CrdCluster'
+MasterUsername = 'cruddurroot'
+```
+
+5. Seed Deploy
+
+Before seeding we need to update the value for `PROD_CONNECTION_URL` to our new database. I updated it in both Parameter Store and GitPod.
+
+We need to update it both locations because a connection will be made by the application `/cruddur/backend-flask/CONNECTION_URL` in parameter store. The GitPod `PROD_CONNECTION_URL` needs to be updated to allow seeding.
+
+Once `PROD_CONNECTION_URL` has been set correctly, seed the database with data by running the following.
+
+`./bin/db/setup prod`
+
+6. Creat CFN DDB Stack Script
+
+- Create `.aws-sam` with `./bin/cfn/ddb-build`
+- Package with `./bin/cfn/ddb-package`
+- Create CFN stack with ths command `./bin/cfn/ddb-deploy`, in order to create CrdDdb stack.
+
+The DDB table created now needs to be added to the following location `/aws/cfn/service/config.toml` and should look as below. Update the parameters for your domain and DDBMessageTable is obtained from the resources section of `CrdDdb`
+
+```config
+[deploy]
+bucket = 'nwaliechinyere-cfn-artifacts'
+region = 'us-east-1'
+stack_name = 'CrdSrvBackendFlask'
+
+[parameters]
+EnvFrontendUrl = 'https://nwaliechinyere.xyz'
+EnvBackendUrl = 'https://api.nwaliechinyere.xyz'
+DDBMessageTable = 'CrdDdb-DynamoDBTable-<the digit and alphabet>'
+```
+
+Below is the Dynamodb Deployed stack after running  `./bin/cfn/db`
+
+![Deployed CrdDb Cluster](assets/week11/cfn-stack/DeployedCrdDbCluster.png)
 
 > *Execute the changeset*
 
 ---
 
-### CFN Deploy Service Stack
+### CFN Service Deploy Stack
 
 **Create Service Template**
 
@@ -2100,9 +2108,28 @@ stack_name = 'CrdNet'
 ```
 5. Save the file in `aws/cfn/service/config.toml`
    
-6. Deploy the template uwith this command `./bin/cfn/service` in your Gitpod or IDE terminal
+6. Deploy the template with this command `./bin/cfn/service` in your Gitpod or IDE terminal
+
+7. Update `aws/cfn/service/template.yaml`
+
+Place this entry under parameters
+
+```yaml
+  DDBMessageTable:
+    Type: String
+    Default: cruddur-messages
+```
+
+The following needs to be added to the `Environment:` section under `TaskDefinition:`
+
+```yaml
+            - Name: DDB_MESSAGE_TABLE
+              Value: !Ref DDBMessageTable       
+```
+
+Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB entry.
    
-7. Running `./bin/cfn/service-deploy` now initiates a changeset for the CFN stack.
+8. Running `./bin/cfn/service-deploy` now initiates a changeset for the CFN stack.
 
 ![CFN sevice-deploy](assets/week10/network/cruddur.png)
 
@@ -2117,7 +2144,7 @@ stack_name = 'CrdNet'
 - [OWASP IaC Security Cheatsheet](https://cheatsheetseries.owasp.org/cheatsheets/Infrastructure_as_Code_Security_Cheat_Sheet.html)
 - [NetDevOps modern approach to networking deployments](https://aws.amazon.com/fr/blogs/networking-and-content-delivery/netdevops-a-modern-approach-to-aws-networking-deployments/)
 
-> *In case you want to convert an already provisioned resource to the was cloud formation stack with the current configuration use [this](https://former2.com/) or try this [link](https://github.com/sentialabs/cloudformer2) [link](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/validate-template.html)*
+> *In case you want to convert an already provisioned resource to the was cloud formation stack with the current configuration use [this](https://former2.com/) or try this [link](https://github.com/sentialabs/cloudformer2) or this [link](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/validate-template.html)*
 
 ---
 
