@@ -2148,4 +2148,13 @@ Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB e
 
 ---
 
+**Issues during this task**
+
+For this task I had an issue with the Code Editor verifying my code. I tried debugging and searching through the bootcamp forum and found a solution, I had to make some changes to the Code Editor adding some yaml tags.
+
+![image](yamlissue.png)
+![image](yamlissuefixed.png)
+
+---
+
 > CloudFormation Part 2 in [Week Eleven](week11.md).
