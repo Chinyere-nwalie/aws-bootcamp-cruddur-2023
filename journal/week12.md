@@ -10,7 +10,7 @@
     - [Issues](#issues)
     - [Issues during CI/CD stack deployment](#issues-during-cicd-stack-deployment)
   - [Update Lambda](#update-lambda)
-    - [Add Rule to `CrdDbRDSSG` SG to allow connection from Lambda](#add-rule-to-crddbrdssg-sg-to-allow-connection-from-lambda)
+    - [Add Rule to CrdDbRDSSG SG to allow connection from Lambda](#add-rule-to-crddbrdssg-sg-to-allow-connection-from-lambda)
     - [Warnings being shown when running static build](#warnings-being-shown-when-running-static-build)
   - [All CFN Stacks Created](#all-cfn-stacks-created)
   - [Proof of cruds working in Production](#proof-of-cruds-working-in-production)
