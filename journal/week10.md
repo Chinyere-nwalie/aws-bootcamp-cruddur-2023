@@ -7,11 +7,11 @@
   - [Cost](#cost)
   - [Security](#Security)
   - [Prerequisite for Our Task ](#prerequisite-for-our-task )
-- [AWS CloudFormation — Policy As Code](#AWS-cloudformation-policy-as-code)
-  - [CFN Guard](#cfn-guard)
   - [CFN Validate](#cfn-validate)
+- [AWS CloudFormation — Policy As Code](#AWS-cloudformation-policy-as-code)
   - [CFN Lint](#cfn-lint)
   - [TOML Config ](#toml-and-config-management)
+  - [CFN Guard](#cfn-guard)
   - [Setting Up CFN Artifact Bucket](#setting-up-cfn-artifact-bucket)
 - [AWS CFN Stack Prerequisite information](#aws-cfn-stack-prerequisite-information)
   - [Networking Layer](#cfn-network-layer)
@@ -130,11 +130,44 @@ I went to cloudtrail to further to view and read the **Event-History** for compr
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(645).png)
 
-The error message states that there wasn't a specific provider hence failure, which means the ECS Cluster wasn't defined. So I deleted the stack.
+The error message states that there wasn't a specific provider hence failure, which means the ECS Cluster wasn't defined or the template file needs modification. So I deleted the stack, learning how crucial it is to ensure that the capacity provider mentioned in your ECS service corresponds to a valid and existing capacity provider.
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(646).png)
 
-So I went to my Gitpod CLI and modified my CloudFormation template and then ran this code to properly define and configure the ECS (Elastic Container Service) cluster. Amazon ECS is a fully managed container orchestration service that allows you to run, stop, and manage Docker containers on a cluster. This code helps to specify the ECS cluster itself and later allows me to add associated resources such as the ECS tasks, services, IAM roles, and networking configurations.
+## CFN validate
+This tool helps prevent common security risks that could affect the infrastructure, ensuring the templates are well-written and follow the recommended CloudFormation syntax, reducing vulnerabilities or misconfigurations. After deleting the stack, I went to my Gitpod CLI modified my CloudFormation template file, and then ran this code to properly validate, define, and configure the ECS (Elastic Container Service) cluster. Amazon ECS is a fully managed container orchestration service that allows you to run, stop, and manage Docker containers on a cluster. 
+
+To validate a **CloudFormation template**, use the below command example
+```sh
+aws cloudformation validate-template --template-body <value> [--template-url <value>]
+```
+- `--template-body` or `-t`: Specifies the CloudFormation template to validate, either as a string or a file path. You must provide either `--template-body` or `--template-url`.
+- `--template-url`: The URL of the CloudFormation template to validate, you must provide either `--template-body` or `--template-url`.
+
+**Run --**
+
+```sh
+aws cloudformation validate-template --template-body file:///workspace/aws-bootcamp-cruddur-2023/aws/cfn/template.yaml
+```
+The output was
+
+```sh
+aws cloudformation describe-change-set --change-set-name arn:aws:cloudformation:us-east-1:454949276804:changeSet/awscli-cloudformation-package-deploy-1698421599/d6a53456-c98a-4e9c-a378-2eec2aff9ebd
+```
+
+```sh
+{
+    "Parameters": [],
+    "Description": "Setup ECS Cluster\n"
+}
+```
+This code also helps to specify the ECS cluster itself and later allows me to add associated resources such as the ECS tasks, services, IAM roles, and networking configurations.
+
+A view of the code in my environment
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(648).png)
+
+The important aspect of working with CFN requires a deep understanding of infrastructure as code (IaC) principles, and writing templates.
+
+> Another potential tool to validate your CFN is [taskcat](https://github.com/aws-ia/taskcat)
 
 I have re-deployed the 'My-Cluster' stack again
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(639).png)
@@ -161,82 +194,6 @@ Note:
 [AWS CFN](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html) is a policy-as-code evaluation tool that manages policies in the form of code. In CFN, it is important to add compliance and PaC, this helps ensure that the deployed infrastructure works in line with the organization's policies and standards. 
 
 ---
-
-## CFN Guard
-
-CFN Guard allows us to define custom rules and policies that are enforced during the CloudFormation stack deployment process. This ensures that our infrastructure deployments complies with **security**, **compliance**, and **governance** requirements.
-
-To get started with CFN Guard for validating your (CFN) templates, follow these steps:
-
-1.  First run this to generated a guard DSL template for version 2.0
-```sh
-cfn-guard rulegen --template /workspace/aws-bootcamp-cruddur-2023/aws/cfn/template.yaml
-```
-> output
-```sh
-let aws_ecs_cluster_resources = Resources.*[ Type == 'AWS::ECS::Cluster' ]
-rule aws_ecs_cluster when %aws_ecs_cluster_resources !empty {
-  %aws_ecs_cluster_resources.Properties.ClusterName == "MyCluster"
-  %aws_ecs_cluster_resources.Properties.CapacityProviders == ["FARGATE"]
-}
-```
-
-2.  Install cfn-guard
-```sh
-install cfn-guard
-```
-3. verify that CFN Guard is successfully installed by running the command
-```sh
- cfn-guard --version
-```
- > If successful, the similar output should be shown as ``cfn-guard 2.1.3``
-
-4. Create  `task-definition.guard` for our cluster.
-
-![image](assets/week10/cfn guard.png)
-
-5. The generated file in [my ecs guard folder](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/ecs-cluster.guard).
-   
-6. Validate the CFN template 
-```sh
- cfn-guard validate
-```
----
-
-## CFN validate
-This tool helps prevent common security risks that could affect your infrastructure. Ensuring the templates are well-written and follow the recommended CloudFormation syntax, reducing vulnerabilities or misconfigurations.
-
-To validate a **CloudFormation template**, use the below command example
-```sh
-aws cloudformation validate-template --template-body <value> [--template-url <value>]
-```
-- `--template-body` or `-t`: Specifies the CloudFormation template to validate, either as a string or a file path. You must provide either `--template-body` or `--template-url`.
-- `--template-url`: The URL of the CloudFormation template to validate, you must provide either `--template-body` or `--template-url`.
-
-**Run --**
-
-```sh
-aws cloudformation validate-template --template-body file:///workspace/aws-bootcamp-cruddur-2023/aws/cfn/template.yaml
-```
-The output was
-
-```sh
-aws cloudformation describe-change-set --change-set-name arn:aws:cloudformation:us-east-1:454949276804:changeSet/awscli-cloudformation-package-deploy-1698421599/d6a53456-c98a-4e9c-a378-2eec2aff9ebd
-```
-
-```sh
-{
-    "Parameters": [],
-    "Description": "Setup ECS Cluster\n"
-}
-```
-![aws-cluster-deploy-cli](assets/week10/aws-cluster-deploy-cli.png)
-
-The important aspect of working with CFN requires a deep understanding of infrastructure as code (IaC) principles, and writing templates.
-
-> Another potential tool to validate your CFN is [taskcat](https://github.com/aws-ia/taskcat)
-
-
 ## CFN Lint
 
 Cfn-lint is a tool that provides linting capabilities for CFN templates to identify and address potential issues, errors, and security risks.
@@ -250,6 +207,7 @@ To run lint, execute the command below to know your CFN template path
 ```sh
 cfn-lint <path-to-template> 
 ```
+![CFN-Lint](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(650).png)
 
 ### TOML and Config Management
 Another thing that you may deploy is the TOML, this is a config language built for storing configuration and data files.
@@ -261,8 +219,46 @@ gem install cfn-toml
 
 **HINTS:** You can run these commands `cfn-lint`, `cfn-guard`, `cfn-toml` for the installation in your Gitpod environment.
 
-![](assets/week10/diagram.png)
+---
 
+## CFN Guard
+
+CFN Guard allows us to define custom rules and policies that are enforced during the CloudFormation stack deployment process. This ensures that our infrastructure deployments complies with **security**, **compliance**, and **governance** requirements.
+
+To get started with CFN Guard follow these steps:
+
+1.  Install cfn-guard
+```sh
+install cfn-guard
+```
+2. verify that CFN Guard is successfully installed by running the command
+```sh
+ cfn-guard --version
+```
+![CFN-Guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(651).png)
+
+ > If successful, the similar output should be shown as ``cfn-guard 2.1.3``
+
+3. Create  `task-definition.guard` for our cluster, run this code to generate a guard DSL template for version 2.0
+```sh
+cfn-guard rulegen --template /workspace/aws-bootcamp-cruddur-2023/aws/cfn/template.yaml
+```
+> output
+```sh
+let aws_ecs_cluster_resources = Resources.*[ Type == 'AWS::ECS::Cluster' ]
+rule aws_ecs_cluster when %aws_ecs_cluster_resources !empty {
+  %aws_ecs_cluster_resources.Properties.ClusterName == "MyCluster"
+  %aws_ecs_cluster_resources.Properties.CapacityProviders == ["FARGATE"]
+}
+```
+
+4. The generated file in
+![Task-definition-guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(652).png)
+   
+5. Validate the CFN template 
+```sh
+ cfn-guard validate
+```
 ---
 
 ### Setting Up CFN Artifact Bucket
