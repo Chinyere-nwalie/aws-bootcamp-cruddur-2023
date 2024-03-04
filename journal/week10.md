@@ -277,7 +277,7 @@ Follow these steps to do so:
 ```rb
 aws s3 mb s3://cfn-artifact-bucket
 ```
-![Artifact-bucket](655)
+![Artifact-bucket](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(655).png)
 
 NB- I later changed the name to **nwaliechinyere-cfn-artifacts**
 
@@ -287,14 +287,15 @@ NB- I later changed the name to **nwaliechinyere-cfn-artifacts**
 export CFN_BUCKET="cfn-artifacts-bucket"
 gp env CFN_BUCKET="cfn-artifacts-bucket"
 ```
-![Env-vars](674)
+![Env-vars](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(674).png)
 
 We can now reference the bucket name in the scripts and get the artifacts on deployments in AWS.
 
 My CFN Artifacts bucket in AWS s3
 
-![nwaliechinyere-cfn-artifacts-in-s3](659)
-![nwaliechinyere-cfn-artifacts-in-s3](660)
+![nwaliechinyere-cfn-artifacts-in-s3](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(659).png)
+
+![nwaliechinyere-cfn-artifacts-in-s3](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(660).png)
 
 > Bucket names are globally unique, *please personalize the bucket name as yours*
 
