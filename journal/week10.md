@@ -181,6 +181,9 @@ An overview of the modified stack and the **Action** is reading modify
 Update is Completed
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(642).png)
 
+![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(673).png)
+
+
 Note: 
 - The `--no-execute-changeset` will validate the code but not execute it.
 - Once you run the command, the CLI will create a script to check the outcome, and afterward check it on the cloud formation via the console.
@@ -269,21 +272,29 @@ As shown in the stack architecture diagram, CFN artifacts will be stored in a bu
 
 Follow these steps to do so:
 
-1. Create an S3 bucket named `cfn-artifacts-bucket` for the CFN artifact. This bucket will be used for all future templates.
+1. Create an S3 bucket named `cfn-artifacts-bucket name` for the CFN artifact. This bucket will be used for all future templates.
 
 ```rb
 aws s3 mb s3://cfn-artifact-bucket
 ```
-2. Save the bucket name in your IDE for effective purposes example is below.
+![Artifact-bucket](655)
+
+NB- I later changed the name to **nwaliechinyere-cfn-artifacts**
+
+2. Save the bucket name in your IDE Environment variables for effective purposes example is below.
 
 ```cfn
 export CFN_BUCKET="cfn-artifacts-bucket"
 gp env CFN_BUCKET="cfn-artifacts-bucket"
 ```
+![Env-vars](674)
 
 We can now reference the bucket name in the scripts and get the artifacts on deployments in AWS.
 
-![My CFN Artifacts bucket in s3](assets/week10/network/CFN Artifactsbucket in s3.png)
+My CFN Artifacts bucket in AWS s3
+
+![nwaliechinyere-cfn-artifacts-in-s3](659)
+![nwaliechinyere-cfn-artifacts-in-s3](660)
 
 > Bucket names are globally unique, *please personalize the bucket name as yours*
 
