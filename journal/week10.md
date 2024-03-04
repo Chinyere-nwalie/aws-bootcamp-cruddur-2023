@@ -1,6 +1,6 @@
 # Week 10 — CloudFormation Part 1
 
- This week we'll be doing rigorous tasks, For weeks 10 & 11, we will focus more on Infrastructure as Code to provision and manage the main components of our Cruddur app with designs to complete the BootCamp. The app completion manages updates to the application consistently and enables automation of the deployment process when needed.
+ This week we'll be doing rigorous tasks, For weeks 10 & 11, we will focus more on Infrastructure as Code to provision and manage the main components of our Cruddur app with designs to complete the BootCamp. The app completion manages updates to the application consistently and enables deployment process automation when needed.
 
 ## CloudFormation Part 1 Tasks
 - [AWS CloudFormation](#aws-cloudformation)
@@ -23,7 +23,7 @@
 
 ### AWS CloudFormation?
 
-AWS CFN  is a service and an IaC tool provided by AWS that helps you model and set up your AWS resources so that you can spend less time managing those resources and more time focusing on your applications that run in AWS, It also allows you to define and provision your cloud infrastructure using templates in JSON or **YAML** format. These templates show and explain the desired state, including resources, configurations, and dependencies in codes, and you don't need to individually create and configure AWS resources and figure out what's dependent on what; CloudFormation handles that.
+AWS CFN  is a service and an IaC tool provided by AWS that helps you model and set up your AWS resources so that you can spend less time managing those resources and more time focusing on your applications that run in AWS, It also allows you to define and provision your cloud infrastructure using templates in JSON or **YAML** format. These templates show and explain the desired state, including resources, configurations, and dependencies in codes, and you don't need to individually create and configure AWS resources and figure out what's dependent on what, AWS CloudFormation handles that.
 
 ## Cost
 In AWS Cloudformation, you only pay for what you use, with no minimum fees and no required upfront commitment. When you deploy a stack extension with AWS Cloudformation, you incur charges per stack operation.
@@ -43,9 +43,9 @@ Stack operations are: `CREATE`, `UPDATE`, `DELETE`, `READ`, or `LIST` actions on
 - Use cfn-init to update an existing file, it creates a backup copy of the original file in the same directory
 - IAM (Identity and Access Management) to control who can access the CFN template
 - Security in and of the cloud formation configuration access
-- Security of the cloudformation entry point.
+- Security of the cloud formation entry point.
 - Develop a process for continuously verifying if there is a change that may break the CICD pipeline
--  Reference podcasts from our security instructor Ashish[Ashish Security Podcast](https://cloudsecuritypodcast.tv/listen-to-the-episodes/)
+-  Reference podcasts from our security instructor [Ashish Security Podcast](https://cloudsecuritypodcast.tv/listen-to-the-episodes/)
 
 ---
 
@@ -64,7 +64,7 @@ CloudFormation is handled differently than IaC tools like Terraform and Ansible,
 
 How provisioning of a Cluster works.
 
-![AWS CFN cluster](assets/week10/image.png)
+![AWS CFN cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/CFN%20Cluster.jpeg)
 
 1.  Create a file in a given directory with the name `template.yaml`
     - Specify the header for `AWSTemplateFormatVersion` and add `Description`
