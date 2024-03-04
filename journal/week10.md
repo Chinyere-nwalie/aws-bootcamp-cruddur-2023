@@ -252,7 +252,9 @@ rule aws_ecs_cluster when %aws_ecs_cluster_resources !empty {
 }
 ```
 
-4. The generated file in
+4. The generated file in [my ecs guard folder](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/ecs-cluster.guard).
+
+A view of the code output i my environment
 ![Task-definition-guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(652).png)
    
 5. Validate the CFN template 
