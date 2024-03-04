@@ -109,32 +109,43 @@ aws cloudformation deploy \
 
 6. Proceed to the AWS Management Console and manually execute the changeset to initiate the provisioning of the infrastructure.
 
+This is a deployment of **My Cluster** stack in my GITPOD environment
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(633).png)
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(634).png)
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(635).png)
 
+The creation of this stack is in review on my AWS console
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(636).png)
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(637).png)
 
-![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(643).png)
+After the creation of this stack, the Update was failing and this was the error message;
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(644).png)
 
+I went to cloudtrail to further to view and read the **Event-History** for comprehension
+![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(643).png)
+
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(645).png)
 
+The error message states that there wasn't a specific provider hence failure, which means the ECS Cluster wasn't defined. So I deleted the stack.
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(646).png)
 
+So I went to my Gitpod CLI and modified my CloudFormation template and then ran this code to properly define and configure the ECS (Elastic Container Service) cluster. Amazon ECS is a fully managed container orchestration service that allows you to run, stop, and manage Docker containers on a cluster. This code helps to specify the ECS cluster itself and later allows me to add associated resources such as the ECS tasks, services, IAM roles, and networking configurations.
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(648).png)
 
+I have re-deployed the 'My-Cluster' stack again
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(639).png)
 
+Creation is completed, now the **Physical ID** and see it is specified
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(640).png)
 
+An overview of the modified stack and the **Action** is reading modify
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(641).png)
 
+Update is Completed
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(642).png)
 
 Note: 
