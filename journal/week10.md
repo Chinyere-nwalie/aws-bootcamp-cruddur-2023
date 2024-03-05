@@ -152,7 +152,7 @@ The error message states that there wasn't a specific provider hence failure, wh
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(645).png)
 
-I went to ECS and there was no service
+I went to ECS and there was a created cluster
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(646).png)
 
 ---
