@@ -1829,11 +1829,35 @@ aws cloudformation deploy \
 ```
 5. Deploy the template using `./bin/cfn/cluster`
 
-![Deployed CrdCluster](assets/week10/DeployedCrdCluster.png)
-
  > *Execute the changeset*
 
 ## Proof of Project Cluster Stack
+
+CFN Toml and then I deployed the Cluster stack with  `./bin/cfn/cluster`
+
+![CrdCluster in cli](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(708).png)
+
+CrdCluster is created
+![Deployed CrdCluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(710).png)
+
+The CrdCluster ALB-(Application Load Balancer) was also created, view the security groups
+![Deployed CrdCluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(719).png)
+
+Inbound rules
+![Deployed CrdCluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(721).png)
+
+Outbound rules
+![Deployed CrdCluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(720).png)
+
+I edited the Route52 records to route traffic from the previous ALB to the Cluster ALB
+![Deployed CrdCluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(750).png)
+
+Security group's description for the RDS and Cluster ALB
+![Deployed CrdCluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(751).png)
+
+Listeners for the Cluster ALB
+![Deployed CrdCluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(756).png)
+
 
 ---
 
@@ -1917,7 +1941,64 @@ Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB e
 
 ## Proof of Project Service Stack
 
-![CFN sevice-deploy](assets/week10/network/cruddur.png)
+Ran service-deploy script in Gitpod cli
+![CFN sevice-deploy](!https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(713).png)
+
+Stack creation on AWS Cloud formation
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(712).png)
+
+Backend-flask service in progress
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(714).png)
+
+Sercurity Group for the Crdbackend flask service
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(718).png)
+
+The service container task is stopping showing the error message
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(715).png)
+
+I was checking the container Logs
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(716).png)
+
+I went to the service backend-flask on EC2 and targets to help debugg and was showing unhealthy still
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(717).png)
+|
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(744).png)
+
+I went to ECS-(Elastic container service) to check the network configuration for the backend service and see if I could find solutions
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(725).png)
+
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(724).png)
+
+I tried creating another service, it was showing the api.health as true
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(758).png)
+
+But after the logs showed no errors, it was still failing at health checks, I was debugging for 3 days till I reached out for help
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(757).png)
+
+After I got help, I discovered that [Task definition](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/task-definitions/backend-flask.json) for my service in lines 29-33 view below had `bin/flask/health-check` but in my task definition on AWS Cluster it didn't have it hence the container was failing, so I edited it on the console to have `flask` in the `bin/flask/health-check` and then re-deploy it again
+
+```sh
+"healthCheck": {
+          "command": [
+            "CMD-SHELL",
+            "python /backend-flask/bin/flask/health-check"
+          ],
+```
+
+I then deleted the stack to rebuild
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(760).png)
+
+Re-deploy of service
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(761).png)
+
+Changeset Executed
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(738).png)
+
+Service In progress
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(739).png)
+
+The backend flask service is Healthy now
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(763).png)
 
 ---
 
@@ -1925,7 +2006,7 @@ Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB e
 
 **Describing the template**
 
-This is the cfn for the primary Postgres RDS Database for crud function.
+This is the cfn for the primary Postgres RDS Database for the crud function.
 
 ```YAML
 AWSTemplateFormatVersion: 2010-09-09
@@ -2278,9 +2359,28 @@ DDBMessageTable = 'CrdDdb-DynamoDBTable-<the digit and alphabet>'
 ```
 
 ## Proof of Project RDS Stack
-Below is the Dynamodb Deployed stack after running  `./bin/cfn/db`
+Below is the Dynamodb stack code  `./bin/cfn/db` I ran in my Gitpod CLI-(Command line interface) to create the RDS with cloud formation script
 
-![Deployed CrdDb Cluster](assets/week11/cfn-stack/DeployedCrdDbCluster.png)
+![CrdDb Cluster cli](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(729).png)
+|
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(730).png)
+|
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(731).png)
+|
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(732).png)
+|
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(733).png)
+
+I went to the parameter store to change the RDS value to that of the newly created one so the Cruddur app could work without errors, I later deleted the old RDS stack we had created in week 4 so I don't incur cost
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(734).png)
+
+Value changed
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(735).png)
+
+The new RDS security groups
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(742).png)
+|
+![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(746).png)
 
 > *Execute the changeset*
 
@@ -2305,6 +2405,7 @@ While carrying out these Bootcamp tasks, I had an issue with the Code Editor ver
 
 ![Red-fine-lines](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(707).png)
 
+After editing the yaml in my gitpod settings all the lines cleared out
 ![Rectified-yaml-script](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(706).png)
 
 ---
