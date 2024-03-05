@@ -17,10 +17,13 @@
   - [Setting Up CFN Artifact Bucket](#setting-up-cfn-artifact-bucket)
 - [AWS CFN Stack Prerequisite information](#aws-cfn-stack-prerequisite-information)
   - [Networking Layer](#cfn-network-layer)
-  - [Cluster Template](#cluster-template)
+     - [Proof of Project](#proof-of-project)
+  - [Cluster Template Stack](#cluster-template-stack)
+     - [Proof of Project](#proof-of-project)
   - [AWS CFN RDS STACK](#aws-cfn-rds-stack)
+     - [Proof of Project](#proof-of-project)
   - [CFN Service Deploy Stack](#cfn-service-deploy-stack)
-
+     - [Proof of Project](#proof-of-project)
 --- 
 
 ### AWS CloudFormation?
@@ -334,7 +337,7 @@ Below are more detailed descriptions on our Cruddur App main component's
 
 A  view of the CIDR
 
-![CIDR](https:/CIDR)
+![CIDR](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(676).png)
 
 **Cluster**
 - Deployment: The cluster template is utilized to deploy a cluster, using the VPC ID and Public Subnet from the Networking exports.
@@ -975,9 +978,78 @@ Outputs:
 
 This template was saved in `aws/cfn/networking/template.yaml`
 
+## Proof of Project
+For the CFN Network Stack, we added VPC to our stack and renamed it 'Cruddur'
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(677).png)
+
+Execute changeset
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(678).png)
+
+Changeset Executed
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(679).png)
+
+VPC Added
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(680).png)
+|
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(681).png)
+
+We created a Network template & deploy script and ran it in the terminal to create a stack on the AWS Console
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(682).png)
+
+Creation completed
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(684).png)
+
+Changeset Executed
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(688).png)
+
+A view of what was added to the stack
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(686).png)
+|
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(687).png)
+
+Route Table
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(689).png)
+
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(698).png)
+
+Executing `Network-deploy` to add subnets
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(690).png)
+
+Creation was completed, I then clicked on the changeset link to view what was added before executing the changeset
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(691).png)
+
+What was Added
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(692).png)
+
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(693).png)
+
+Changeset was throwing errors; When I read the error message and checked my code for debugging, the Ipv6Cidrblock and the subnets didn't have CIDR blocks that's why it refused to create changeset
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(694).png)
+
+I modified my codes and created it again
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(701).png)
+
+A view of the stack outputs what was added and re-modified
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(702).png)
+
+The resources
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(704).png)
+
+VPC
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(695).png)
+
+Subnets
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(696).png)
+
+IGW-(Internet gateway)
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(697).png)
+
+Network ACLs
+![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(700).png)
+
 ---
 
-### Cluster Stack
+### Cluster Template Stack
 
 This stack builds upon our networking stack and takes the output from it to build our cluster. It specifically requires the ARN of our domain certificate to create a HTTPS listener and the name of our networking stack to be able to reference its outputs (Public Subnets etc.)
 
@@ -1761,6 +1833,8 @@ aws cloudformation deploy \
 
  > *Execute the changeset*
 
+## Proof of Project
+
 
 ### AWS CFN RDS STACK
 
@@ -2118,6 +2192,7 @@ EnvBackendUrl = 'https://api.nwaliechinyere.xyz'
 DDBMessageTable = 'CrdDdb-DynamoDBTable-<the digit and alphabet>'
 ```
 
+## Proof of Project
 Below is the Dynamodb Deployed stack after running  `./bin/cfn/db`
 
 ![Deployed CrdDb Cluster](assets/week11/cfn-stack/DeployedCrdDbCluster.png)
@@ -2204,6 +2279,8 @@ Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB e
    
 8. Running `./bin/cfn/service-deploy` now initiates a changeset for the CFN stack.
 
+## Proof of Project
+
 ![CFN sevice-deploy](assets/week10/network/cruddur.png)
 
 ---
@@ -2223,10 +2300,11 @@ Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB e
 
 **Issues during this task**
 
-For this task I had an issue with the Code Editor verifying my code. I tried debugging and searching through the bootcamp forum and found a solution, I had to make some changes to the Code Editor adding some yaml tags.
+While carrying out these Bootcamp tasks, I had an issue with the Code Editor verifying my code. I tried debugging and searching through the bootcamp forum and found a solution, I had to make some changes to the Code Editor adding some yaml tags.
 
-![image](yamlissue.png)
-![image](yamlissuefixed.png)
+![Red-fine-lines](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(707).png)
+
+![Rectified-yaml-script](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(706).png)
 
 ---
 
