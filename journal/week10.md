@@ -20,10 +20,10 @@
      - [Proof of Project Network Stack](#proof-of-project-network-stack)
   - [Cluster Template Stack](#cluster-template-stack)
      - [Proof of Project Cluster Stack](#proof-of-project-cluster-stack)
-  - [AWS CFN RDS STACK](#aws-cfn-rds-stack)
-     - [Proof of Project RDS Stack](#proof-of-project-rds-stack)
   - [CFN Service Deploy Stack](#cfn-service-deploy-stack)
      - [Proof of Project Service Stack](#proof-of-project-service-stack)
+  - [AWS CFN RDS STACK](#aws-cfn-rds-stack)
+     - [Proof of Project RDS Stack](#proof-of-project-rds-stack)
 --- 
 
 ### AWS CloudFormation?
@@ -1834,7 +1834,93 @@ aws cloudformation deploy \
  > *Execute the changeset*
 
 ## Proof of Project Cluster Stack
+
 ---
+
+### CFN Service Deploy Stack
+
+**Create Service Template**
+
+1. As I did with the networking-deploy script I modified the script to not have hardcoded values, and Updated config.toml with the following settings that specify the bucket, region and name of the CFN stack.
+
+ > With all the pre-requisites in place the service stack script can now be created
+
+2.  Create the cfn service deploy script, It make use of toml
+   
+```sh
+#! /usr/bin/env bash
+set -e # stop the execution of the script if it fails
+
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="CFN_NETWORK_DEPLOY"
+printf "${CYAN}====== ${LABEL}${NO_COLOR}\n"
+
+# Get the absolute path of this script
+ABS_PATH=$(readlink -f "$0")
+CFN_BIN_PATH=$(dirname $ABS_PATH)
+BIN_PATH=$(dirname $CFN_BIN_PATH)
+PROJECT_PATH=$(dirname $BIN_PATH)
+CFN_PATH="$PROJECT_PATH/aws/cfn/networking/template.yaml"
+CONFIG_PATH="$PROJECT_PATH/aws/cfn/networking/config.toml"
+
+cfn-lint $CFN_PATH
+
+BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
+REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
+STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
+
+aws cloudformation deploy \
+  --stack-name $STACK_NAME \
+  --s3-bucket $BUCKET \
+  --s3-prefix networking \
+  --region $REGION \
+  --template-file "$CFN_PATH" \
+  --no-execute-changeset \
+  --tags group=cruddur-networking \
+  --capabilities CAPABILITY_NAMED_IAM
+```
+
+3. Save this toml file in a bin directory here; `bin/cfn/service-deploy` and always make it executable e.g `chmod u+x`
+   
+4. Create toml config.toml and add the required variables.
+```TOML
+[deploy]
+bucket = 'cfn-artifacts'
+region = 'us-east-1'
+stack_name = 'CrdNet'
+```
+5. Save the file in `aws/cfn/service/config.toml`
+   
+6. Deploy the template with this command `./bin/cfn/service` in your Gitpod or IDE terminal
+
+7. Update `aws/cfn/service/template.yaml`
+
+Place this entry under parameters
+
+```yaml
+  DDBMessageTable:
+    Type: String
+    Default: cruddur-messages
+```
+
+The following needs to be added to the `Environment:` section under `TaskDefinition:`
+
+```yaml
+            - Name: DDB_MESSAGE_TABLE
+              Value: !Ref DDBMessageTable       
+```
+
+Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB entry.
+   
+8. Running `./bin/cfn/service-deploy` now initiates a changeset for the CFN stack.
+
+## Proof of Project Service Stack
+
+![CFN sevice-deploy](assets/week10/network/cruddur.png)
+
+---
+
 ### AWS CFN RDS STACK
 
 **Describing the template**
@@ -2197,90 +2283,6 @@ Below is the Dynamodb Deployed stack after running  `./bin/cfn/db`
 ![Deployed CrdDb Cluster](assets/week11/cfn-stack/DeployedCrdDbCluster.png)
 
 > *Execute the changeset*
-
----
-
-### CFN Service Deploy Stack
-
-**Create Service Template**
-
-1. As I did with the networking-deploy script I modified the script to not have hardcoded values, and Updated config.toml with the following settings that specify the bucket, region and name of the CFN stack.
-
- > With all the pre-requisites in place the service stack script can now be created
-
-2.  Create the cfn service deploy script, It make use of toml
-   
-```sh
-#! /usr/bin/env bash
-set -e # stop the execution of the script if it fails
-
-CYAN='\033[1;36m'
-NO_COLOR='\033[0m'
-LABEL="CFN_NETWORK_DEPLOY"
-printf "${CYAN}====== ${LABEL}${NO_COLOR}\n"
-
-# Get the absolute path of this script
-ABS_PATH=$(readlink -f "$0")
-CFN_BIN_PATH=$(dirname $ABS_PATH)
-BIN_PATH=$(dirname $CFN_BIN_PATH)
-PROJECT_PATH=$(dirname $BIN_PATH)
-CFN_PATH="$PROJECT_PATH/aws/cfn/networking/template.yaml"
-CONFIG_PATH="$PROJECT_PATH/aws/cfn/networking/config.toml"
-
-cfn-lint $CFN_PATH
-
-BUCKET=$(cfn-toml key deploy.bucket -t $CONFIG_PATH)
-REGION=$(cfn-toml key deploy.region -t $CONFIG_PATH)
-STACK_NAME=$(cfn-toml key deploy.stack_name -t $CONFIG_PATH)
-
-aws cloudformation deploy \
-  --stack-name $STACK_NAME \
-  --s3-bucket $BUCKET \
-  --s3-prefix networking \
-  --region $REGION \
-  --template-file "$CFN_PATH" \
-  --no-execute-changeset \
-  --tags group=cruddur-networking \
-  --capabilities CAPABILITY_NAMED_IAM
-```
-
-3. Save this toml file in a bin directory here; `bin/cfn/service-deploy` and always make it executable e.g `chmod u+x`
-   
-4. Create toml config.toml and add the required variables.
-```TOML
-[deploy]
-bucket = 'cfn-artifacts'
-region = 'us-east-1'
-stack_name = 'CrdNet'
-```
-5. Save the file in `aws/cfn/service/config.toml`
-   
-6. Deploy the template with this command `./bin/cfn/service` in your Gitpod or IDE terminal
-
-7. Update `aws/cfn/service/template.yaml`
-
-Place this entry under parameters
-
-```yaml
-  DDBMessageTable:
-    Type: String
-    Default: cruddur-messages
-```
-
-The following needs to be added to the `Environment:` section under `TaskDefinition:`
-
-```yaml
-            - Name: DDB_MESSAGE_TABLE
-              Value: !Ref DDBMessageTable       
-```
-
-Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB entry.
-   
-8. Running `./bin/cfn/service-deploy` now initiates a changeset for the CFN stack.
-
-## Proof of Project Service Stack
-
-![CFN sevice-deploy](assets/week10/network/cruddur.png)
 
 ---
 
