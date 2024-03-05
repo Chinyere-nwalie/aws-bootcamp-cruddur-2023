@@ -218,7 +218,7 @@ To run lint, execute the command below to know your CFN template path
 ```sh
 cfn-lint <path-to-template> 
 ```
-![CFN-Lint](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(650).png)
+![CFN-Lint](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(650).png)
 
 ## TOML and Config Management
 Another thing that you may deploy is the TOML, this is a config language built for storing configuration and data files.
@@ -249,7 +249,7 @@ install cfn-guard
 ```sh
  cfn-guard --version
 ```
-![CFN-Guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(651).png)
+![CFN-Guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(651).png)
 
  > If successful, the similar output should be shown as ``cfn-guard 2.1.3``
 
@@ -271,7 +271,7 @@ rule aws_ecs_cluster when %aws_ecs_cluster_resources !empty {
 4. The generated file in [my ecs guard folder](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/ecs-cluster.guard).
 
 A view of the code output in my environment
-![Task-definition-guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(652).png)
+![Task-definition-guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(652).png)
    
 5. Validate the CFN template
 
