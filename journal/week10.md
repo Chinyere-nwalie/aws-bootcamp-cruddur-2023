@@ -220,7 +220,7 @@ cfn-lint <path-to-template>
 ```
 ![CFN-Lint](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(650).png)
 
-### TOML and Config Management
+## TOML and Config Management
 Another thing that you may deploy is the TOML, this is a config language built for storing configuration and data files.
 
 - Make sure you have `Ruby` and install `TOML` from `Gem`
@@ -289,7 +289,7 @@ The important aspect of working with CFN requires a deep understanding of infras
 
 ---
 
-### Setting Up CFN Artifact Bucket
+## Setting Up CFN Artifact Bucket
 
 As shown in the stack architecture diagram, CFN artifacts will be stored in a bucket.
 
@@ -325,7 +325,7 @@ My CFN Artifacts bucket in AWS s3
 
 ---
 
-### AWS CFN Stack Prerequisite Information
+## AWS CFN Stack Prerequisite Information
 
 Below are more detailed descriptions on our Cruddur App main component's
 
