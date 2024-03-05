@@ -7,7 +7,7 @@
   - [Cost](#cost)
   - [Security](#Security)
   - [Prerequisite for Our Task ](#prerequisite-for-our-task )
-  - [Proof of Project](#proof-of-project)
+  - [Proof of Project CloudFormation](#proof-of-project-cloudformation)
  
 - [AWS CloudFormation — Policy As Code](#AWS-cloudformation-policy-as-code)
   - [CFN Validate](#cfn-validate)
@@ -17,13 +17,13 @@
   - [Setting Up CFN Artifact Bucket](#setting-up-cfn-artifact-bucket)
 - [AWS CFN Stack Prerequisite information](#aws-cfn-stack-prerequisite-information)
   - [CFN Network Stack](#cfn-network-stack)
-     - [Proof of Project](#proof-of-project)
+     - [Proof of Project Network Stack](#proof-of-project-network-stack)
   - [Cluster Template Stack](#cluster-template-stack)
-     - [Proof of Project](#proof-of-project)
+     - [Proof of Project Cluster Stack](#proof-of-project-cluster-stack)
   - [AWS CFN RDS STACK](#aws-cfn-rds-stack)
-     - [Proof of Project](#proof-of-project)
+     - [Proof of Project RDS Stack](#proof-of-project-rds-stack)
   - [CFN Service Deploy Stack](#cfn-service-deploy-stack)
-     - [Proof of Project](#proof-of-project)
+     - [Proof of Project Service Stack](#proof-of-project-service-stack)
 --- 
 
 ### AWS CloudFormation?
@@ -115,7 +115,7 @@ aws cloudformation deploy \
 6. Proceed to the AWS Management Console and manually execute the changeset to initiate the infrastructure provisioning.
 ---
 
-## Proof of Project
+## Proof of Project Cloudformation
 
 This is a deployment of **My Cluster** stack in my GITPOD environment
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(633).png)
@@ -978,7 +978,7 @@ Outputs:
 
 This template was saved in `aws/cfn/networking/template.yaml`
 
-## Proof of Project
+## Proof of Project Network Stack
 For the CFN Network Stack, we added VPC to our stack and renamed it 'Cruddur'
 ![Networking](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(677).png)
 
@@ -1833,9 +1833,8 @@ aws cloudformation deploy \
 
  > *Execute the changeset*
 
-## Proof of Project
-
-
+## Proof of Project Cluster Stack
+---
 ### AWS CFN RDS STACK
 
 **Describing the template**
@@ -2192,7 +2191,7 @@ EnvBackendUrl = 'https://api.nwaliechinyere.xyz'
 DDBMessageTable = 'CrdDdb-DynamoDBTable-<the digit and alphabet>'
 ```
 
-## Proof of Project
+## Proof of Project RDS Stack
 Below is the Dynamodb Deployed stack after running  `./bin/cfn/db`
 
 ![Deployed CrdDb Cluster](assets/week11/cfn-stack/DeployedCrdDbCluster.png)
@@ -2279,7 +2278,7 @@ Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB e
    
 8. Running `./bin/cfn/service-deploy` now initiates a changeset for the CFN stack.
 
-## Proof of Project
+## Proof of Project Service Stack
 
 ![CFN sevice-deploy](assets/week10/network/cruddur.png)
 
