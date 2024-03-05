@@ -7,8 +7,10 @@
   - [Cost](#cost)
   - [Security](#Security)
   - [Prerequisite for Our Task ](#prerequisite-for-our-task )
-  - [CFN Validate](#cfn-validate)
+  - [Proof of Project](#proof-of-project)
+ 
 - [AWS CloudFormation — Policy As Code](#AWS-cloudformation-policy-as-code)
+  - [CFN Validate](#cfn-validate)
   - [CFN Lint](#cfn-lint)
   - [TOML Config ](#toml-and-config-management)
   - [CFN Guard](#cfn-guard)
@@ -107,7 +109,10 @@ aws cloudformation deploy \
   --parameter-overrides $PARAMETERS \
 ```
 
-6. Proceed to the AWS Management Console and manually execute the changeset to initiate the provisioning of the infrastructure.
+6. Proceed to the AWS Management Console and manually execute the changeset to initiate the infrastructure provisioning.
+---
+
+## Proof of Project
 
 This is a deployment of **My Cluster** stack in my GITPOD environment
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(633).png)
@@ -121,17 +126,39 @@ The creation of this stack is in review on my AWS console
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(637).png)
 
+The 'My-Cluster' stack was modified to add **Physical ID** CHANGESET has been executed
+![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(639).png)
+
+Creation is completed, now see the **Physical ID** specified
+![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(640).png)
+
+An overview of the modified stack and the **Action** is reading modify
+![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(641).png)
+
+Update is Completed
+![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(642).png)
+
 After the creation of this stack, the Update was failing and this was the error message;
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(644).png)
 
-I went to cloudtrail to further to view and read the **Event-History** for comprehension
+I went to Cloudtrail to further view and read the **Event-History** for comprehension
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(643).png)
+
+The error message states that there wasn't a specific provider hence failure, which means the ECS Cluster wasn't defined or the template file needs modification. So I deleted the stack, learning how crucial it is to ensure that the capacity provider mentioned in your ECS service corresponds to a valid and existing capacity provider. To solve this I have to validate the CFN stack
 
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(645).png)
 
-The error message states that there wasn't a specific provider hence failure, which means the ECS Cluster wasn't defined or the template file needs modification. So I deleted the stack, learning how crucial it is to ensure that the capacity provider mentioned in your ECS service corresponds to a valid and existing capacity provider.
+I went to ECS and there was no service
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(646).png)
+
+---
+
+##  AWS CloudFormation — Policy As Code 
+
+[AWS CFN](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html) is a policy-as-code evaluation tool that manages policies in the form of code. In CFN, it is important to add compliance and PaC, this helps ensure that the deployed infrastructure works in line with the organization's policies and standards. 
+
+---
 
 ## CFN validate
 This tool helps prevent common security risks that could affect the infrastructure, ensuring the templates are well-written and follow the recommended CloudFormation syntax, reducing vulnerabilities or misconfigurations. After deleting the stack, I went to my Gitpod CLI modified my CloudFormation template file, and then ran this code to properly validate, define, and configure the ECS (Elastic Container Service) cluster. Amazon ECS is a fully managed container orchestration service that allows you to run, stop, and manage Docker containers on a cluster. 
@@ -140,7 +167,7 @@ To validate a **CloudFormation template**, use the below command example
 ```sh
 aws cloudformation validate-template --template-body <value> [--template-url <value>]
 ```
-- `--template-body` or `-t`: Specifies the CloudFormation template to validate, either as a string or a file path. You must provide either `--template-body` or `--template-url`.
+- `--template-body` or `-t`: Specifies the CloudFormation template to validate as a string or a file path. You must provide either `--template-body` or `--template-url`.
 - `--template-url`: The URL of the CloudFormation template to validate, you must provide either `--template-body` or `--template-url`.
 
 **Run --**
@@ -160,29 +187,11 @@ aws cloudformation describe-change-set --change-set-name arn:aws:cloudformation:
     "Description": "Setup ECS Cluster\n"
 }
 ```
-This code also helps to specify the ECS cluster itself and later allows me to add associated resources such as the ECS tasks, services, IAM roles, and networking configurations.
+This code also helps specify the ECS cluster itself and allows me to add associated resources such as the ECS tasks, services, IAM roles, and networking configurations.
 
 A view of the code in my environment
+
 ![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(648).png)
-
-The important aspect of working with CFN requires a deep understanding of infrastructure as code (IaC) principles, and writing templates.
-
-> Another potential tool to validate your CFN is [taskcat](https://github.com/aws-ia/taskcat)
-
-I have re-deployed the 'My-Cluster' stack again
-![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(639).png)
-
-Creation is completed, now the **Physical ID** and see it is specified
-![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(640).png)
-
-An overview of the modified stack and the **Action** is reading modify
-![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(641).png)
-
-Update is Completed
-![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(642).png)
-
-![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(673).png)
-
 
 Note: 
 - The `--no-execute-changeset` will validate the code but not execute it.
@@ -191,22 +200,18 @@ Note:
 - check the tab `replacement` if it is `true`. this helps to see if one part of the stack will be replaced.
 
 ---
-
-##  AWS CloudFormation — Policy As Code 
-
-[AWS CFN](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html) is a policy-as-code evaluation tool that manages policies in the form of code. In CFN, it is important to add compliance and PaC, this helps ensure that the deployed infrastructure works in line with the organization's policies and standards. 
-
----
 ## CFN Lint
 
 Cfn-lint is a tool that provides linting capabilities for CFN templates to identify and address potential issues, errors, and security risks.
 
-Integrating cfn-lint into your preferred IDE (Integrated developement environment), you must first install it using this command
+Integrating cfn-lint into your preferred IDE (Integrated development environment), you must first install it using this command
+
 ```sh
 pip install cfn-lint
 ```
 
 To run lint, execute the command below to know your CFN template path
+
 ```sh
 cfn-lint <path-to-template> 
 ```
@@ -216,6 +221,7 @@ cfn-lint <path-to-template>
 Another thing that you may deploy is the TOML, this is a config language built for storing configuration and data files.
 
 - Make sure you have `Ruby` and install `TOML` from `Gem`
+
 ```rb
 gem install cfn-toml
 ```
@@ -231,10 +237,12 @@ CFN Guard allows us to define custom rules and policies that are enforced during
 To get started with CFN Guard follow these steps:
 
 1.  Install cfn-guard
+
 ```sh
 install cfn-guard
 ```
 2. verify that CFN Guard is successfully installed by running the command
+
 ```sh
  cfn-guard --version
 ```
@@ -243,10 +251,12 @@ install cfn-guard
  > If successful, the similar output should be shown as ``cfn-guard 2.1.3``
 
 3. Create  `task-definition.guard` for our cluster, run this code to generate a guard DSL template for version 2.0
+
 ```sh
 cfn-guard rulegen --template /workspace/aws-bootcamp-cruddur-2023/aws/cfn/template.yaml
 ```
 > output
+
 ```sh
 let aws_ecs_cluster_resources = Resources.*[ Type == 'AWS::ECS::Cluster' ]
 rule aws_ecs_cluster when %aws_ecs_cluster_resources !empty {
@@ -257,13 +267,23 @@ rule aws_ecs_cluster when %aws_ecs_cluster_resources !empty {
 
 4. The generated file in [my ecs guard folder](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/ecs-cluster.guard).
 
-A view of the code output i my environment
+A view of the code output in my environment
 ![Task-definition-guard](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/Screenshot%20(652).png)
    
-5. Validate the CFN template 
+5. Validate the CFN template
+
 ```sh
  cfn-guard validate
 ```
+
+After Validating, guarding, and lining, stack creation works fine
+
+![CFN-Week-10](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(673).png)
+
+The important aspect of working with CFN requires a deep understanding of infrastructure as code (IaC) principles, and writing templates.
+
+> Another potential tool to validate your CFN is [taskcat](https://github.com/aws-ia/taskcat)
+
 ---
 
 ### Setting Up CFN Artifact Bucket
@@ -272,7 +292,7 @@ As shown in the stack architecture diagram, CFN artifacts will be stored in a bu
 
 Follow these steps to do so:
 
-1. Create an S3 bucket named `cfn-artifacts-bucket name` for the CFN artifact. This bucket will be used for all future templates.
+1. Create an S3 bucket named `cfn-artifacts-your-bucket-name` for the CFN artifact. This bucket will be used for all future templates.
 
 ```rb
 aws s3 mb s3://cfn-artifact-bucket
@@ -281,12 +301,13 @@ aws s3 mb s3://cfn-artifact-bucket
 
 NB- I later changed the name to **nwaliechinyere-cfn-artifacts**
 
-2. Save the bucket name in your IDE Environment variables for effective purposes example is below.
+2. Save the bucket name in your IDE for effective purposes example is below.
 
 ```cfn
-export CFN_BUCKET="cfn-artifacts-bucket"
-gp env CFN_BUCKET="cfn-artifacts-bucket"
+export CFN_BUCKET="cfn-artifacts-your-bucket-name"
+gp env CFN_BUCKET="cfn-artifacts-your-bucket-name"
 ```
+I have set my Env-vars (Environment variables) in my workspace
 ![Env-vars](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(674).png)
 
 We can now reference the bucket name in the scripts and get the artifacts on deployments in AWS.
@@ -307,9 +328,13 @@ Below are more detailed descriptions on our Cruddur App main component's
 
 **Networking**
 - Virtual Private Cloud (VPC): A dedicated VPC is essential using CloudFormation, providing isolated network resources for the application.
-- Ensuring the right CIDR (Classless Inter-Domain Routing) block size is vital, [use this tool](https://cidr.xyz/) to select an appropriate CIDR block.
 - Public Subnet: Within the VPC, a public subnet is created, allowing external access to the application.
 - Availability Zones: The architecture spans across multiple availability zones to enhance fault tolerance and ensure high availability.
+- Ensuring the right CIDR (Classless Inter-Domain Routing) block size is vital, [use this tool](https://cidr.xyz/) to select an appropriate CIDR block.
+
+A  view of the CIDR
+
+![CIDR](https:/CIDR)
 
 **Cluster**
 - Deployment: The cluster template is utilized to deploy a cluster, using the VPC ID and Public Subnet from the Networking exports.
