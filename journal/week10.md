@@ -16,7 +16,7 @@
   - [CFN Guard](#cfn-guard)
   - [Setting Up CFN Artifact Bucket](#setting-up-cfn-artifact-bucket)
 - [AWS CFN Stack Prerequisite information](#aws-cfn-stack-prerequisite-information)
-  - [Networking Layer](#cfn-network-layer)
+  - [CFN Network Stack](#cfn-network-stack)
      - [Proof of Project](#proof-of-project)
   - [Cluster Template Stack](#cluster-template-stack)
      - [Proof of Project](#proof-of-project)
@@ -357,7 +357,7 @@ A  view of the CIDR
 
 This CloudFormation template is designed to create foundational networking components for the app stack and assure cloud connectivity.
 
-[Diagramming](assets/week10/diagramming.png)
+![Diagramming](assets/week10/diagramming.png)
 
 Cruddur network resources include the following:
 
