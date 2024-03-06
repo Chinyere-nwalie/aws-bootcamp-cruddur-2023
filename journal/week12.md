@@ -168,6 +168,8 @@ All stacks were deployed successfully
 
 ![image](profilepicchange.png)
 
+![Watch the video](https://www.youtube.com/watch?v=NhDYbskXRgc)
+
 ---
 
  > All these while I was running on an AWS Free tier account that expired on Jan 31st, I had to tear down all the CFN stacks, and all projects to avoid costs
