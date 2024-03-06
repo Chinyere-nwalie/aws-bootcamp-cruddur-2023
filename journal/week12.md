@@ -168,7 +168,7 @@ All stacks were deployed successfully
 
 ![image](profilepicchange.png)
 
-![Watch the video](https://www.youtube.com/watch?v=NhDYbskXRgc)
+[![Watch the video](https://www.youtube.com/watch?v=NhDYbskXRgc)
 
 ---
 
