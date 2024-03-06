@@ -1,4 +1,4 @@
-# Week 11/X — CloudFormation Part 2 & Static website hosting
+# Week 11 — CloudFormation Part 2 & Static website hosting
 
 - [Pre-Requisites](#pre-requisites)
     - [Create Build scripts](#create-build-scripts)
