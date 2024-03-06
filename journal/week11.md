@@ -382,7 +382,78 @@ MachineUser stack AccessKeys
 
 ## Troubleshooting
 
-I modified the `kill=all` script
+Another issue I was faced with was the fact that when I deleted my main user in Cognito, while signing-in I mistakenly gave spacing in the username I wrote it as `nwalie chinyere` instead of `nwaliechinyere`, and in SQL you don't leave spacing in name. In my research, it said Leaving a space in a username in SQL is generally not recommended, While some database systems may allow it, unfortunately, mine didn't allow it, hence it was throwing errors in my username on my production link URL as `@nwalie%20chinyere` and unknowingly because of this issues I didn't know how to solve it so I kept signing in my main handle multiple times on Local database instead of my production. In the pic below look closely and see that the url is altered
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(223).png)
+
+My app was lagging and then shows blank, I had to check my users in local database and figured they were multiple
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(209).png)
+
+I connected to my local database in my terminal with the `./bin/db-connect` code to delete users. I used this code to delete
+```sh
+DELETE FROM your_table_name
+WHERE your_condition_column = your_condition_value;
+```
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(257).png)
+
+I modified the [kill=all](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/backend-flask/db/kill-all-connections.sql) script
+
+Then I killed all connections, ran the [setup](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/db/setup) to drop & create a database
+
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(315).png)
+
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(313).png)
+
+A boot camper helped me in creating this [update.sql](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/backend-flask/db/sql/users/update.sql) script to;
+```sh
+UPDATE public.users
+    SET uuid = <PROD_UUID>
+    WHERE
+      users.handle = <USER_HANDLE>;
+```
+- I Pasted this code below manually in my `db-connection` on my terminal to update the users to that of mine
+```sh
+UPDATE public.users 
+SET uuid = 'mu uuid'
+WHERE users.handle = 'nwaliechinyere';
+
+UPDATE public.users 
+SET uuid = 'new user uuid'
+WHERE users.handle = 'cloudgeekchie';
+```
+It's was Updated!
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(260).png)
+
+This time I created a new user and sign-in in my production, my username didn't have a space, below is the clear URL without `%`
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(307).png)
+
+I also modified the timestamp in my files and that of my local connection database so whenever I crud the timing is correct
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(304).png)
+
+Old timing which was wrong
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(213).png)
+
+The timing now is accurate
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(327).png)
+
+My CSS in my app was breaking, I got help from the discord forum to  `add: #000 in background in .activity_feed in ActivityFeed.css file`
+
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(274).png)
+
+Which is this;
+```sh
+.activity_feed {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #000 
+}
+```
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(275).png)
+
+Cruds in my terminal on local database connection corresponding to the rectified CSS cruds
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(273).png)
+
 In the final week before clean up, my Cruddur display picture in the Local container wasn't showing, till I debugged and figured I had to change the `Access-control-allow-origin` in my Cruddur-Avatar-Upload `Headers` to that of my current Gitpod workplace URL in my lambda for it to reflex.
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(795).png)
 
