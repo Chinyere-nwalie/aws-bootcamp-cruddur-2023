@@ -207,7 +207,7 @@ All stacks were deployed successfully
 
 ![image](profilepicchange.png)
 
-[![Watch the video](https://www.youtube.com/watch?v=NhDYbskXRgc)
+I published [My Cruddur video ](https://www.youtube.com/playlist?list=PLog3wMUvMmbxNX4Lzwbc2z4QaMmE8E6Q_) on Youtube as proof of completion of all tasks done
 
 ---
 
