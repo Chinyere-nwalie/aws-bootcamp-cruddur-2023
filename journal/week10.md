@@ -2382,6 +2382,42 @@ The new RDS security groups
 |
 ![Deployed CrdDb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(746).png)
 
+Installing aws-sam-cli to further  develop, test, and deploy our CrdDdb stack
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(765).png)
+
+I added the aws-sam-cli in my gitpod.yaml so when I spin up a new workspace it downloads automatically
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(766).png)
+
+Running ddb deploy in terminal
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(769).png)
+
+Ddb deploy script failed, and I was reading through the error message to rectify the issue
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(775).png)
+
+The reason wasn't the `ZIP` it was directory I specified for the CodeUri, cruddur-messaging-stream isn't suppose to have a `/` after it, but mine was haven't it hence it altered the mounting of the container. I later rectified this issue
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(777).png)
+
+Ddb stack created
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(786).png)
+
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(779).png)
+
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(778).png)
+
+ddb folder in s3
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(780).png)
+
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(781).png)
+
+We wrote a lambda_handler.py script
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(785).png)
+
+Then we converted it to a file and uploaded it on s3 to create tables
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(783).png)
+
+Ddb tables created on AWS Dynamodb tables console
+![Deployed CrdDdb Cluster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(787).png)
+
 > *Execute the changeset*
 
 ---
