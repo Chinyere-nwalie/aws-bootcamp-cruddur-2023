@@ -1,15 +1,15 @@
 # Week 12 — Personal Cleanup
 
 - [Overview](#overview)
-- [CleanUp for Cruddur](#cleanup-for-cruddur)
-  - [Messaging Alt User](#messaging-alt-user)
+- [CleanUp for Cruddur part 2](#cleanup-for-cruddur-part-2)
+  - [Cognito Alt User](#Cognito-alt-user)
+    - [Update Lambda](#update-lambda)
+- [Troubleshooting](#troubleshooting)
   - [Allowing Production to upload images](#allowing-production-to-upload-images)
     - [CORS Amendments required to allow avatars to be uploaded to the S3 bucket](#cors-amendments-required-to-allow-avatars-to-be-uploaded-to-the-s3-bucket)
     - [PUT Method not allowed in application](#put-method-not-allowed-in-application)
-  - [Troubleshooting](#troubleshooting)
     - [Issues](#issues)
     - [Issues during CI/CD stack deployment](#issues-during-cicd-stack-deployment)
-  - [Update Lambda](#update-lambda)
     - [Add Rule to CrdDbRDSSG SG to allow connection from Lambda](#add-rule-to-crddbrdssg-sg-to-allow-connection-from-lambda)
     - [Warnings being shown when running static build](#warnings-being-shown-when-running-static-build)
   - [All CFN Stacks Created](#all-cfn-stacks-created)
@@ -27,7 +27,7 @@ This week we will be cleaning up all the codes in our application making and ens
 
 ---
 
-## CleanUp for Cruddur
+## CleanUp for Cruddur part 2
 
 This involved the following
 
@@ -36,14 +36,59 @@ This involved the following
 - Fixing missing settings in CloudFormation stacks correctly
 - Adding a new user to our Cruddur application to ensure the least privileged access
 - Refactor to use JWT decorator in the application
-- Implementing replies
-- Improve error handling
+- Implementing replies & Improving error handling
 
 ---
 
-## Messaging Alt User
+## Cognito Alt User
+
+I cleared all Cognito users in my AWS console after creating a CFN CrdSyncRole so it won't glitch and cause users because deleting the old manual RDS means the old Cognito is invalid
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(192).png)
+
+Sign-up for new users was throwing errors and it was due to no Security groups set for this function
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(197).png)
+
+### Update Lambda
+
+A new security group was created for the Post Confirmation Lambda (We created a Cognito SG)
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(198).png)
+
+New Sign up again for **nwaliechinyere**
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(668).png)
+
+Gmail Confirmation Code
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(595).png)
+
+I subscribed to AWS SNS-(Simple Notification Service) hence the sender is from Amazon
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(666).png)
+
+New User Signup for **cloudgeekchie**
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(216).png)
+
+New User Created
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(306).png)
 
 I used the following URL to message my altUser in Production: `https://nwaliechinyere.xyz/messages/new/cloudgeekchie`
+![ Cognito Alt](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(792).png)
+
+---
+
+## Troubleshooting
+
+Concerning Implementing replies & Improving error handling, when I wrote a reply and clicked on reply, it throws an error
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(288).png)
+
+I handled the error by checking the replies in connection via the local database and there wasn't a reply activity uuid hence why, then I generated a reply_to_activity_uuid migration script
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(290).png)
+
+I ran the `./bin/db/migrate` to get an output
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(293).png)
+
+Now there's `reply_to_activity_uuid` and it is showing integer
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(310).png)
+
+Replied all working now!
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(326).png)
 
 ---
 
@@ -69,8 +114,6 @@ To allow messaging, the following changes need to be made from my experience
 ![image](addundefined.jpg.png)
 
 ---
-
-## Troubleshooting
 
 ### Issues
 
@@ -112,17 +155,13 @@ Build succeeded after updating concerning code build and buildspec.yml
 
 ---
 
-## Update Lambda
-
-A new security group was created for the Post Confirmation Lambda.
-
-In `CrdDbRDSSG` created a rule to allow connectivity as it was previously connected to the default VPC.
-
----
-
 ### Add Rule to `CrdDbRDSSG` SG to allow connection from Lambda
 
-![image](newCrdDbRDSSG.png)
+In `CrdDbRDSSG` a new rule was added to allow connectivity as it was previously connected to the default VPC.
+
+![CrdDbRDSSG](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(174).png)
+
+![CrdDbRDSSG](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(199).png)
 
 ---
 
