@@ -14,6 +14,7 @@
 - [CFN CI/CD Stack](#cfn-cicd-stack)
     - [Create CI/CD Template](#create-cicd-template)
 - [CFN MachineUser Stack](#cfn-machineuser-stack)
+    - [Proof of Project For MachineUser Stack](#proof-of-project-for-machineuser-stack)
 - [Troubleshooting](#troubleshooting)
       
 ---
@@ -350,11 +351,35 @@ SET uuid = 'ab7423df-5546-4974-8819-c283a90e8b78'
 WHERE users.handle = 'cloudgeekchie';
 ```
 
+### Proof of Project For MachineUser Stack
+
+Creating MachineUser Stack via CLI
+![MachineUser Stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(498).png)
+
+![MachineUser Stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(500).png)
+
+A Machine user stack IAM was created and assigned
+![MachineUser Stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(520).png)
+
+MachineUser stack AccessKeys
+![MachineUser Stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(532).png)
+
 ---
 
 ## Troubleshooting
 
 I modified the `kill=all` script
+In the final week before clean up, my Cruddur display picture in the Local container wasn't showing, till I debugged and figured I had to change the `Access-control-allow-origin` in my Cruddur-Avatar-Upload `Headers` to that of my current Gitpod workplace URL in my lambda for it to reflex.
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(795).png)
+
+I had created an Access key before for the machine user stack, but I only input the access key ID in the parameter store and  didn't input the secret access key, so I created another one again because my app wasn't working
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(798).png)
+
+Putting the access key ID value and that of the Secret Access Key too
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(799).png)
+
+The parameter store has successfully updated both
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(7800).png)
 
 ---
 
