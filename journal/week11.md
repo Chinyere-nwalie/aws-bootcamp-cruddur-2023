@@ -15,7 +15,7 @@
     - [Create CI/CD Template](#create-cicd-template)
 - [CFN MachineUser Stack](#cfn-machineuser-stack)
     - [Proof of Project For MachineUser Stack](#proof-of-project-for-machineuser-stack)
-- [Troubleshooting & Cleanup part 1](#troubleshooting-&-cleanup part 1)
+- [Troubleshooting & Cleanup part 1](#troubleshooting-&-cleanup-part-1)
       
 ---
 
