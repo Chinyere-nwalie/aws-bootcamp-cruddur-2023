@@ -1942,7 +1942,7 @@ Execute `./bin/cfn/service-deploy` to update `CrdSrvBackendFlask` with the DDB e
 ## Proof of Project Service Stack
 
 Ran service-deploy script in Gitpod cli
-![CFN sevice-deploy](!https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(713).png)
+![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(713).png)
 
 Stack creation on AWS Cloud formation
 ![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(712).png)
