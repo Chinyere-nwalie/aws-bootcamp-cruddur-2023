@@ -1,7 +1,6 @@
-# Week 11/X — CloudFormation Part 2 - Cleanup
+# Week 11/X — CloudFormation Part 2 & Static website hosting
 
-- [Week X Sync tool for static website hosting](#week-x-sync-tool-for-static-website-hosting)
-    - [Pre-Requisites](#pre-requisites)
+- [Pre-Requisites](#pre-requisites)
     - [Create Build scripts](#create-build-scripts)
     - [Create Sync Template](#create-sync-template)
 - [Initialise Static Hosting](#initialise-static-hosting)
@@ -19,12 +18,11 @@
       
 ---
 
-## Week X Sync tool for static website hosting
+## Pre-Requisites
 
-### Pre-Requisites
-
-- Publicly accessible bucket that was created via `./bin/cfn/frontend`
+- A publicly accessible bucket that was created via `./bin/cfn/frontend`
 - Cloudfront distribution that was created via `./bin/cfn/frontend`
+---
 
 ### Create Build scripts
 
@@ -106,9 +104,9 @@ OIDCProviderArn = ''
 
 Update `aws/cfn/sync/template.yaml` with the following [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/template.yaml)
 
-### Initialise Static Hosting
+## Initialise Static Hosting
 
-**Run Static-Build script**
+- Run Static-Build script
 
 Run build script `./bin/frontend/build` , you should see output similar to the following when successful.
 
@@ -156,6 +154,7 @@ Invalidation Created
 
 Invalidation Details
 ![image](newsyncinvalidationsdetails.png)
+
 
 ### Create GitHub Action
 
