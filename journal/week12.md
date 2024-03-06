@@ -1,4 +1,4 @@
-# Week 12 — Personal Cleanup
+# Week X - Personal Cleanup
 
 - [Overview](#overview)
 - [CleanUp for Cruddur part 2](#cleanup-for-cruddur-part-2)
