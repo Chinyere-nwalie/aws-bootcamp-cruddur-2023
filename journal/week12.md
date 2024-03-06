@@ -32,7 +32,7 @@ This week we will be cleaning up all the codes in our application making and ens
 This involved the following
 
 - Refactoring of codes
-- Reimporting TimeDateCodes, profile, and CSS in the app
+- Reimporting TimeDateCodes, profile, and CSS in the app - which I did in > Week 11 [Week-11](week11.md)
 - Fixing missing settings in CloudFormation stacks correctly
 - Adding a new user to our Cruddur application to ensure the least privileged access
 - Refactor to use JWT decorator in the application
