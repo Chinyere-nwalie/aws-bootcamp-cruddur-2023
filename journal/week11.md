@@ -270,6 +270,20 @@ BuildSpec = 'backend-flask/buildspec.yml'
 
 ## CFN MachineUser Stack
 
+A Machine User: generally refers to a user account or identity used for automated processes or machine-to-machine communication. It's often associated with tasks performed by scripts, applications, or services rather than interactive human users. 
+The "CFN MachineUser Stack" was created to manage resources related to a machine user (In our Cruddur CFN machine user template automatically created a machine user in IAM and gave it a role). CFN MachineUser Stack creation could include the provisioning of IAM (Identity and Access Management) roles, policies, or other resources associated with a machine user account.
+
+### Here are some possible reasons why this stack was created:
+
+- Automation: The stack was part of an automated process for setting up machine user accounts in our Cruddur app and its associated resources.
+
+- Security Policies: The stack defined IAM policies and roles with the least privilege principle, ensuring that the machine user has only the necessary permissions.
+
+- Consistency: By using CloudFormation, we ensured that the creation and management of machine user resources were consistent and reproducible.
+
+**Note** In terms of Scalability for your future application: If you have multiple machine users or need to scale resources based on demand, CloudFormation allows you to manage the infrastructure in a scalable way.
+
+---
 1. **Create MachineUser Template**
 
 ```sh
