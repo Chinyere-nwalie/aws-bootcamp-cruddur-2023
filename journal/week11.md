@@ -106,9 +106,9 @@ OIDCProviderArn = ''
 
 Update `aws/cfn/sync/template.yaml` with the following [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/template.yaml)
 
-## Initialise Static Hosting
+### Initialise Static Hosting
 
-### Run Static-Build script
+**Run Static-Build script**
 
 Run build script `./bin/frontend/build` , you should see output similar to the following when successful.
 
@@ -157,7 +157,7 @@ Invalidation Created
 Invalidation Details
 ![image](newsyncinvalidationsdetails.png)
 
-## Create GitHub Action
+### Create GitHub Action
 
 Create folder in base of repo for action
 
@@ -221,9 +221,9 @@ jobs:
 
 ---
 
-### CFN CI/CD Stack
+## CFN CI/CD Stack
 
-## Create CI/CD Template
+### Create CI/CD Template
 
 Create the folder structure.
 
@@ -268,7 +268,7 @@ BuildSpec = 'backend-flask/buildspec.yml'
 
 ---
 
-### CFN MachineUser Stack
+## CFN MachineUser Stack
 
 1. **Create MachineUser Template**
 
@@ -353,7 +353,7 @@ WHERE users.handle = 'cloudgeekchie';
 
 ---
 
-### Troubleshooting
+## Troubleshooting
 
 I modified the `kill=all` script
 
