@@ -417,6 +417,8 @@ A Machine user stack IAM was created and assigned
 MachineUser stack AccessKeys
 ![MachineUser Stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(532).png)
 
+Refer to this [MachineUser](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/d6647f96e866c36ad882458faa9ece5c28730f33) commit message as proof
+
 ---
 
 ## Troubleshooting & Cleanup part 1
@@ -471,8 +473,10 @@ I also modified the timestamp in my files and that of my local connection databa
 Old timing which was wrong
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(213).png)
 
-The timing now is accurate
+The timing now is accurate. 
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(327).png)
+
+These are the [time stamp & killall](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/105ce8f0c1d34dd7f1579df723a853e3d35b426d) , [time stamp & killall 2](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/b306b219bfec1ec97c896c97165f2cf1bb28aaf4) commit messages
 
 My CSS in my app was breaking, I got help from the discord forum to  `add: #000 in background in .activity_feed in ActivityFeed.css file`
 
