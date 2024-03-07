@@ -26,14 +26,14 @@ This week we will be cleaning up all the codes in our application making and ens
 
 ## CleanUp for Cruddur part 2
 
-This involved the following
+I wrote and provided proof and screenshots of some of these in my Week 11 [Week-11](week11.md) They involved the following;
 
 - Refactoring of codes
 - Reimporting TimeDateCodes, profile, and CSS in the app - which I did in > Week 11 [Week-11](week11.md)
 - Fixing missing settings in CloudFormation stacks correctly
-- Adding a new user to our Cruddur application to ensure the least privileged access
+- Adding a new Cognito user to our Cruddur application to ensure the least privileged access
 - Refactor to use JWT decorator in the application
-- Implementing replies & Improving error handling
+- Implementing replies & Improving error handling; refer to [this commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/78a4012625308bcfdcc34600fc2dd491fba2d71b) message
 
 ---
 
