@@ -150,6 +150,8 @@ As the Bootcamp draws near, these are the key things that happened to me in the 
 
 ![image](crudsworkingwithcloudgeekchie.png)
 
+And these are my final commit messages [All done Cruddur working perfectly!](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/100fa2d8ad96afdd8dce36ba7fb210b4a1272831) and [Personal clean up all done](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/1b2b80c7c02945a14b1f3c5f1f40da8a3ce666fd)
+
 ---
 
 I published [My Cruddur video ](https://www.youtube.com/playlist?list=PLog3wMUvMmbxNX4Lzwbc2z4QaMmE8E6Q_) on Youtube as proof of completion of all tasks done
