@@ -5,19 +5,16 @@
   - [Cognito Alt User](#Cognito-alt-user)
     - [Update Lambda](#update-lambda)
 - [Troubleshooting](#troubleshooting)
-  - [Allowing Production to upload images](#allowing-production-to-upload-images)
+- [Add Rule to CrdDbRDSSG SG to allow connection from Lambda](#add-rule-to-crddbrdssg-sg-to-allow-connection-from-lambda)
+- [Rectified Upload Issues](#rectified-upload-issues)
+    - [Allowing Production to upload images](#allowing-production-to-upload-images)
     - [CORS Amendments required to allow avatars to be uploaded to the S3 bucket](#cors-amendments-required-to-allow-avatars-to-be-uploaded-to-the-s3-bucket)
     - [PUT Method not allowed in application](#put-method-not-allowed-in-application)
-    - [Issues](#issues)
-    - [Issues during CI/CD stack deployment](#issues-during-cicd-stack-deployment)
-    - [Add Rule to CrdDbRDSSG SG to allow connection from Lambda](#add-rule-to-crddbrdssg-sg-to-allow-connection-from-lambda)
-    - [Warnings being shown when running static build](#warnings-being-shown-when-running-static-build)
-  - [All CFN Stacks Created](#all-cfn-stacks-created)
+- [My Experiences](#my-experiences)
   - [Proof of cruds working in Production](#proof-of-cruds-working-in-production)
-    - [Messaging to AltUser working in Prod](#messaging-to-altuser-working-in-prod)
-    - [Cruds work in Prod](#cruds-work-in-prod)
-    - [Replies working in Prod](#replies-working-in-prod)
-    - [Profile Image successfully uploaded](#profile-image-successfully-uploaded)
+    - [Cruds & Messaging to AltUser working in Prod](#cruds-&-messaging-to-altuser-working-in-prod)
+    - [Cruds & Messaging to AltUser working in local](#cruds-&-messaging-to-altuser-working-in-local)
+  - [All Created CFN Stacks](#all-created-cfn-stacks)
 
 ---
 
@@ -94,7 +91,19 @@ Replied all working now!
 
 ---
 
-## Allowing Production to upload images
+## Add Rule to `CrdDbRDSSG` SG to allow connection from Lambda
+
+In `CrdDbRDSSG` a new rule was added to allow connectivity as it was previously connected to the default VPC.
+
+![CrdDbRDSSG](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(174).png)
+
+![CrdDbRDSSG](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(199).png)
+
+---
+
+## Rectified Upload Issues
+
+### Allowing Production to upload images
 
 To allow messaging, the following changes need to be made from my experience
 
@@ -117,63 +126,33 @@ To allow messaging, the following changes need to be made from my experience
 
 ---
 
-### Issues
+## My Experiences
 
-- Tasks in GitPod and AWS CLI stopped running because `AWS_ENDPOINT_URL` had been set and was causing issues
-- CI/CD configuration error
+As the Bootcamp draws near, these are the key things that happened to me in the final week
+
+- Tasks in GitPod and AWS CLI stopped running because `AWS_ENDPOINT_URL` hasn't been set and was causing issues
 - The reply function was not working due to me breaking a line of code,  I had to figure out what the issue was by debugging.
 - Rollbar stopped working despite working earlier with no errors thrown, I stopped it from working.
-- Earlier on in the boot camp I made an error in the seed script and included space when filling a new username, I had to delete it manually in my database
+- Earlier on in the boot camp I made an error in the seed script and included space when filling in a new username, I had to delete it manually in my database
 - Uploading in production was causing CORS issues. In addition to adding permissions to the `nwaliechinyere.xyz` domain, this was resolved by adding the `PUT` method in `/api/profile/update` under `backend-flask/routes/users.py`
 
 ---
 
-### Issues during CI/CD stack deployment
+## Proof of cruds working in Production
 
-Error on First Run as Pipeline Execution Fails
+### Cruds & Messaging to AltUser working in Prod
 
-![image](cicdfailing.png)
-
----
-
-The connection shows as pending
-![image](cicdpending.png)
+![image](newsigninforcloudgeekchie.png)
 
 ---
 
-![image](cicdconnecting.png)
+### Cruds & Messaging to AltUser working in local
+
+![image](crudsworkingwithcloudgeekchie.png)
 
 ---
 
-Pipeline still fails saying `[GitHub] No Branch [prod] found for FullRepositoryName [aws-bootcamp-cruddur-2023]` at the Build stage
-
-To resolve this change the following setting `GithubRepo` in `aws/cfn/cicd/config.toml` to include the account name e.g
-
-`GithubRepo = 'Chinyere-nwalie/aws-bootcamp-cruddur-2023'`
-
-Build succeeded after updating concerning code build and buildspec.yml
-
-![image](cicdbuildsuccessful.png)
-
----
-
-### Add Rule to `CrdDbRDSSG` SG to allow connection from Lambda
-
-In `CrdDbRDSSG` a new rule was added to allow connectivity as it was previously connected to the default VPC.
-
-![CrdDbRDSSG](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(174).png)
-
-![CrdDbRDSSG](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(199).png)
-
----
-
-### Warnings being shown when running static build
-
-![image](frontendsyncwaring.png)
-
-These were addressed by commenting out the following import line
-
-`import ReactDOM from 'react-dom';`
+I published [My Cruddur video ](https://www.youtube.com/playlist?list=PLog3wMUvMmbxNX4Lzwbc2z4QaMmE8E6Q_) on Youtube as proof of completion of all tasks done
 
 ---
 
@@ -182,34 +161,6 @@ These were addressed by commenting out the following import line
 All stacks were deployed successfully
 
 ![image](allcfnstackscomplete.png)
-
----
-
-## Proof of cruds working in Production
-
-### Messaging to AltUser working in Prod
-
-![image](newsigninforcloudgeekchie.png)
-
----
-
-### Cruds work in Prod
-
-![image](crudsworkingwithcloudgeekchie.png)
-
----
-
-### Replies working in Prod
-
-![image](repliedworkingwithcloudgeekchie.png)
-
----
-
-### Profile Image successfully uploaded
-
-![image](profilepicchange.png)
-
-I published [My Cruddur video ](https://www.youtube.com/playlist?list=PLog3wMUvMmbxNX4Lzwbc2z4QaMmE8E6Q_) on Youtube as proof of completion of all tasks done
 
 ---
 
