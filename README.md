@@ -9,7 +9,7 @@ This is the starting codebase that will be used in the FREE AWS Cloud Project Bo
 ![Cruddur Screenshot](_docs/assets/cruddur-screenshot.png)
 
 - Application: Cruddur
-- Cohort: 2023-A1 ([bootcamp website](https://aws.cloudprojectbootcamp.com/))
+- Cohort: 2023-A1 [bootcamp website](https://aws.cloudprojectbootcamp.com/)
 - At the end of the Boot-camp, I obtained the AWS Cloud Project Bootcamp Certificate (Blue Squad) with a Demonstration of Good Skills as a Cloud Engineer [My Certificate on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7103450901075406848/)
 - I published [My Cruddur video ](https://www.youtube.com/playlist?list=PLog3wMUvMmbxNX4Lzwbc2z4QaMmE8E6Q_) on Youtube as proof of completion of all tasks done
 ---
