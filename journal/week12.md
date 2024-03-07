@@ -9,7 +9,7 @@
 - [Rectified Upload Issues](#rectified-upload-issues)
     - [Allowing Production to upload images](#allowing-production-to-upload-images)
     - [CORS Amendments required to allow avatars to be uploaded to the S3 bucket](#cors-amendments-required-to-allow-avatars-to-be-uploaded-to-the-s3-bucket)
-    - [Wrong UUID Input in Application](#wrong-uuid-input-in-applicationion)
+    - [Wrong UUID Input in Application](#wrong-uuid-input-in-application)
 - [My Experiences](#my-experiences)
 - [Proof of cruds working in Production and Local](#proof-of-cruds-working-in-production-and-local)
   - [Cruds and Messaging to AltUser working in Prod](#cruds-and-messaging-to-altuser-working-in-prod)
