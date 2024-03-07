@@ -12,8 +12,8 @@
     - [PUT Method not allowed in application](#put-method-not-allowed-in-application)
 - [My Experiences](#my-experiences)
 - [Proof of cruds working in Production](#proof-of-cruds-working-in-production)
-  - [Cruds & Messaging to AltUser working in Prod](#cruds-&-messaging-to-altuser-working-in-prod)
-  - [Cruds & Messaging to AltUser working in local](#cruds-&-messaging-to-altuser-working-in-local)
+  - [Cruds and Messaging to AltUser working in Prod](#cruds-and-messaging-to-altuser-working-in-prod)
+  - [Messaging and Cruds to AltUser working in local](#messaging-and-cruds-to-altuser-working-in-local)
 - [All Created CFN Stacks](#all-created-cfn-stacks)
 
 ---
@@ -140,13 +140,13 @@ As the Bootcamp draws near, these are the key things that happened to me in the 
 
 ## Proof of cruds working in Production
 
-### Cruds & Messaging to AltUser working in Prod
+### Cruds and Messaging to AltUser working in Prod
 
 ![image](newsigninforcloudgeekchie.png)
 
 ---
 
-### Cruds & Messaging to AltUser working in local
+### Messaging and Cruds to AltUser working in local
 
 ![image](crudsworkingwithcloudgeekchie.png)
 
