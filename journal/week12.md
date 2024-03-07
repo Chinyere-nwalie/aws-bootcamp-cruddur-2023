@@ -78,8 +78,10 @@ I used the following URL to message my altUser in Production: `https://nwaliechi
 Concerning Implementing replies & Improving error handling, when I wrote a reply and clicked on reply, it throws an error
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(288).png)
 
-I handled the error by checking the replies in connection via the local database and there wasn't a reply activity uuid hence why, then I generated a reply_to_activity_uuid migration script
+I handled the error by checking the replies in connection via the local database and there a reply activity uuid but it was showing `uuid` instead on `integer` hence why, then I ran migrations to update **pubilc-activites** for reply_to_activity_uuid migration script
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(290).png)
+
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(661).png)
 
 I ran the `./bin/db/migrate` to get an output
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(293).png)
