@@ -464,7 +464,7 @@ Putting the access key ID value and that of the Secret Access Key too
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(799).png)
 
 The parameter store has successfully updated both
-![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(780).png)
+![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(800).png)
 
 ---
 
