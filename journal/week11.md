@@ -9,10 +9,12 @@
     - [Create GitHub Action](#create-github-action)
     - [Listing of S3 bucket](#listing-of-s3-bucket)
     - [Sync Executed](#sync-executed)
+    - [Warnings being shown when running static build](#warnings-being-shown-when-running-static-build)
     - [Invalidation Created](#invalidation-created)
     - [Invalidation Details](#invalidation-details)
 - [CFN CI/CD Stack](#cfn-cicd-stack)
     - [Create CI/CD Template](#create-cicd-template)
+    - [Issues during CI/CD stack deployment](#issues-during-cicd-stack-deployment)
 - [CFN MachineUser Stack](#cfn-machineuser-stack)
     - [Proof of Project For MachineUser Stack](#proof-of-project-for-machineuser-stack)
 - [Troubleshooting & Cleanup part 1](#troubleshooting-&-cleanup-part-1)
@@ -221,6 +223,15 @@ jobs:
 
 ---
 
+### Warnings being shown when running static build
+
+![image](frontendsyncwaring.png)
+
+These were addressed by commenting out the following import line
+
+`import ReactDOM from 'react-dom';`
+
+---
 ## CFN CI/CD Stack
 
 ### Create CI/CD Template
@@ -265,6 +276,34 @@ GithubRepo = 'Chinyere-nwalie/aws-bootcamp-cruddur-2023'
 ArtifactBucketName = "codepipeline-nwaliechinyere-cruddur-artifacts"
 BuildSpec = 'backend-flask/buildspec.yml'
 ```
+---
+
+### Issues during CI/CD stack deployment
+
+Error on First Run as Pipeline Execution Fails
+
+![image](cicdfailing.png)
+
+---
+
+The connection shows as pending
+![image](cicdpending.png)
+
+---
+
+![image](cicdconnecting.png)
+
+---
+
+Pipeline still fails saying `[GitHub] No Branch [prod] found for FullRepositoryName [aws-bootcamp-cruddur-2023]` at the Build stage
+
+To resolve this change the following setting `GithubRepo` in `aws/cfn/cicd/config.toml` to include the account name e.g
+
+`GithubRepo = 'Chinyere-nwalie/aws-bootcamp-cruddur-2023'`
+
+Build succeeded after updating concerning code build and buildspec.yml
+
+![image](cicdbuildsuccessful.png)
 
 ---
 
