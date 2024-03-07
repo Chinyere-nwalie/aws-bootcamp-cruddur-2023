@@ -11,10 +11,10 @@
     - [CORS Amendments required to allow avatars to be uploaded to the S3 bucket](#cors-amendments-required-to-allow-avatars-to-be-uploaded-to-the-s3-bucket)
     - [PUT Method not allowed in application](#put-method-not-allowed-in-application)
 - [My Experiences](#my-experiences)
-  - [Proof of cruds working in Production](#proof-of-cruds-working-in-production)
-    - [Cruds & Messaging to AltUser working in Prod](#cruds-&-messaging-to-altuser-working-in-prod)
-    - [Cruds & Messaging to AltUser working in local](#cruds-&-messaging-to-altuser-working-in-local)
-  - [All Created CFN Stacks](#all-created-cfn-stacks)
+- [Proof of cruds working in Production](#proof-of-cruds-working-in-production)
+  - [Cruds & Messaging to AltUser working in Prod](#cruds-&-messaging-to-altuser-working-in-prod)
+  - [Cruds & Messaging to AltUser working in local](#cruds-&-messaging-to-altuser-working-in-local)
+- [All Created CFN Stacks](#all-created-cfn-stacks)
 
 ---
 
