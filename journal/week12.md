@@ -9,12 +9,12 @@
 - [Rectified Upload Issues](#rectified-upload-issues)
     - [Allowing Production to upload images](#allowing-production-to-upload-images)
     - [CORS Amendments required to allow avatars to be uploaded to the S3 bucket](#cors-amendments-required-to-allow-avatars-to-be-uploaded-to-the-s3-bucket)
-    - [PUT Method not allowed in application](#put-method-not-allowed-in-application)
+    - [Wrong UUID Input in Application](#wrong-uuid-input-in-applicationion)
 - [My Experiences](#my-experiences)
-- [Proof of cruds working in Production](#proof-of-cruds-working-in-production)
+- [Proof of cruds working in Production and Local](#proof-of-cruds-working-in-production-and-local)
   - [Cruds and Messaging to AltUser working in Prod](#cruds-and-messaging-to-altuser-working-in-prod)
   - [Messaging and Cruds to AltUser working in local](#messaging-and-cruds-to-altuser-working-in-local)
-- [All Created CFN Stacks](#all-created-cfn-stacks)
+- [All CFN Stacks Created](#all-cfn-stacks-created)
 
 ---
 
@@ -112,17 +112,113 @@ To allow messaging, the following changes need to be made from my experience
 - Add the `PUT` method in `/api/profile/update` under `backend-flask/routes/users.py`
 - Update the CORS Policy for the avatars bucket to change the `AllowedMethods` as `POST,PUT`
 
+I uploaded a picture in s3 so I can use it for my second user in cruddur app
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(813).png)
+
+To upload of pic in Local: After uploading in my s3, I changed the url in my Cruddur AvatarUpload Lambda to that of the current workspace, then I also changed it in my codes, did a docker compose up before uploading. Then from the cruddur app in local database, I then uploaded the pic from my local computer and it worked! 
+
+This is for 1st user
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(812).png)
+
+This is for 2nd user, after I did a hard refresh it reflected
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(819).png)
+
+You can see the image details
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(821).png)
+
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(817).png)
+
+
+That of production profile picture didn't work
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(815).png)
+
+
+I then inspected the page to know the reason, and it turns out it was CORS issue
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(814).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(826).png)
+
 ---
 
 ### CORS Amendments required to allow avatars to be uploaded to the S3 bucket
 
-![image](CORSfordomain.png)
+I went into the newly created s3 bucket
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(829).png)
+
+And then, I went to the CORS policy for this object in the bucket and add gitpod and my domain link to the **AllowedOrigins** section
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(797).png)
+
+
+Now it's accurate
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(830).png)
+
+View the presigned URL for nwalie chinyere
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(825).png)
+
+And that of chiechee nwalie my 2nd user
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(824).png)
 
 ---
 
-### PUT Method not allowed in application
+### Wrong UUID Input in Application
 
-![image](addundefined.jpg.png)
+After editinf the CORS Object bucket policy, the profile picture wasn't showing, I debugged and reached out for help, found out that in my inspect in my profile picture on Local database, I found out that the `uuid` and that of production wasn't same 
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(840).png)
+
+So I deleted the old UUID here 
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(835).png)
+
+And manually fill in the new one, now it's correct
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(834).png)
+
+Checked it on wed too, and it corresponds
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(867).png)
+
+
+Because I have made a major amendment, I need to tear down the service stack and rebuild for it to work
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(847).png)
+
+Creating new one via CLI
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(848).png)
+
+
+Created completed
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(849).png)
+
+After creating service, next is to backend build and push
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(877).png)
+
+Backend-flask current image
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(866).png)
+
+
+Then (frontend)-> static-build
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(878).png)
+
+
+Final stage for this to work is to sync it, it will then created an INVALIDATION
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(879).png)
+
+All done!!
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(880).png)
 
 ---
 
@@ -138,17 +234,60 @@ As the Bootcamp draws near, these are the key things that happened to me in the 
 
 ---
 
-## Proof of cruds working in Production
+## Proof of cruds working in Production and Local
+
+This is a proof that my cruds was same as in my Dynamodb table on AWS
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(804).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(836).png)
+
+And that of my local database working with Andrew bayko
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(810).png)
+
 
 ### Cruds and Messaging to AltUser working in Prod
 
-![image](newsigninforcloudgeekchie.png)
+I got help refactoring codes to make sure the small cruds profiles display my pictures too
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(837).png)
+
+
+After all refactoring now it shows; This is for the main user `nwalie chinyere` please check the URL to confirm its my domain name meaning for production.
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(868).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(869).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(870).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(871).png)
+
+---
+
+This is for my new user `chiechee nwalie` also, please check the URL to confirm its my domain name meaning for production. 
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(872).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(873).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(874).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(875).png)
 
 ---
 
 ### Messaging and Cruds to AltUser working in local
 
-![image](crudsworkingwithcloudgeekchie.png)
+This is for the main user `nwalie chinyere` check the URL to confirm its gitpod which means it's local 
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(859).png)
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(860).png)
+
+This is for my new user `chiechee nwalie` also check the URL to confirm its gitpod which means it's local
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(861).png)
 
 And these are my final commit messages [All done Cruddur working perfectly!](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/100fa2d8ad96afdd8dce36ba7fb210b4a1272831) and [Personal clean up all done](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/1b2b80c7c02945a14b1f3c5f1f40da8a3ce666fd)
 
@@ -162,7 +301,7 @@ I published [My Cruddur video ](https://www.youtube.com/playlist?list=PLog3wMUvM
 
 All stacks were deployed successfully
 
-![image](allcfnstackscomplete.png)
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(882).png)
 
 ---
 
