@@ -10,7 +10,7 @@
     - [Initialise Sync](#initialise-sync)
     - [Sync Executed](#sync-executed)
     - [Invalidation Details](#invalidation-details)
-    - [All Invalidation Created](#all-invalidation-created)
+    - [All Invalidations Created](#all-invalidations-created)
     - [All Lists of S3 bucket](#all-lists-of-s3-bucket)
 - [CFN CI/CD Stack](#cfn-cicd-stack)
     - [Create CI/CD Template](#create-cicd-template)
@@ -229,11 +229,11 @@ In the root of the repository
 ### Invalidation Details
 ![image](newsyncinvalidationsdetails.png)
 
-### All Lists of S3 bucket
-![image](newsyncinvalidationsdetails.png)
-
 ### All Invalidations Created
 ![image](newsyncinvalidation.png)
+
+### All Lists of S3 bucket
+![image](newsyncinvalidationsdetails.png)
 
 ---
 
