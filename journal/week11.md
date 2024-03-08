@@ -3,15 +3,15 @@
 - [Pre-Requisites](#pre-requisites)
     - [Create Build scripts](#create-build-scripts)
     - [Create Sync Template](#create-sync-template)
+    - [Create GitHub Action](#create-github-action)
 - [Initialise Static Hosting](#initialise-static-hosting)
     - [Run Static-Build script](#run-static-build-script)
-    - [Initialise Sync](#initialise-sync)
-    - [Create GitHub Action](#create-github-action)
-    - [Listing of S3 bucket](#listing-of-s3-bucket)
-    - [Sync Executed](#sync-executed)
     - [Warnings being shown when running static build](#warnings-being-shown-when-running-static-build)
-    - [Invalidation Created](#invalidation-created)
+    - [Initialise Sync](#initialise-sync)
+    - [Sync Executed](#sync-executed)
     - [Invalidation Details](#invalidation-details)
+    - [All Invalidation Created](#all-invalidation-created)
+    - [All Lists of S3 bucket](#all-lists-of-s3-bucket)
 - [CFN CI/CD Stack](#cfn-cicd-stack)
     - [Create CI/CD Template](#create-cicd-template)
     - [Issues during CI/CD stack deployment](#issues-during-cicd-stack-deployment)
@@ -107,57 +107,7 @@ OIDCProviderArn = ''
 
 Update `aws/cfn/sync/template.yaml` with the following [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/template.yaml)
 
-## Initialise Static Hosting
-
-- Run Static-Build script
-
-Run build script `./bin/frontend/build` , you should see output similar to the following when successful.
-
-```console
-The build folder is ready to be deployed.
-You may serve it with a static server:
-
-  npm install -g serve
-  serve -s build
-
-Find out more about deployment here:
-
-  https://cra.link/deployment
-```
-
-Change to the frontend directory and zip the build folder
-
-```sh
-cd frontend-react-js
-zip -r build.zip build/
-```
-
-The steps within the video recommended downloading the zip file locally and then uploading it to the s3 bucket. 
-
-I verified everything had been zipped successfully before uploading in s3
-
-![image](listsofbucketsinlaptop.png)
-
 ---
-
-### Initialise Sync
-
-In the root of the repository
-
-- Install the pre-requisite ruby gems `gem install aws_s3_website_sync dotenv`
-- Generate `sync.env` by running updated `./bin/frontend/generate-env`
-- Initiate synchronisation './bin/frontend/sync'
-- Create CFN Sync `CrdSyncRole` stack by running `./bin/cfn/sync`
-
-Sync Executed
-![image](newlycreatedsync.pmg)
-
-Invalidation Created
-![image](newsyncinvalidation.png)
-
-Invalidation Details
-![image](newsyncinvalidationsdetails.png)
-
 
 ### Create GitHub Action
 
@@ -220,9 +170,40 @@ jobs:
       - name: Run tests
         run: bundle exec rake sync
 ```
-
 ---
 
+## Initialise Static Hosting
+
+- Run Static-Build script
+
+Run build script `./bin/frontend/build` , you should see output similar to the following when successful.
+
+```console
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+```
+
+Change to the frontend directory and zip the build folder
+
+```sh
+cd frontend-react-js
+zip -r build.zip build/
+```
+
+The steps within the video recommended downloading the zip file locally and then uploading it to the s3 bucket. 
+
+I verified everything had been zipped successfully before uploading in s3
+
+![image](listsofbucketsinlaptop.png)
+
+---
 ### Warnings being shown when running static build
 
 ![image](frontendsyncwaring.png)
@@ -232,6 +213,30 @@ These were addressed by commenting out the following import line
 `import ReactDOM from 'react-dom';`
 
 ---
+
+### Initialise Sync
+
+In the root of the repository
+
+- Install the pre-requisite ruby gems `gem install aws_s3_website_sync dotenv`
+- Generate `sync.env` by running updated `./bin/frontend/generate-env`
+- Initiate synchronisation './bin/frontend/sync'
+- Create CFN Sync `CrdSyncRole` stack by running `./bin/cfn/sync`
+
+### Sync Executed
+![image](newlycreatedsync.pmg)
+
+### Invalidation Details
+![image](newsyncinvalidationsdetails.png)
+
+### All Lists of S3 bucket
+![image](newsyncinvalidationsdetails.png)
+
+### All Invalidations Created
+![image](newsyncinvalidation.png)
+
+---
+
 ## CFN CI/CD Stack
 
 ### Create CI/CD Template
@@ -289,11 +294,8 @@ Error on First Run as Pipeline Execution Fails
 The connection shows as pending
 ![image](cicdpending.png)
 
----
-
 ![image](cicdconnecting.png)
 
----
 
 Pipeline still fails saying `[GitHub] No Branch [prod] found for FullRepositoryName [aws-bootcamp-cruddur-2023]` at the Build stage
 
