@@ -18,7 +18,7 @@
     - [Issues during CI/CD stack deployment](#issues-during-cicd-stack-deployment)
 - [CFN MachineUser Stack](#cfn-machineuser-stack)
     - [Proof of Project For MachineUser Stack](#proof-of-project-for-machineuser-stack)
-- [Troubleshooting & Cleanup part 1](#troubleshooting-&-cleanup-part-1)
+- [Troubleshooting and Cleanup part 1](#troubleshooting-and-cleanup-part-1)
       
 ---
 
@@ -454,7 +454,7 @@ Refer to this [MachineUser](https://github.com/Chinyere-nwalie/aws-bootcamp-crud
 
 ---
 
-## Troubleshooting & Cleanup part 1
+## Troubleshooting and Cleanup part 1
 
 Another issue I was faced with was the fact that when I deleted my main user in Cognito, while signing-in I mistakenly gave spacing in the username I wrote it as `nwalie chinyere` instead of `nwaliechinyere`, and in SQL you don't leave spacing in name. In my research, it said Leaving a space in a username in SQL is generally not recommended, While some database systems may allow it, unfortunately, mine didn't allow it, hence it was throwing errors in my username on my production link URL as `@nwalie%20chinyere` and unknowingly because of this issues I didn't know how to solve it so I kept signing in my main handle multiple times on Local database instead of my production. In the pic below look closely and see that the url is altered
 ![Troubleshooting](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(223).png)
