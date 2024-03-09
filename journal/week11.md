@@ -12,6 +12,7 @@
     - [Invalidation Details](#invalidation-details)
     - [All Invalidations Created](#all-invalidations-created)
     - [All Lists of S3 bucket](#all-lists-of-s3-bucket)
+    - [Static Website Hosting Summary for Frontend](#static-website-hosting-summary-for-frontend)
 - [CFN CI/CD Stack](#cfn-cicd-stack)
     - [Create CI/CD Template](#create-cicd-template)
     - [Issues during CI/CD stack deployment](#issues-during-cicd-stack-deployment)
@@ -235,6 +236,34 @@ In the root of the repository
 ### All Lists of S3 bucket
 ![image](newsyncinvalidationsdetails.png)
 
+### Static Website Hosting Summary for Frontend
+
+We use a Ruby-based tool to sync a folder from local development to S3 bucket, and then invalidate the CloudFront cache.
+
+We created the following scripts:
+
+- `./bin/frontend/static-build` and `./bin/frontend/sync`
+- `./erb/sync.env.erb` change `SYNC_S3_BUCKET` to your own and that of `SYNC_CLOUDFRONT_DISTRIBUTION_ID`
+- `./tmp/.keep` as a placeholder
+- `Gemfile`
+- `Rakefile`
+- `./bin/cfn/sync`
+
+We initialized the static hosting by uploading the frontend to the S3 bucket, the following were done below:
+
+- run `./bin/frontend/static-build`
+- `cd frontend-react-js` then `zip -r build.zip build/`
+- download and decompress the zip, and upload everything inside the build folder to s3://beici-demo.xyz
+
+For syncing:
+
+- Install by `gem install aws_s3_website_sync dotenv`
+- Run `./bin/frontend/generate-env` to generate `sync.env`
+- Run `./bin/frontend/sync` to sync
+- Run `./bin/cfn/sync` to create stack `CrdSyncRole`, add the permissions by creating an inline policy `S3AccessForSync` for the created `CrdSyncRole` with S3 service, actions of GetObject, PutObject, ListBucket, and DeleteObject, resources specific to the bucket `nwaliechinyere.xyz`, and resource with the same bucket and any object.
+
+And if changes are been made to the frontend  we can always should sync by running `./bin/frontend/static-build` and then `./bin/frontend/sync`.
+
 ---
 
 ## CFN CI/CD Stack
@@ -284,6 +313,8 @@ BuildSpec = 'backend-flask/buildspec.yml'
 ---
 
 ### Issues during CI/CD stack deployment
+
+Anytime the backend is updated, it triggers CICD, then we merge this branch to the prod branch. Since the frontend is also updated, we can sync by running ./bin/frontend/static-build and then ./bin/frontend/sync.
 
 Error on First Run as Pipeline Execution Fails
 
