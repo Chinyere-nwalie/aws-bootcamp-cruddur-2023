@@ -42,5 +42,5 @@ The `/journal` directory contains
 
 At the end of this AWS Cloud Project Bootcamp, the Cruddur application looks like this;
 
-![Cruddur!](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(875).png)
+![Cruddur!](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(874).png)
 
