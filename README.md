@@ -38,7 +38,9 @@ The `/journal` directory contains
 - [x] [Week 11](journal/week11.md)
 - [x] [Week X](journal/week12.md)
 
+---
 
 At the end of this AWS Cloud Project Bootcamp, the Cruddur application looks like this;
+
 ![Cruddur!](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(875).png)
 
