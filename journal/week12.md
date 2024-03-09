@@ -226,11 +226,14 @@ All done!!
 
 As the Bootcamp draws near, these are the key things that happened to me in the final week
 
-- Tasks in GitPod and AWS CLI stopped running because `AWS_ENDPOINT_URL` hasn't been set and was causing issues
+- Tasks in GitPod and AWS CLI stopped running because `AWS_ENDPOINT_URL` hadn't been set and was causing issues
 - The reply function was not working due to me breaking a line of code,  I had to figure out what the issue was by debugging.
 - Rollbar stopped working despite working earlier with no errors thrown, I stopped it from working.
 - Earlier on in the boot camp I made an error in the seed script and included space when filling in a new username, I had to delete it manually in my database
 - Uploading in production was causing CORS issues. In addition to adding permissions to the `nwaliechinyere.xyz` domain, this was resolved by adding the `PUT` method in `/api/profile/update` under `backend-flask/routes/users.py`
+- In `bin/frontend/static-build`, add env variable `REACT_APP_API_GATEWAY_ENDPOINT_URL` to be stored in production.
+- In the S3 bucket saving the uploaded avatars [`nwaliechinyere.xyz-cruddur-uploaded-avatars`], edit the CORS configuration, including setting `AllowedOrigins` as your my domain name and `AllowedMethods` as `POST, PUT`.
+- In Lambda `CruddurAvatarUpload`, I edited `function.rb` by setting `Access-Control-Allow-Origin` as my domain for Cruddur and `Access-Control-Allow-Methods` as `OPTIONS, GET, POST, PUT`.
 
 ---
 
