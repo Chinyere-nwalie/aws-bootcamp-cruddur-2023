@@ -1,17 +1,14 @@
-# Week 11 — CloudFormation Part 2 & Static website hosting
+ # Week 11 — CloudFormation Part 2 & Static website hosting
 
 - [Pre-Requisites](#pre-requisites)
     - [Create Build scripts](#create-build-scripts)
-    - [Create Sync Template](#create-sync-template)
     - [Create GitHub Action](#create-github-action)
-- [Initialise Static Hosting](#initialise-static-hosting)
-    - [Run Static-Build script](#run-static-build-script)
-    - [Warnings being shown when running static build](#warnings-being-shown-when-running-static-build)
-    - [Initialise Sync](#initialise-sync)
+- [Warnings being shown when running static build](#warnings-being-shown-when-running-static-build)
+    - [Initialise Static Hosting](#initialise-static-hosting)
+    - [Create CrdSync Template](#create-crdsync-template)
+    - [Initialise CrdSync](#initialise-crdsync)
     - [Sync Executed](#sync-executed)
-    - [Invalidation Details](#invalidation-details)
     - [All Invalidations Created](#all-invalidations-created)
-    - [All Lists of S3 bucket](#all-lists-of-s3-bucket)
     - [Static Website Hosting Summary for Frontend](#static-website-hosting-summary-for-frontend)
 - [CFN CI/CD Stack](#cfn-cicd-stack)
     - [Create CI/CD Template](#create-cicd-template)
@@ -82,31 +79,26 @@ chmod u+x bin/cfn/sync
 
 Update `bin/cfn/sync` with the following [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/bin/cfn/sync)
 
-### Create Sync Template
 
-```sh
-cd /workspace/aws-bootcamp-cruddur-2023
-mkdir -p  aws/cfn/sync
-touch aws/cfn/sync/template.yaml aws/cfn/sync/config.toml aws/cfn/sync/config.toml.example
-```
+After all of these, I firstly deployed my frontend cfn stack, but it failed
 
-Update config.toml with the following settings that specify the bucket, region and name of the CFN stack. Replace `bucket` and `region` with your own.
+![cfn-frontend](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(82).png/)
 
-We also need to specify the GitHubOrg which in our case will correspond to our GitHub username and the GitHub Repository name
+It failed because there wasn't a distribution because I didn't add a `rootbucket name`
 
-```toml
-[deploy]
-bucket = 'nwaliechinyere-cfn-artifacts'
-region = 'nwaliechinyere.xyz'
-stack_name = 'CrdSyncRole'
+![cfn-frontend](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(83).png/)
 
-[parameters]
-GitHubOrg = 'Chinyere-nwalie'
-RepositoryName = 'aws-bootcamp-cruddur-2023'
-OIDCProviderArn = ''
-```
+I added everything and deployed
+![cfn-frontend](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(91).png/)
 
-Update `aws/cfn/sync/template.yaml` with the following [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/template.yaml)
+
+Create & Execute changeset is completed now
+
+![cfn-frontend](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(105).png/)
+
+View my distribution
+
+![cfn-frontend](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(106).png/)
 
 ---
 
@@ -159,8 +151,8 @@ jobs:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::797130574998:role/CrdSyncRole-Role-VW38RM6ZXJ6W
-          aws-region: eu-west-2
+          role-to-assume: arn:aws:iam::454949276804:role/CrdSyncRole-Role-KLklk0hE7GXn
+          aws-region: us-east-1
       - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
@@ -171,9 +163,35 @@ jobs:
       - name: Run tests
         run: bundle exec rake sync
 ```
+
 ---
 
-## Initialise Static Hosting
+## Warnings being shown when running static build
+
+![warning for static-build](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(369).png/)
+
+These were addressed by commenting out the following import line, and editing the pages provided in the warning details
+
+`import ReactDOM from 'react-dom';`
+
+Syncing  was a success
+
+![CrdSync](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(137).png/)
+
+
+Initializing static-build-script again
+
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(116).png/)
+
+Invalidations created
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(138).png/)
+
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(139).png/)
+
+---
+
+
+### Initialise Static Hosting
 
 - Run Static-Build script
 
@@ -202,20 +220,51 @@ The steps within the video recommended downloading the zip file locally and then
 
 I verified everything had been zipped successfully before uploading in s3
 
-![image](listsofbucketsinlaptop.png)
+![zip for static-build](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(126).png/)
+
+![zip for static-build](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(127).png/)
+
+![zip for static-build](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(128).png/)
+
+
+All nwaliechinyere-cfn-artifacts objects in the bucket
+
+![nwalie chinyere artifacts objects](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(833).png/)
+
 
 ---
-### Warnings being shown when running static build
 
-![image](frontendsyncwaring.png)
 
-These were addressed by commenting out the following import line
+### Create CrdSync Template
 
-`import ReactDOM from 'react-dom';`
+```sh
+cd /workspace/aws-bootcamp-cruddur-2023
+mkdir -p  aws/cfn/sync
+touch aws/cfn/sync/template.yaml aws/cfn/sync/config.toml aws/cfn/sync/config.toml.example
+```
+
+Update config.toml with the following settings that specify the bucket, region and name of the CFN stack. Replace `bucket` and `region` with your own.
+
+We also need to specify the GitHubOrg which in our case will correspond to our GitHub username and the GitHub Repository name
+
+```toml
+[deploy]
+bucket = 'nwaliechinyere-cfn-artifacts'
+region = 'nwaliechinyere.xyz'
+stack_name = 'CrdSyncRole'
+
+[parameters]
+GitHubOrg = 'Chinyere-nwalie'
+RepositoryName = 'aws-bootcamp-cruddur-2023'
+OIDCProviderArn = ''
+```
+
+Update `aws/cfn/sync/template.yaml` with the following [code](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/template.yaml)
 
 ---
 
-### Initialise Sync
+
+### Initialise CrdSync
 
 In the root of the repository
 
@@ -224,19 +273,38 @@ In the root of the repository
 - Initiate synchronisation './bin/frontend/sync'
 - Create CFN Sync `CrdSyncRole` stack by running `./bin/cfn/sync`
 
-### Sync Executed
-![image](newlycreatedsync.pmg)
+dotenv installed
 
-### Invalidation Details
-![image](newsyncinvalidationsdetails.png)
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(130).png/)
+
+CFN sync refused to create and this was the error message, I rectified this by adding my repository name in the sync template file
+
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(145).png/)
+
+I ran the cfn-toml parameter to see the workspace again before deploying
+
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(146).png/)
+
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(147).png/)
+
+
+### Sync Executed
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(151).png/)
+
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(150).png/)
+
+
+I gave the CrdSyncRole permission
+
+![CrdSyncRole](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(156).png/)
+
 
 ### All Invalidations Created
-![image](newsyncinvalidation.png)
 
-### All Lists of S3 bucket
-![image](newsyncinvalidationsdetails.png)
+![invalidations](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(852).png/)
 
-### Static Website Hosting Summary for Frontend
+
+### Static Website Hosting Summary for Frontend;
 
 We use a Ruby-based tool to sync a folder from local development to S3 bucket, and then invalidate the CloudFront cache.
 
@@ -288,6 +356,8 @@ cd aws/cfn/cicd/nested
 touch codebuild.yaml
 ```
 
+![Nested stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(85).png/)
+
 Update the files with the following code.
 
 - ["aws/cfn/cicd/template.yaml"](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/cicd/template.yaml)
@@ -310,33 +380,87 @@ GithubRepo = 'Chinyere-nwalie/aws-bootcamp-cruddur-2023'
 ArtifactBucketName = "codepipeline-nwaliechinyere-cruddur-artifacts"
 BuildSpec = 'backend-flask/buildspec.yml'
 ```
+
+Creating the s3 bucket for CICD
+![cicd bucket](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(52).png/)
+
+After I ran cicd deploy in my Gitpod CLI, I went to my AWS to view the status, the creation was complete
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(52).png/)
+
+But when I executed changesets, it was throwing errors
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(56).png/)
+
+Our Instructor Andrew brown rectified this issue by changing `version` from 2
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(78).png/)
+
+To `1`
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(111).png/)
+
+Then I deployed the stack again via CLI
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(68).png/)
+
+It deployed successfully
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(67).png/)
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(84).png/)
+
+Yet It was still failing on codepipeline
+
+![cicd deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(71).png/)
+
 ---
 
 ### Issues during CI/CD stack deployment
 
 Anytime the backend is updated, it triggers CICD, then we merge this branch to the prod branch. Since the frontend is also updated, we can sync by running ./bin/frontend/static-build and then ./bin/frontend/sync.
 
-Error on First Run as Pipeline Execution Fails
+Before I add any updates to merge to prod branch, I updated the `pending connection`
 
-![image](cicdfailing.png)
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(73).png/)
 
----
+Connected my repository which was a success;
 
-The connection shows as pending
-![image](cicdpending.png)
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(76).png/)
 
-![image](cicdconnecting.png)
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(77).png/)
 
+I made an update to be pushed and merged to prod branch to see if cicd pipeling works completely
 
-Pipeline still fails saying `[GitHub] No Branch [prod] found for FullRepositoryName [aws-bootcamp-cruddur-2023]` at the Build stage
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(229).png/)
+
+It did but failed on build 
+
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(231).png/)
+
+Saying `access denied` our instructor said this is because in Github; there's No Branch [prod] found for FullRepositoryName [aws-bootcamp-cruddur-2023]` at the Build stage
+
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(244).png/)
+
 
 To resolve this change the following setting `GithubRepo` in `aws/cfn/cicd/config.toml` to include the account name e.g
 
 `GithubRepo = 'Chinyere-nwalie/aws-bootcamp-cruddur-2023'`
 
+I tried to build again
+
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(247).png/)
+
+
 Build succeeded after updating concerning code build and buildspec.yml
 
-![image](cicdbuildsuccessful.png)
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(248).png/)
+
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(246).png/)
+
+Build & Deploy was a success
+
+![cicd stack](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(249).png/)
 
 ---
 

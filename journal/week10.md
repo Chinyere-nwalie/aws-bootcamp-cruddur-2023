@@ -2000,6 +2000,10 @@ Service In progress
 The backend flask service is Healthy now
 ![CFN sevice-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(763).png)
 
+All CFN Service-stack parameters
+
+![CFN service-deploy](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(214).png/)
+
 ---
 
 ### AWS CFN RDS STACK
