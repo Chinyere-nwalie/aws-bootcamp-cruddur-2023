@@ -1,4 +1,7 @@
 # Week 0 — Billing and Architecture
+
+This marks the beginning of our AWS Free Cloud Project Bootcamp organized solely by our instructor Andrew Brown. *A start for an amazing ride*
+
 - [Architecture Diagrams](#architecture-diagrams)
   -[Main Architectural Diagrams](#main-architectural-diagrams)
   -[Usage of the Types of Architectural Diagram](#usage-of-the-types-of-architectural-diagram)
