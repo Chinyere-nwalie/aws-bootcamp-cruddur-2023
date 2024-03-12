@@ -24,19 +24,19 @@ Follow [this playlist](https://www.youtube.com/playlist?list=PLBfufR7vyJJ7k25byh
 
 The `/journal` directory contains
 
-- [x] [Week 0](journal/week0.md)
-- [x] [Week 1](journal/week1.md)
-- [x] [Week 2](journal/week2.md)
-- [x] [Week 3](journal/week3.md)
-- [x] [Week 4](journal/week4.md)
-- [x] [Week 5](journal/week5.md)
-- [x] [Week 6](journal/week6.md)
-- [x] [Week 7](journal/week7.md)
-- [x] [Week 8](journal/week8.md)
-- [x] [Week 9](journal/week9.md)
-- [x] [Week 10](journal/week10.md)
-- [x] [Week 11](journal/week11.md)
-- [x] [Week X](journal/week12.md)
+- [x] [Week 0 - Billing and Architecture](journal/week0.md)
+- [x] [Week 1 - App Containerization](journal/week1.md)
+- [x] [Week 2 - Distributed Tracing](journal/week2.md)
+- [x] [Week 3 - Decentralized Authentication](journal/week3.md)
+- [x] [Week 4 - Postgres and RDS](journal/week4.md)
+- [x] [Week 5 - DynamoDB and Serverless Caching](journal/week5.md)
+- [x] [Week 6 - Deploying Containers](journal/week6.md)
+- [x] [Week 7 - Solving CORS with a Load Balancer and Custom Domain](journal/week7.md)
+- [x] [Week 8 - Serverless Image Processing](journal/week8.md)
+- [x] [Week 9 - CI/CD with CodePipeline, CodeBuild and CodeDeploy](journal/week9.md)
+- [x] [Week 10 - CloudFormation Part 1](journal/week10.md)
+- [x] [Week 11 - CloudFormation Part 2 & Static website hosting](journal/week11.md)
+- [x] [Week X - Personal Cleanup](journal/week12.md)
 
 ---
 
