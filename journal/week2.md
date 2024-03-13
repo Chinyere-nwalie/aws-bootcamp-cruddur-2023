@@ -106,7 +106,7 @@ After `docker compose up` launch the app and browse the backend endpoint of `/ap
 
 We can run queries to explore traces within Honeycomb as shown in the screenshot below
 
-![HONEY_COMB](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(149).png)
+![HONEY_COMB](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(149).png)
 
 I followed closely the  instructions via this [link](https://www.youtube.com/watch?v=2GD9xCzRId4&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=30)
 
