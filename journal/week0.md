@@ -280,9 +280,9 @@ gp AWS_DEFAULT_REGION=your_default_region
 
 ![MY BILLINGLARM](assets/cloud%20watch%20alarms.png)
 
-![MY BILLINGLARM](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(432).png)
+![MY BILLINGLARM](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(432).png)
 
-![MY BILLINGLARM](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(431).png)
+![MY BILLINGLARM](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(431).png)
 
 ### Budgets Alarms
 
@@ -303,7 +303,7 @@ aws sns subscribe \
 --protocol=email \
 --notification-endpoint=your_sns_details
 ```
-![EMAIL] (https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(134).png)
+![EMAIL] (https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(134).png)
 
 
 After creating billing alarms, I received an email below as proof
@@ -316,13 +316,13 @@ Proof of Budget alerts
 
 ![BILLING-BUDGET](assets/billing-budgets.png)
 
-![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(438).png)
+![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(438).png)
 
-![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(435).png)
+![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(435).png)
 
-![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(436).png)
+![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(436).png)
 
-![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(437).png)
+![BILLING-BUDGET](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(437).png)
 
 ---
 
@@ -375,7 +375,7 @@ To view details related to AWS Free Tier, visit the [AWS Free Tier website](http
 
 Gitpod Credits
 
-![Gitpod Credits](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-20A23/blob/main/journal/assets/Screenshot%20(433).png)
+![Gitpod Credits](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(433).png)
 
 
 > Week 1 [App Containerization](week1.md)
