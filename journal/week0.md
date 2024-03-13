@@ -303,7 +303,7 @@ aws sns subscribe \
 --protocol=email \
 --notification-endpoint=your_sns_details
 ```
-![EMAIL] (https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(134).png)
+![EMAIL](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(134).png)
 
 
 After creating billing alarms, I received an email below as proof
