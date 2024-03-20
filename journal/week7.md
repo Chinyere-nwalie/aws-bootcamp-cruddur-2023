@@ -38,8 +38,6 @@ A view of the container in my frontend and backend task
 
 -  Now after signing in, I can crud a new post, and I can send messages to a mock user previously inserted into the RDS
 
-ECR - Image for Cruddur-python
-
 ![cruddur-task](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(409).png)
 
 ---
