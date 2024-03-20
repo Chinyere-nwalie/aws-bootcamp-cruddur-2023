@@ -15,18 +15,18 @@
 
 Containerizing an application in simply terms means putting an app into a container which is like a small self-contained package that contains everything the application needs to run; this includes the code, runtime, system tools, and dependencies. The container is like a portable, isolated environment that can be easily deployed and scaled, and we're using docker to containerize our applications because it provides a standardized way to package and deploy applications making it easier to move applications between environments, and to scale them when needed. Using Docker provides isolation between containers, so they are less likely to interfere with each other, it makes it easy to use the same base image for multiple containers, reducing the size and complexity of the environment. 
 
-Fun-fact is I read this book [Increment](https://store.increment.com/products/issue-17-containers) and it talked at large about contianers, it's history and also about Docker too
+Fun-fact is I read this book [Increment](https://store.increment.com/products/issue-17-containers) and it talked at large about containers, their history, and Docker too
 
-  > In increment book, it was written that contianers are the *Lingua franca* of computing infrastructure
+  > In increment book, it was written that containers are the *Lingua franca* of computing infrastructure
 
 Below are some Docker components<br/>
 
 - Docker Engine -> The core runtime that creates and manages containers.
-- Docker Images -> Self-contained snapshots of applications and their dependencies e.g Frontend.
-- Docker Containers -> Runnable instances of Docker images that encapsulate the application and its runtime environment.
+- Docker Images -> Self-contained snapshots of applications and their dependencies e.g. Frontend.
+- Docker Containers -> Runnable instances of Docker images encapsulating the application and its runtime environment.
 - Docker Registry -> A centralized repository for storing and sharing Docker images e.g. Dockerhub or ECR.
 - Dockerfile -> This is a text file that contains instructions for building Docker images; It specifies the base image, adds dependencies, configures the environment, and defines runtime commands.
-- Docker Compose -> simplifies managing multi-container applications. With a YAML file, it defines services, their configurations, and relationships between them.
+- Docker Compose -> simplifies managing multi-container applications. With a YAML file, it defines services, their configurations, and the relationships between them.
 
 Commands for working with Docker<br/>
 
@@ -92,7 +92,7 @@ export BACKEND_URL="*"
 python3 -m flask run --host=0.0.0.0 --port=4567
 ```
 
-![image]https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(110).png
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(110).png)
 
 ---
 
@@ -236,7 +236,7 @@ Now run docker compose up and unlock the ports (3000, 4567); open the link of 30
 
 The containers
 
-![image]https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(119).png
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(119).png)
 
   > Docker Compose is a tool for defining and running multi-container as services by designing a single YAML file and with a single command, you create and start all the services from your configuration.Compose will allows us to manage these containers in one go enabling seamless interconnection.
 
@@ -397,9 +397,9 @@ import NotificationsFeedPage from './pages/NotificationsFeedPage';
 },
 ```
 
-![image]https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(117).png
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(117).png)
 
-![image]https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(118).png
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(118).png)
 
 
   > NB: When the server refuses to load, I use the command {gp stop} in my terminal to stop the workspace and start again and it worked successfully.
@@ -410,7 +410,7 @@ import NotificationsFeedPage from './pages/NotificationsFeedPage';
 
 For more accurate data, We will make use of DynamoDB to enable seamless message sending within our platform and efficiently store the associated data.
 
-To run the dynamodb via container I added theses commands in the docker compose file
+To run the dynamodb via container I added these commands in the docker-compose file
  
 ```yml
 dynamodb-local:
