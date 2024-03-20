@@ -179,3 +179,5 @@ Implementing server side verification using JWT, I understood how to use codes f
 
 - I also changed the UI of my cruddur App by implementing and writing CSS scripts in my Front-end.
 
+Next:
+> Week 4 [Postgres and RDS](week4.md)

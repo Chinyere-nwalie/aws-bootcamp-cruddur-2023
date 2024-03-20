@@ -2450,4 +2450,5 @@ After editing the yaml in my gitpod settings all the lines cleared out
 
 ---
 
+Next:
 > CloudFormation Part 2 in [Week Eleven](week11.md).

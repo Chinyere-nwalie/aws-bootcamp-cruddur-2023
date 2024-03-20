@@ -15,3 +15,8 @@ Week 7 task was merged  with Week 6. Check my [week6 journal](https://github.com
 - further check the configuration for the frontend task & backend task, the containers are running healthy containers.
 
 -  Now after signing in, I can crud a new post, and I can send messages to a mock user previously inserted into the RDS.
+
+---
+
+Next:
+> Week 8 [Serverless Image Processing](week8.md)

@@ -807,4 +807,8 @@ Now I have successfully changed my profile Avatar to another picture
   - Environment variables in the two Lambdas were added such as:  `USER_POOL_ID` and `CLIENT_ID` for **CruddurApiGatewayLambdaAuthorizer** and `UPLOADS_BUCKET_NAME`  for **CruddurUploadAvatar**
   - `erb/frontend-react-js.env.erb`: `REACT_APP_API_GATEWAY_ENDPOINT_URL` equals to the Invoke URL shown in the API Gateway.
   - `frontend-react-js/src/components/ProfileForm.js`: `gateway_url` and `backend_url` are correctly set.
+
 ---
+
+Next:
+> Week 9 [CI/CD with CodePipeline, CodeBuild and CodeDeploy](week9.md)

@@ -331,3 +331,7 @@ Dynamodb uses appropriate authentication e.g IAM Roles/AWS Cognito Identity Pool
 
 Add an amazon dynamodb accelerator (DAX) to improve the response time of the dynamodb linked to a web-application in AWS.
 
+---
+
+Next:
+> Week 6 [Deploying Containers](week6.md)

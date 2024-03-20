@@ -377,5 +377,5 @@ Gitpod Credits
 
 ![Gitpod Credits](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(433).png)
 
-
+Next:
 > Week 1 [App Containerization](week1.md)

@@ -1389,3 +1389,10 @@ RUN apt-get install iputils-ping -y
 To enable this function, go to the cluster and click on update cluster.
 
 Under the section Monitoring, toggle on Use Container Insights
+
+---
+
+Next:
+> Week 7 [Solving CORS with a Load Balancer and Custom Domain](week7.md)
+
+  >please also note that week 6 and 7 tasks were all merged

@@ -10,7 +10,10 @@
 
 ## Observability
 
-Observability is the ability to understand and analyze the internal state of a system or application based on the external outputs and behaviors it exhibits. It involves collecting, analyzing, and visualizing data such as logs, metrics, and traces to gain insights into the performance, health, and behavior of the system.
+In distributed systems, observability is the ability to collect data about programs execution, modules, internal states, and the communication among components. It is the ability to gain insight into a system by analyzing its outputs, it's also about understanding a system's behavior by looking at what it does, instead of just what it's made of. Observability helps you to understand how a system is performing, whether it's meeting its goals, and how it can be improved. To improve observability, engineers use a wide range of logging and tracing techniques to gather telemetry information, and tools to analyze and use it. 
+
+For more comprehension; Observability is like watching how a machine works by analyzing its results. Imagine a machine you can't open or see inside, but you can watch what it does, observability lets you understand the machine by looking at its results. It's a way to find problems and improve performance.
+
 
 The three pillars of observability are,
 - **Metrics:** Metrics are numerical measurements of the state of a system. They can be used to track things like CPU usage, memory usage, and database queries.
@@ -145,9 +148,9 @@ I followed the instructions via this [link](https://www.youtube.com/watch?v=xMBD
 
 ![ROLLBAR](assets/week.2%20Rollbar.png)
 
-I Installed WatchTower and write a custom logger to send application log data to CloudWatch Log group.
+I Installed WatchTower and wrote a custom logger to send application log data to CloudWatch Log group.
 
 Lastly, when you run into an error, go to rollbar, view and rectify it and it save you time for Debugging.
 
-
+Next:
 > Week 3 [Decentralized Authentication](week3.md)
