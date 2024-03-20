@@ -1,5 +1,18 @@
 # Week 1 — App Containerization
 
+- [Containerizing an Application](#containerizing-an-application)
+  - [Preparing Flask Before Docker Conternerization](#preparing-flask-before-docker-conternerization)
+- [Docker Conternerization ](#docker-conternerization)
+  - [Containerized Backend](#containerized-backend)
+  - [Containerized Frontend](#containerized-frontend)
+  - [Adding OpenAPI endpoint to both the Backend and Frontend page](#adding-openapi-endpoint-to-both-the-backend-and-frontend-page)
+- [ Dynamodb and Postgres](#dynamodb-and-postgres)
+- [Home Work Challenges](#home-work-challenges)
+ 
+---
+
+## Containerizing an Application
+
 Containerizing an application in simply terms means putting an app into a container which is like a small self-contained package that contains everything the application needs to run; this includes the code, runtime, system tools, and dependencies. The container is like a portable, isolated environment that can be easily deployed and scaled, and we're using docker to containerize our applications because it provides a standardized way to package and deploy applications making it easier to move applications between environments, and to scale them when needed. Using Docker provides isolation between containers, so they are less likely to interfere with each other, it makes it easy to use the same base image for multiple containers, reducing the size and complexity of the environment. 
 
 Fun-fact is I read this book [Increment](https://store.increment.com/products/issue-17-containers) and it talked at large about contianers, it's history and also about Docker too
@@ -29,7 +42,7 @@ Commands for working with Docker<br/>
 | `docker-compose arg`      | Starts services with  `up ` and stop with  `down` as **arg**         |
 
 
-## Preparing Flask Before Docker Conternerization 
+### Preparing Flask Before Docker Conternerization 
 
 Here we ensured that our package manager is updated to the latest version
 
@@ -83,7 +96,7 @@ python3 -m flask run --host=0.0.0.0 --port=4567
 
 ---
 
-##  Docker Conternerization 
+## Docker Conternerization 
 
 1. Go to the root of directory that you want containerize the project
 2. Create a file and call it `Dockerfile`
@@ -158,7 +171,7 @@ docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-
  ```
 
 
-##  Containerized  Frontend
+### Containerized Frontend
 
 To set up the frontend, we need first to install the Node Package Manager.
 
@@ -229,7 +242,7 @@ The containers
 
 ---
 
-## Adding OpenAPI endpoint to both the Backend and Frontend page
+### Adding OpenAPI endpoint to both the Backend and Frontend page
 
 We made use of **OPENAPI** OpenAPI is a specification that provides a machine-readable format for defining and documenting RESTful APIs. At its core, OpenAPI provides a comprehensive and user-friendly framework to help innovators visualize and share their vision.
 
@@ -458,7 +471,7 @@ More explanations;
 
 ---
 
-# Home work Challenges
+## Home Work Challenges
 
 These were assignments I accomplised<br/>
 
