@@ -126,7 +126,7 @@ And run the following command using the CLI to set the url of the repo
 export ECR_PYTHON_URL="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/cruddur-python"
 echo $ECR_PYTHON_URL
 ```
-![cruddur-python](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(280).png)
+![cruddur-python](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(280)_LI.jpg)
 
 
 This command pulled the python:3.10-slim-buster, tag the image and push to the repo in ECR
