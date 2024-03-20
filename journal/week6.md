@@ -6,6 +6,8 @@
 - [Fixing Check Auth Cognito](#Fixing-Check-Auth-Cognito)
 - [Implementation of Xray on Ecs and Container Insights](#Implementation-of-Xray-on-Ecs-and-Container-Insights)
 
+---
+
 ## ECS Security Best Practices
 
 Choose the right public or private ECR for images
@@ -81,11 +83,11 @@ except Exception as e:
 ![Api-health-check](assets/Health-check%20week%206-7.png)
 
 4) Create the cloudwatch log group with the following command running the codes in the terminal
+
 ```sh
 aws logs create-log-group --log-group-name "/cruddur/fargate-cluster"
 aws logs put-retention-policy --log-group-name "/cruddur/fargate-cluster" --retention-in-days 1
 ```
-![cluster-cruddur](assets/Cluster-cruddur%20week6-7.png)
 
 5) Create the container registry the images and we are creating this cluster in the aws CLI
 
@@ -95,6 +97,13 @@ aws ecs create-cluster \
 --service-connect-defaults namespace=cruddur
 ```
 
+A view of the created cluster in CLI & AWS Console
+
+![cluster-cruddur](assets/Cluster-cruddur%20week6-7.png)
+
+![cluster-cruddur](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(279).png)
+
+
 6) Prepare docker; Create 3 repo in ECR. Python, backend-flask and frontend-react-js
 
 First we need to login to ECR using the following command (Note this has to be done everytime you need to connect to ECR eventually at some point we set a script for it)
@@ -103,74 +112,88 @@ aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --usernam
 
 ```
 
-we created the python repo using the CLI
+We created the python repo using the CLI
+
 ```sh
 aws ecr create-repository \
   --repository-name cruddur-python \
   --image-tag-mutability MUTABLE
 ```
 
-and run the following command using the CLI to set the url of the repo 
+And run the following command using the CLI to set the url of the repo
+
 ```sh
 export ECR_PYTHON_URL="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/cruddur-python"
 echo $ECR_PYTHON_URL
 ```
+![cruddur-python](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(280).png)
 
-this command pulled the python:3.10-slim-buster, tag the image and push to the repo in ECR
+
+This command pulled the python:3.10-slim-buster, tag the image and push to the repo in ECR
+
 ```sh
 docker pull python:3.10-slim-buster
 docker tag python:3.10-slim-buster $ECR_PYTHON_URL:3.10-slim-buster
 docker push $ECR_PYTHON_URL:3.10-slim-buster
 ```
 
-we changed the following line of code in the dockerfile of backend-flask.
-```
+![cruddur-python slim-buster](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(283).png)
+
+ECR - Image for Cruddur-python
+
+![cruddur-task](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(449).png)
+
+
+We changed the following line of code in the dockerfile of backend-flask<br/>
+
+```sh
 FROM python:3.10-slim-buster
 
 ENV FLASK_ENV=development
-````
-with
-```
+
 FROM 238967891447.dkr.ecr.eu-west-2.amazonaws.com/cruddur-python
 
 ENV FLASK_DEBUG=1
 ```
 
-- to ensure it works, try to do Compose Up 
-- to remove an image use the following code `docker image rm nameoffile:tag`
-- to check the images of docker use `docker images`
+To ensure it works, try to do Compose Up <br/> 
+To remove an image use the following code `docker image rm nameoffile:tag` <br/>
+To check the images of docker use `docker images` <br/>
 
 7) Create the repo for the backend flask using the codes in the CLI
+
 ```sh
 aws ecr create-repository \
   --repository-name backend-flask \
   --image-tag-mutability MUTABLE
 ```
 
-run the following command using the CLI to set the url of the repo created
+Run the following command using the CLI to set the url of the repo created
 
 ```sh
 export ECR_BACKEND_FLASK_URL="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/backend-flask"
 echo $ECR_BACKEND_FLASK_URL
 ```
 
-build the backend-flask image *inside the directory
+Build the backend-flask image *inside the directory
 
 ```sh
 docker build -t backend-flask .
 ```
 
-tag it
+Tag it
 
 ```sh
 docker tag backend-flask:latest $ECR_BACKEND_FLASK_URL:latest
 ```
 
-and push to our repo
+And push to our repo
 
 ```sh
 docker push $ECR_BACKEND_FLASK_URL:latest
 ```
+
+![cruddur-task](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(447).png)
 
 8) Create a container, first create policies for the container, and then pass the parameters to the ssm
 
@@ -529,8 +552,12 @@ aws ecs execute-command  \
       }
     ],
 ```
-Then, on the targetGroupArn insert the arn of the target group, the target-group for the backend-flask
-on container name backend-flask and port:4567.
+
+Security group for the Application Load balancer
+
+![cruddur-task](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(445).png)
+
+Then, on the targetGroupArn insert the arn of the target group, the target-group for the backend-flask on container name backend-flask and port:4567 <br/>
 
 13) Create the task definition for the frontend-react-js.first
 
@@ -572,6 +599,9 @@ on container name backend-flask and port:4567.
 ```
 
 ![Task-def-Frontend](assets/Task%20Def%20Frontend%20week%206-7.jpg)
+
+ECR - Image for frontend
+![cruddur-task](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(448).png)
 
 
 (i) Create a dockerfile.prod under the frontend-react-js
@@ -1395,4 +1425,4 @@ Under the section Monitoring, toggle on Use Container Insights
 Next:
 > Week 7 [Solving CORS with a Load Balancer and Custom Domain](week7.md)
 
-  >please also note that week 6 and 7 tasks were all merged
+  > please also note that week 6 and 7 tasks were all merged and you'll find most pictures in week 7

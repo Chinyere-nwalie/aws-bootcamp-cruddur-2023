@@ -1,12 +1,12 @@
 # Week 2 — Distributed Tracing
--[Observability](#observability)
-  -[Distrubuted Tracing](#distrubuted-tracing)
-  -[Instrumentation in Observability](#instrumentation-in-observability)
-  -[Observability in AWS](#observability-in-aws)
--[Technical task](#technical-task)
-  -[OTEL with Honeycomb](#otel-with-honeycomb)
-  -[AWS X-Ray](#aws-x-ray)
-  -[Rollbar](#rollbar)
+- [Observability](#observability)
+  - [Distrubuted Tracing](#distrubuted-tracing)
+  - [Instrumentation in Observability](#instrumentation-in-observability)
+  - [Observability in AWS](#observability-in-aws)
+- [Technical task](#technical-task)
+  - [OTEL with Honeycomb](#otel-with-honeycomb)
+  - [AWS X-Ray](#aws-x-ray)
+  - [Rollbar](#rollbar)
 
 ## Observability
 
