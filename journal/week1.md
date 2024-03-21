@@ -74,7 +74,7 @@ Flask-AWSCognito <br/>
 psycopg[binary] <br/>
 psycopg[pool] <br/>
 boto3 <br/>
-```
+
 
 And then install them all with a single command, doing this makes the installation comprehensive <br/>
 
