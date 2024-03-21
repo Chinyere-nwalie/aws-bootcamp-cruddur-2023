@@ -78,8 +78,9 @@ boto3 <br/>
 
 And then install them all with a single command, doing this makes the installation comprehensive <br/>
 
-
-*pip3 install -r requirements.txt*
+```sh
+pip3 install -r requirements.txt
+```
 
 
 We still took these steps to run our application.

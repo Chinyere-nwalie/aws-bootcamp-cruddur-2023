@@ -274,6 +274,8 @@ gp AWS_DEFAULT_REGION=your_default_region
 
 ## AWS Billing 
 
+AWS Billing is a system AWS uses to track and bill you for all the resources you use. AWS Billing is a key part of the AWS platform as it provides a comprehensive accounting for your spending, as well as detailed breakdowns of the resources you're using. You can also use AWS Billing to set up alarms,budgets and alerts to help you stay within your budget.
+
 ### Billing Alarms 
 
 * I set up billing alarms using cloud watch.
