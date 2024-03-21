@@ -15,7 +15,7 @@
 
 Containerizing an application in simply terms means putting an app into a container which is like a small self-contained package that contains everything the application needs to run; this includes the code, runtime, system tools, and dependencies. The container is like a portable, isolated environment that can be easily deployed and scaled, and we're using docker to containerize our applications because it provides a standardized way to package and deploy applications making it easier to move applications between environments, and to scale them when needed. Using Docker provides isolation between containers, so they are less likely to interfere with each other, it makes it easy to use the same base image for multiple containers, reducing the size and complexity of the environment. 
 
-Fun-fact is I read this book [Increment](https://store.increment.com/products/issue-17-containers) and it talked at large about containers, their history, and Docker too
+Fun-fact is I read the hard copy of this book [Increment](https://store.increment.com/products/issue-17-containers) and it talked at large about containers, their history, and Docker too
 
   > In increment book, it was written that containers are the *Lingua franca* of computing infrastructure
 
@@ -50,7 +50,7 @@ Here we ensured that our package manager is updated to the latest version
 sudo apt-get update
 ```
 
-Then we move forward with the installation of indispensable Python dependencies.
+Then we move forward with installing the Python dependencies.
 
 ```sh
 sudo apt-get install python3-setuptools python3-dev build-essential
@@ -59,24 +59,24 @@ sudo apt-get install python3-setuptools python3-dev build-essential
 We included these dependencies in our project and I completed each of them one by one, ensuring a smooth and satisfactory experience. Find more [here](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/backend-flask/requirements.txt)
 
 
-flask
-flask-cors
-opentelemetry-api
-opentelemetry-sdk 
-opentelemetry-exporter-otlp-proto-http 
-opentelemetry-instrumentation-flask 
-opentelemetry-instrumentation-requests
-aws-xray-sdk
-watchtower
-blinker
-rollbar
-Flask-AWSCognito
-psycopg[binary]
-psycopg[pool]
-boto3
+flask <br/>
+flask-cors <br/>
+opentelemetry-api <br/>
+opentelemetry-sdk <br/>
+opentelemetry-exporter-otlp-proto-http <br/>
+opentelemetry-instrumentation-flask <br/>
+opentelemetry-instrumentation-requests <br/>
+aws-xray-sdk <br/>
+watchtower <br/>
+blinker <br/>
+rollbar <br/>
+Flask-AWSCognito <br/>
+psycopg[binary] <br/>
+psycopg[pool] <br/>
+boto3 <br/>
 ```
 
-And then install them all with a single command, doing this allows for a more streamlined installation process.
+And then install them all with a single command, doing this makes the installation comprehensive.
 
 ```sh
 pip3 install -r requirements.txt
