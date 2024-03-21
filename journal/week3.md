@@ -404,9 +404,11 @@ This was a sign-in on my Cruddur app with my real name
 
 1. Open the `signupPage.js` file.
 2. Replace the `cookies` import with the following:
+
 ```js
 import { Auth } from 'aws-amplify';
 ```
+
 3. Replace the `onsubmit` event handler with the following code:
 ```js
 const onsubmit = async (event) => {
@@ -486,9 +488,6 @@ const onsubmit = async (event) => {
 - If the sign up fails, the `catch` block will log the error and set the `errors` state variable to the error message. The `console.log()` function - prints the error to the console. The `setErrors()` function sets the `errors` state variable to the error message.
 5. Save the Sign-Up page and verify it.
 
-<img src="assets/Week3/Complete/Signup/userpool again/3 sign up.png">
-<div id="signup-figure" align="center" style="font-weight: bold; margin-bottom:12px; padding-top:0px">Fig 3.0: Cruddur Sign Up Page </div>
-
 Once you have created the page it will now use the AWS Amplify library to sign up users.
 
 ---
@@ -562,10 +561,10 @@ const onsubmit = async (event) => {
 }
 ```
 
-7. Testing the Confirmation Page; Refresh the Cruddur signin webpage to get the recent changes .
+7. Testing the Confirmation Page; Refresh the Cruddur signin webpage to get the recent changes.
 8. Click on `sign up` button where you will input your email address
 9. After inputing your details, you will be sent an automatic email of a confirmation code 
-10. Go bacl to the confirmation page, fill the code you received
+10. Go back to the confirmation page, fill the code you received
 
  I received a cofirmation email to login. 
 
