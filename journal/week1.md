@@ -56,7 +56,7 @@ Then we move forward with installing the Python dependencies.
 sudo apt-get install python3-setuptools python3-dev build-essential
 ```
 
-We included these dependencies in our project and I completed each of them one by one, ensuring a smooth and satisfactory experience. Find more [here](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/backend-flask/requirements.txt)
+We included these dependencies in our project and I completed each of them one by one [here](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/backend-flask/requirements.txt)
 
 
 flask <br/>
@@ -76,11 +76,11 @@ psycopg[pool] <br/>
 boto3 <br/>
 ```
 
-And then install them all with a single command, doing this makes the installation comprehensive.
+And then install them all with a single command, doing this makes the installation comprehensive <br/>
 
-```sh
-pip3 install -r requirements.txt
-```
+
+*pip3 install -r requirements.txt*
+
 
 We still took these steps to run our application.
 
