@@ -12,7 +12,7 @@ This is the starting codebase that will be used in the FREE AWS Cloud Project Bo
 - Cohort: 2023-A1 [bootcamp website](https://aws.cloudprojectbootcamp.com/)
 - At the end of the Boot-camp, I obtained the AWS Cloud Project Bootcamp Certificate (Blue Squad) with a Demonstration of Good Skills as a Cloud Engineer [My Certificate on LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7103450901075406848/)
 - I published [My Cruddur video ](https://www.youtube.com/playlist?list=PLog3wMUvMmbxNX4Lzwbc2z4QaMmE8E6Q_) on Youtube as proof of completion of all tasks done
-- Also In this bootcamp, I created a domain name ![nwaliechinyere](https://nwaliechinyere.xyz/) for my projects (the projects isn't available on the domain anymore, this is because the task of Fargate services was first set to 0, then I have teared down the stack in order not to incur bills as my Free Tier has expired) I used it majorly to serve as a static website.
+- Also In this bootcamp, I created a domain name [nwaliechinyere](https://nwaliechinyere.xyz/) for my projects (the projects isn't available on the domain anymore, this is because the task of Fargate services was first set to 0, then I have teared down the stack in order not to incur bills as my Free Tier has expired) I used it majorly to serve as a static website.
 ---
 
 ## Instructions
@@ -47,8 +47,8 @@ At the end of this AWS Cloud Project Bootcamp, the Cruddur application looks lik
 
 *Now a Cruddur user can:*
 
--*Sign up and sign in to post and reply a Crud*
--*Edit bio and upload avatars*
--*Send messages to other Crud users with accurate timing*
+- *Sign up and sign in to post and reply a Crud*
+- *Edit bio and upload avatars*
+- *Send messages to other Crud users with accurate timing*
 
 
