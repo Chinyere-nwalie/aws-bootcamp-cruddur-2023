@@ -502,7 +502,7 @@ These were assignments I accomplised<br/>
 
 I pushed the docker images from my Gitpod CLI to my docker hub<br/>
 
-Using the following commands, I firstly create an access token, then I login, tag and push the images of my Front and backend  to my public repo at DockerHub ![docker Frontend](https://hub.docker.com/repository/docker/nwaliechinyerejessica/cruddur-frontend/general) and ![docker Backend](https://hub.docker.com/repository/docker/nwaliechinyerejessica/cruddur-backend/general)
+Using the following commands, I firstly create an access token, then I login, tag and push the images of my Front and backend  to my public repo at DockerHub [docker Frontend](https://hub.docker.com/repository/docker/nwaliechinyerejessica/cruddur-frontend/general) and [docker Backend](https://hub.docker.com/repository/docker/nwaliechinyerejessica/cruddur-backend/general)
 
 
 I achieved this by firstly creating an access token, then i login to docker in my CLI<br/>
