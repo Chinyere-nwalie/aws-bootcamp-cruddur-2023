@@ -1,22 +1,39 @@
 # Week 4 — Postgres and RDS
 
-This week has to do with RDS, SQL, PSQL database and I was able to learn from my instructor all of these. 
+This week has to do with RDS, SQL, PSQL database and I was able to learn from my instructor all of these.
 
-- Things to note about Amazon RDS security best practices before I lead you on how i created mine; 
+[RDS Security Best Practices](#rds-security-best-practices)
 
-Use amazon virtual cloud (VPC) to create a private network for your RDS instance. This helps prevent unauthorized access to your instance from the public internet.
 
-Compliance standard is what your business requires.
 
-RDS instance should always be in the AWS region that you are legally allowed to be holding user data in.
 
-Amazon organizations SCP is used to manage RDS deletion, RDS creation, region lock, RDS Encryption enforcement.
 
-AWS CloudTrail is enabled to monitor trigger alerts on malicious RDS behaviour by an identity in AWS.
 
-Amazon Guardduty is enabled in the account and region of RDS.
+---
 
-Also, Un-relational database is mysql, postgres and outbound rules state that without vpc, it can go anywhere. 
+## RDS Security Best Practices
+
+Things to note about Amazon RDS security best practices before I lead you on how I created my task 
+
+1. Use Amazon virtual cloud (VPC) to create a private network for your RDS instance. This helps prevent unauthorized access to your instance from the public internet.
+2. Compliance standard is what your business requires.
+3. RDS instance should always be in the AWS region that you are legally allowed to be holding user data in.
+4. Amazon organizations SCP is used to manage RDS deletion, RDS creation, region lock, RDS Encryption enforcement.
+5. AWS CloudTrail is enabled to monitor trigger alerts on malicious RDS behaviour by an identity in AWS.
+6. Amazon Guardduty is enabled in the account and region of RDS.
+7. Also, Un-relational database is mysql, postgres and outbound rules state that without vpc, it can go anywhere. 
+
+---
+
+## AWS Relational Database Service
+
+AWS RDS (Relational Database Service) is an AWS managed database service that makes it easy to set up, operate, and scale databases in the cloud, where it handles all the database tasks, such as backing up data, patching software, and managing storage. It also provides a variety of database engines to choose from, including MySQL, PostgreSQL, and Amazon Aurora. we'll integrate this database to facilitate CRUD operations, enabling us to store user posts seamlessly. 
+
+A view of types of engines
+
+![engines rds](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(727).png)
+
+
 
 # Technical Task
 I created an RDS datbase and named it cruddurroot and I connected to Postgres via CLI. 
