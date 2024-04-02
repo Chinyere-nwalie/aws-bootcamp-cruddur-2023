@@ -86,6 +86,8 @@ cd /workspace/aws-bootcamp-cruddur-2023
 mkdir thumbing-serverless-cdk
 ```
 
+![thumbing-serverless-cdk](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(330).png)
+
 - **Initialise CDK Pipeline**
 
    - Navigate to the `thumbing-serverless-cdk` folder and initialise it for typescript.
@@ -181,6 +183,8 @@ Remember to always run `cdk synth` to check for errors, if the yaml is returned 
 CDK synth in my Gitpod environment
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(340).png)
 
+![Bootstrap](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(335).png)
+
 CDK Bootstrap in my Gitpod environment
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(332).png)
 
@@ -189,6 +193,8 @@ Cloud formation Thumbing serverless CDK stack
 
 Cloud formation CDK Toolkit
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(457).png)
+
+![CDK](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(342).png)
 
 The Thumbing serverless CDK stack Lambda Function bucket
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(427).png)
@@ -555,6 +561,8 @@ Use the following command to see the output of the public users column
 Here's a reference to my [commit](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/commit/955f03ca349daa848d71b89f3ce81c7f3110ef46#diff-691fec3bd590373f2413b92b1d83b2a83ddc2852d21326ac2f8b8a2f66946672)
 
 Now my profile Bio is set correctly and is displaying
+
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(483).png)
 
 ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(459).png)
 

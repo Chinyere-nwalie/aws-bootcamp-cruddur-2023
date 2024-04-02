@@ -86,6 +86,8 @@ Make sure you're logged in to your AWS console;
 
 I created an RDS datbase and named it cruddurroot and I connected to Postgres via CLI. 
 
+![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(164).png)
+
 ![RDS](assets/RDS%20week%204.jpg)
 
 - Observe the creation progress on the RDS console and await for it to show "Available", when it does, it means it has successfully been created
@@ -135,7 +137,10 @@ aws rds create-db-instance \
 
 
   > 5432 is the default port used by PostgreSQL. we did this because hackers will scan for databases on the default port, so changing it might reduce the number of attacks targeting to your database.
+  
+  ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(182).png)
 
+  ![image](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(183).png)
 ---
 
 ## PSQL Commands 
@@ -1067,6 +1072,8 @@ Upon user sign-ups , we lay their entry into the users table. To achieve this, w
 5. Provide the function name as `cognito-post-confirm-function` and select runtime as "Python 3.8."
 6. Keep the default settings for other configurations and click "Create function."
 
+![cruddur-lambda](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(416).png)
+
 
 ### Step 2: Configure Environment Variables
 
@@ -1094,8 +1101,9 @@ arn:aws:lambda:us-east-1:AWS-ACCOUNT-ID:layer:psycopg2-py38:2
 2. Choose a function.
 3. Choose Configuration go to Network
 4. Under Network, choose Edit.
-5. Choose the VPC.<
+5. Choose the VPC.
 
+![lambda](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(415).png)
 
 ### Step 5: Create Lambda Code
 
@@ -1472,8 +1480,6 @@ This `create_activity.py` ensures that the creation and querying of activities a
 
 We are creating the SQL functions queries in `/db/sql` that way we are adhering to the principle of **separation of concerns, code organization, modularity, and maintainability**. 
 
-<img src="assets/week4/7- DB Activities/6 take sql outside.png">
-
 We are adding codes in both `home_activities.py` and `create_activity.py` .
 
 
@@ -1780,7 +1786,11 @@ Now I signed in a new user in my cognito and it dropped in my tables.
 
 ![cognito](assets/cognito.png)
 
-I can signin my crudder app
+I can signin my Cruddur App now
+
+![cruddur](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(408).png)
+
+![cruddur-signin](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(410).png)
 
 ![cruddur](assets/Week%204%20Messages.png)
 

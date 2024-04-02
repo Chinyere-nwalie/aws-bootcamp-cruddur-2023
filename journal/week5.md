@@ -100,6 +100,12 @@ UPDATE public.users SET cognito_user_id = 'f73f4b05-a59e-468b-8a29-a1c39e7a1111'
 
 ![UUID](assets/Week%205%20UUID.jpg)
 
+![UUID](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(450).png)
+
+![UUID](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(451).png)
+
+![UUID](https://github.com/Chinyere-nwalie/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Screenshot%20(262).png)
+
 ## DynamoDB Utility Scripts
 
 - In this section, I created the following utility scripts to easily setup and remove dynamodb data in the `backend-flask/bin/ddb/` directory.
